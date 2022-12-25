@@ -46,6 +46,8 @@ class _MainPageState extends State<MainPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width / 8.0;
+    double height = MediaQuery.of(context).size.height / 14.0;
     return Scaffold(
         body: pages[_index],
         bottomNavigationBar: BottomAppBar(
@@ -58,8 +60,8 @@ class _MainPageState extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 7.0,
-                  height: MediaQuery.of(context).size.height / 14.0,
+                  width: width,
+                  height: height,
                   child: IconButton(
                     onPressed: () {
                       setState(() {
@@ -69,15 +71,15 @@ class _MainPageState extends State<MainPage> {
                     icon: FittedBox(
                       child: Icon(
                         _index == 0 ? Icons.home : Icons.home_outlined,
-                        size: MediaQuery.of(context).size.width / 7.0,
+                        size: width,
                         color: _index == 0 ? Colors.amber : Colors.grey,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 7.0,
-                  height: MediaQuery.of(context).size.height / 14.0,
+                  width: width,
+                  height: height,
                   child: IconButton(
                     onPressed: () {
                       setState(() {
@@ -87,15 +89,15 @@ class _MainPageState extends State<MainPage> {
                     icon: FittedBox(
                       child: Icon(
                         _index == 1 ? Icons.group : Icons.group_outlined,
-                        size: MediaQuery.of(context).size.width / 7.0,
+                        size: width,
                         color: _index == 1 ? Colors.amber : Colors.grey,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 7.0,
-                  height: MediaQuery.of(context).size.height / 14.0,
+                  width: width,
+                  height: height,
                   child: IconButton(
                     onPressed: () {
                       setState(() {
@@ -107,7 +109,7 @@ class _MainPageState extends State<MainPage> {
                         _index == 2
                             ? Icons.account_circle
                             : Icons.account_circle_outlined,
-                        size: MediaQuery.of(context).size.width / 7.0,
+                        size: width,
                         color: _index == 2 ? Colors.amber : Colors.grey,
                       ),
                     ),
