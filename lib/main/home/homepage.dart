@@ -102,20 +102,10 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      _controller.animateToPage(0,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut);
-                    },
-                    child: const Text(
-                      "Circles",
-                      style: TextStyle(
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
+                PageButton(
+                  controller: _controller,
+                  toPage: 0,
+                  text: "Circles",
                 ),
                 const VerticalDivider(
                   thickness: 1.0,
@@ -123,29 +113,54 @@ class _HomePageState extends State<HomePage> {
                   endIndent: 8.0,
                   color: Colors.black87,
                 ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      _controller.animateToPage(1,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut);
-                    },
-                    child: const Text(
-                      "Goals",
-                      style: TextStyle(
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                )
+                PageButton(
+                  controller: _controller,
+                  text: "Goals",
+                  toPage: 1,
+                ),
               ],
             ),
           ),
         ),
       ),
-      body: PageView(
-        controller: _controller,
-        children: [CirclesDisp(), GoalsDisp()],
+      body: Container(
+        margin: const EdgeInsets.only(top: 10.0),
+        child: PageView(
+          controller: _controller,
+          children: [CirclesDisp(), GoalsDisp()],
+        ),
+      ),
+    );
+  }
+}
+
+class PageButton extends StatelessWidget {
+  final String text;
+  final PageController controller;
+  final int toPage;
+
+  const PageButton({
+    Key? key,
+    required this.controller,
+    required this.text,
+    required this.toPage,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: TextButton(
+        onPressed: () {
+          controller.animateToPage(toPage,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut);
+        },
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.black54,
+          ),
+        ),
       ),
     );
   }

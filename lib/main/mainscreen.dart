@@ -1,7 +1,7 @@
-import 'package:circlesapp/friends/friendspage.dart';
+import 'package:circlesapp/main/friends/friendspage.dart';
 import 'package:circlesapp/main/home/homepage.dart';
 import 'package:circlesapp/login/loginscreen.dart';
-import 'package:circlesapp/profile/profilescreen.dart';
+import 'package:circlesapp/main/profile/profilescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:circlesapp/services/auth_service.dart';
 
@@ -49,75 +49,76 @@ class _MainPageState extends State<MainPage> {
     double width = MediaQuery.of(context).size.width / 8.0;
     double height = MediaQuery.of(context).size.height / 14.0;
     return Scaffold(
-        body: pages[_index],
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 45.0,
-              vertical: 15.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: width,
-                  height: height,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _index = 0;
-                      });
-                    },
-                    icon: FittedBox(
-                      child: Icon(
-                        _index == 0 ? Icons.home : Icons.home_outlined,
-                        size: width,
-                        color: _index == 0 ? Colors.amber : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: width,
-                  height: height,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _index = 1;
-                      });
-                    },
-                    icon: FittedBox(
-                      child: Icon(
-                        _index == 1 ? Icons.group : Icons.group_outlined,
-                        size: width,
-                        color: _index == 1 ? Colors.amber : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: width,
-                  height: height,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _index = 2;
-                      });
-                    },
-                    icon: FittedBox(
-                      child: Icon(
-                        _index == 2
-                            ? Icons.account_circle
-                            : Icons.account_circle_outlined,
-                        size: width,
-                        color: _index == 2 ? Colors.amber : Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      body: pages[_index],
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 45.0,
+            vertical: 15.0,
           ),
-        ));
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: width,
+                height: height,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _index = 0;
+                    });
+                  },
+                  icon: FittedBox(
+                    child: Icon(
+                      _index == 0 ? Icons.home : Icons.home_outlined,
+                      size: width,
+                      color: _index == 0 ? Colors.amber : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: width,
+                height: height,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _index = 1;
+                    });
+                  },
+                  icon: FittedBox(
+                    child: Icon(
+                      _index == 1 ? Icons.group : Icons.group_outlined,
+                      size: width,
+                      color: _index == 1 ? Colors.amber : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: width,
+                height: height,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _index = 2;
+                    });
+                  },
+                  icon: FittedBox(
+                    child: Icon(
+                      _index == 2
+                          ? Icons.account_circle
+                          : Icons.account_circle_outlined,
+                      size: width,
+                      color: _index == 2 ? Colors.amber : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
