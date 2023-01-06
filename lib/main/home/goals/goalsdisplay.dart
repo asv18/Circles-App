@@ -55,9 +55,7 @@ class _GoalsDispState extends State<GoalsDisp> {
           margin: const EdgeInsets.fromLTRB(0, 10.0, 50.0, 10.0),
           decoration: BoxDecoration(
             color: Colors.blue[800],
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20.0),
-            ),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           width: 100.0,
           height: 40.0,
@@ -115,9 +113,7 @@ class GoalWidget extends StatelessWidget {
       margin: const EdgeInsets.all(10.0),
       height: 175.0,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20.0),
-        ),
+        borderRadius: BorderRadius.circular(20.0),
         color: Colors.blue[800],
       ),
       child: Container(

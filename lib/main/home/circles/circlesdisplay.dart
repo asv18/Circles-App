@@ -1,3 +1,4 @@
+import 'package:circlesapp/main/home/circles/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -60,8 +61,7 @@ class _CirclesDispState extends State<CirclesDisp> {
             itemCount: _circles.length,
             itemBuilder: (BuildContext context, int index) {
               return CircleWidget(
-                circles: _circles,
-                index: index,
+                circle: _circles[index],
               );
             },
           ),
@@ -84,9 +84,7 @@ class CreateButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.blue[800],
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20.0),
-        ),
+        borderRadius: BorderRadius.circular(20.0),
       ),
       width: 100.0,
       height: 40.0,
@@ -116,118 +114,140 @@ class CreateButton extends StatelessWidget {
 class CircleWidget extends StatelessWidget {
   const CircleWidget({
     Key? key,
-    required List<Circle> circles,
-    required this.index,
-  })  : _circles = circles,
-        super(key: key);
+    required this.circle,
+  }) : super(key: key);
 
-  final List<Circle> _circles;
-  final int index;
+  final Circle circle;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      height: 175.0,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(
-            _circles[index].image,
+    return Hero(
+      tag: circle.image,
+      child: Material(
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          margin: const EdgeInsets.all(10.0),
+          height: 175.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                circle.image,
+              ),
+            ),
           ),
-        ),
-      ),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _circles[index].name,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: const Offset(2.5, 2.5),
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.8),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 500),
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation) {
+                    return CircleScreen(circle: circle);
+                  },
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    circle.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(2.5, 2.5),
+                          blurRadius: 10.0,
+                          color: Colors.black.withOpacity(0.8),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Text(
+                      "${circle.updates} new updates",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400,
+                        shadows: [
+                          Shadow(
+                            offset: const Offset(2.5, 2.5),
+                            blurRadius: 10.0,
+                            color: Colors.black.withOpacity(0.8),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Row(
+                        children: List.generate(
+                          circle.userCount <= 3 ? circle.userCount : 3,
+                          (index) {
+                            return Container(
+                              width: 40.0,
+                              height: 40.0,
+                              transform: Matrix4.translationValues(
+                                  -10.0 * index, 0, 0),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    'https://source.unsplash.com/random/200x200?sig=${index}',
+                                  ),
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Text(
+                        (() {
+                          if (circle.userCount > 3) {
+                            return "+${circle.userCount - 3}";
+                          } else {
+                            return "";
+                          }
+                        }()),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                          shadows: [
+                            Shadow(
+                              offset: const Offset(2.5, 2.5),
+                              blurRadius: 10.0,
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Text(
-                "${_circles[index].updates} new updates",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  shadows: [
-                    Shadow(
-                      offset: const Offset(2.5, 2.5),
-                      blurRadius: 10.0,
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Row(
-                  children: List.generate(
-                    _circles[index].userCount <= 3
-                        ? _circles[index].userCount
-                        : 3,
-                    (index) {
-                      return Container(
-                        width: 40.0,
-                        height: 40.0,
-                        transform:
-                            Matrix4.translationValues(-10.0 * index, 0, 0),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              'https://source.unsplash.com/random/200x200?sig=${index}',
-                            ),
-                          ),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Text(
-                  (() {
-                    if (_circles[index].userCount > 3) {
-                      return "+${_circles[index].userCount - 3}";
-                    } else {
-                      return "";
-                    }
-                  }()),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w300,
-                    shadows: [
-                      Shadow(
-                        offset: const Offset(2.5, 2.5),
-                        blurRadius: 10.0,
-                        color: Colors.black.withOpacity(0.8),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

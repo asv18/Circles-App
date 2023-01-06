@@ -45,9 +45,7 @@ class _HomePageState extends State<HomePage> {
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                     decoration: BoxDecoration(
                       color: Colors.blue[800],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: TextButton(
                       style: TextButton.styleFrom(
@@ -69,9 +67,7 @@ class _HomePageState extends State<HomePage> {
                     height: 32.0,
                     decoration: BoxDecoration(
                       color: Colors.blue[800],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: TextButton(
                       style: TextButton.styleFrom(
