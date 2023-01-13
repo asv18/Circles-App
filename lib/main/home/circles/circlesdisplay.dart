@@ -124,41 +124,47 @@ class CircleWidget extends StatelessWidget {
     return Hero(
       tag: circle.image,
       child: Material(
-        child: Container(
-          clipBehavior: Clip.antiAlias,
-          margin: const EdgeInsets.all(10.0),
-          height: 175.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                circle.image,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 500),
+                pageBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                ) {
+                  return CircleScreen(
+                    circle: circle,
+                  );
+                },
+                transitionsBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child,
+                ) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            margin: const EdgeInsets.all(10.0),
+            height: 175.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  circle.image,
+                ),
               ),
             ),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 500),
-                  pageBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation) {
-                    return CircleScreen(circle: circle);
-                  },
-                  transitionsBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
-            },
             child: Container(
               margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 0),
               child: Column(
@@ -200,46 +206,48 @@ class CircleWidget extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Row(
-                        children: List.generate(
-                          circle.userCount <= 3 ? circle.userCount : 3,
-                          (index) {
-                            return Container(
-                              width: 40.0,
-                              height: 40.0,
-                              transform: Matrix4.translationValues(
-                                  -10.0 * index, 0, 0),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    'https://source.unsplash.com/random/200x200?sig=${index}',
+                      SizedBox(
+                        height: 40.0,
+                        width: 120.0,
+                        child: Stack(
+                          children: List.generate(
+                            circle.userCount <= 3 ? circle.userCount : 3,
+                            (index) {
+                              return Positioned(
+                                left: index * 30,
+                                child: Container(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        'https://source.unsplash.com/random/200x200?sig=${index}',
+                                      ),
+                                    ),
+                                    shape: BoxShape.circle,
                                   ),
                                 ),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
-                      Text(
-                        (() {
-                          if (circle.userCount > 3) {
-                            return "+${circle.userCount - 3}";
-                          } else {
-                            return "";
-                          }
-                        }()),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w300,
-                          shadows: [
-                            Shadow(
-                              offset: const Offset(2.5, 2.5),
-                              blurRadius: 10.0,
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                          ],
+                      Visibility(
+                        visible: circle.userCount > 3,
+                        child: Text(
+                          "+${circle.userCount - 3}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w300,
+                            shadows: [
+                              Shadow(
+                                offset: const Offset(2.5, 2.5),
+                                blurRadius: 10.0,
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
