@@ -1,4 +1,6 @@
+import 'package:circlesapp/services/data_service.dart';
 import 'package:circlesapp/shared/circle.dart';
+import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 
@@ -51,13 +53,14 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
         image: "https://source.unsplash.com/random/400x400?sig=6"),
   ];
 
-  String? _goalName = null;
+  String? _goalName;
+  String? _description;
   String _dateText = "mm / dd / yyyy";
   DateTime _selectedDate = DateTime.now();
-  List<Task> _tasks = [
-    Task(
+  List<Task> tasks = [
+    Task.newTask(
       name: "",
-      repeat: "Repeats?",
+      repeat: "Never",
     ),
   ];
 
@@ -67,7 +70,13 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: Colors.black),
+        toolbarHeight: 100,
+        leading: BackButton(
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context, "Goal Not Created");
+          },
+        ),
         elevation: 0,
         centerTitle: true,
         title: const Text(
@@ -116,7 +125,9 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         width: 275.0,
                         height: 50.0,
                         child: TextField(
+                          maxLength: 32,
                           decoration: const InputDecoration(
+                            counterText: "",
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.black,
@@ -132,7 +143,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                             });
                           },
                         ),
-                      )
+                      ),
                     ],
                   )
                 ],
@@ -203,6 +214,56 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                 ),
               ),
               Container(
+                margin: const EdgeInsets.only(top: 30.0),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20.0),
+                      child: const Icon(
+                        Icons.description_outlined,
+                        size: 75.0,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "What describes your goal?",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          width: 275,
+                          height: 50,
+                          child: TextField(
+                            maxLength: 500,
+                            decoration: const InputDecoration(
+                              counterText: "",
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 1.0,
+                                ),
+                              ),
+                              hintText: "Write a short description...",
+                              hintStyle: TextStyle(fontSize: 15.0),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                _description = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Container(
                 margin: const EdgeInsets.only(
                   top: 30.0,
                 ),
@@ -230,51 +291,52 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 10.0),
-                child: _tasks.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount: _tasks.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Dismissible(
-                            key: ValueKey<Task>(_tasks[index]),
-                            onDismissed: (direction) {
-                              setState(() {
-                                _tasks.removeAt(index);
-                              });
-                            },
-                            child: TaskWidget(
-                              tasks: _tasks,
-                              index: index,
-                            ),
-                          );
-                        },
-                      )
-                    : SizedBox(
-                        height: 170.0,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: tasks.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Dismissible(
+                      key: ValueKey<Task>(tasks[index]),
+                      onDismissed: (direction) {
+                        setState(() {
+                          tasks.removeAt(index);
+                        });
+                      },
+                      background: Container(
+                        alignment: Alignment.centerLeft,
                         child: Container(
                           margin: const EdgeInsets.symmetric(
-                            vertical: 30.0,
+                            horizontal: 50.0,
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                "We strongly recommend adding tasks to reach your goal",
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              Icon(
-                                Icons.dns_outlined,
-                                size: 40.0,
-                              ),
-                            ],
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.black,
+                            size: 30,
                           ),
                         ),
                       ),
+                      secondaryBackground: Container(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 50.0,
+                          ),
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      child: TaskWidget(
+                        tasks: tasks,
+                        index: index,
+                      ),
+                    );
+                  },
+                ),
               ),
               CircleAvatar(
                 radius: 30,
@@ -282,14 +344,14 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                 child: Center(
                   child: IconButton(
                     onPressed: () {
-                      if (_tasks.length == 10) {
+                      if (tasks.length == 10) {
                         ScaffoldMessenger.of(context).showSnackBar(taskLimit);
                       } else {
                         setState(() {
-                          _tasks.add(
-                            Task(
+                          tasks.add(
+                            Task.newTask(
                               name: "",
-                              repeat: "Repeats?",
+                              repeat: "Never",
                             ),
                           );
                         });
@@ -370,10 +432,10 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                 backgroundColor: Colors.blue,
                 child: Center(
                   child: IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_goalName == null ||
                           _dateText == "mm / dd / yyyy" ||
-                          anyNull(_tasks)) {
+                          anyNull(tasks)) {
                         List<String> neglected = [];
                         if (_goalName == null) {
                           neglected.add("Goal Name");
@@ -382,7 +444,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                           neglected.add("Date");
                         }
 
-                        if (anyNull(_tasks)) {
+                        if (anyNull(tasks)) {
                           neglected.add("Task Names/Repeats");
                         }
 
@@ -391,10 +453,19 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                             "You have left the following fields blank: ${neglected.toString().substring(1, neglected.toString().length - 1)}",
                             textAlign: TextAlign.center,
                           ),
-                          duration: Duration(seconds: 5),
+                          duration: const Duration(seconds: 5),
                         ));
                       } else {
-                        Navigator.pop(context);
+                        Goal newGoal = Goal.newGoal(
+                          name: _goalName!,
+                          endDate: _selectedDate,
+                          description: _description!,
+                          tasks: tasks,
+                        );
+
+                        await DataService.createGoal(newGoal);
+
+                        Navigator.pop(context, "Goal Created");
                       }
                     },
                     icon: const Center(
@@ -415,7 +486,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
 
   static bool anyNull(List<Task> tasks) {
     for (Task task in tasks) {
-      if (task.name == "" || task.repeat == "Repeats?") {
+      if (task.name == "") {
         return true;
       }
     }
@@ -435,7 +506,7 @@ class TaskWidget extends StatefulWidget {
 
 class _TaskWidgetState extends State<TaskWidget> {
   List<String> spinnerItems = [
-    "Repeats?",
+    "Never",
     "Daily",
     "Weekly",
     "Monthly",
@@ -495,21 +566,32 @@ class _TaskWidgetState extends State<TaskWidget> {
                         });
                       },
                     ),
-                    DropdownButton<String>(
-                      value: widget.tasks[widget.index].repeat,
-                      onChanged: (String? value) {
-                        setState(() {
-                          widget.tasks[widget.index].repeat = value!;
-                        });
-                      },
-                      items: spinnerItems.map<DropdownMenuItem<String>>(
-                        (String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        },
-                      ).toList(),
+                    Row(
+                      children: [
+                        const Text(
+                          "Repeats: ",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          value: widget.tasks[widget.index].repeat,
+                          onChanged: (String? value) {
+                            setState(() {
+                              widget.tasks[widget.index].repeat = value!;
+                            });
+                          },
+                          items: spinnerItems.map<DropdownMenuItem<String>>(
+                            (String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ],
                     ),
                   ],
                 ),

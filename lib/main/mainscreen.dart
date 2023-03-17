@@ -38,18 +38,38 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _index = 0;
+  late final PageController pageController;
 
   final pages = [
     HomePage(),
     FriendsPage(),
     ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / 8.0;
     double height = MediaQuery.of(context).size.height / 14.0;
+
     return Scaffold(
-      body: pages[_index],
+      body: PageView(
+        controller: pageController,
+        children: pages,
+      ),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -64,6 +84,7 @@ class _MainPageState extends State<MainPage> {
                 height: height,
                 child: IconButton(
                   onPressed: () {
+                    pageController.jumpToPage(0);
                     setState(() {
                       _index = 0;
                     });
@@ -82,6 +103,7 @@ class _MainPageState extends State<MainPage> {
                 height: height,
                 child: IconButton(
                   onPressed: () {
+                    pageController.jumpToPage(1);
                     setState(() {
                       _index = 1;
                     });
@@ -100,6 +122,7 @@ class _MainPageState extends State<MainPage> {
                 height: height,
                 child: IconButton(
                   onPressed: () {
+                    pageController.jumpToPage(2);
                     setState(() {
                       _index = 2;
                     });

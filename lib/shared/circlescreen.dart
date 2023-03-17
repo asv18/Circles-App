@@ -22,7 +22,7 @@ class _CircleScreenState extends State<CircleScreen> {
         elevation: 2,
         backgroundColor: Colors.transparent,
         flexibleSpace: Hero(
-          tag: widget.circle.image,
+          tag: widget.circle.name,
           child: Image(
             image: NetworkImage(widget.circle.image),
             fit: BoxFit.cover,

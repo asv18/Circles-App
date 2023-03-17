@@ -22,14 +22,6 @@ class LoginScreen extends StatelessWidget {
             ),
             Flexible(
               child: LoginButton(
-                icon: FontAwesomeIcons.userNinja,
-                text: 'Continue as Guest',
-                loginMethod: AuthService().anonLogin,
-                color: Colors.deepPurple,
-              ),
-            ),
-            Flexible(
-              child: LoginButton(
                 text: 'Sign in with Google',
                 icon: FontAwesomeIcons.google,
                 color: Colors.blue,

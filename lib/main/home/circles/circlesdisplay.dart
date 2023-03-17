@@ -1,4 +1,4 @@
-import 'package:circlesapp/main/home/circles/circlescreen.dart';
+import 'package:circlesapp/shared/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -122,7 +122,7 @@ class CircleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: circle.image,
+      tag: circle.name,
       child: Material(
         child: InkWell(
           onTap: () {

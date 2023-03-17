@@ -1,5 +1,8 @@
 import 'package:circlesapp/main/home/circles/circlesdisplay.dart';
 import 'package:circlesapp/main/home/goals/goalsdisplay.dart';
+import 'package:circlesapp/services/auth_service.dart';
+import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,8 +12,26 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final PageController _controller = PageController();
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
+  late Future<User> user;
+  late PageController _controller = PageController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = PageController();
+    user = DataService.fetchUserFromAuth(AuthService.user?.uid);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +56,19 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Top Text",
-                    style: TextStyle(fontSize: 30.0),
+                  FutureBuilder<User>(
+                    future: user,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                            "Hi ${snapshot.data!.firstName} ${snapshot.data!.lastName}!");
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+
+                      // By default, show a loading spinner.
+                      return const CircularProgressIndicator();
+                    },
                   ),
                   Container(
                     width: double.infinity,
@@ -123,11 +154,15 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.only(top: 10.0),
         child: PageView(
           controller: _controller,
-          children: [CirclesDisp(), GoalsDisp()],
+          children: const [CirclesDisp(), GoalsDisp()],
         ),
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class PageButton extends StatelessWidget {
@@ -147,9 +182,11 @@ class PageButton extends StatelessWidget {
     return Expanded(
       child: TextButton(
         onPressed: () {
-          controller.animateToPage(toPage,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut);
+          controller.animateToPage(
+            toPage,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
         child: Text(
           text,
