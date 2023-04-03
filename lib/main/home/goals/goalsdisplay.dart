@@ -1,5 +1,6 @@
 import 'package:circlesapp/services/data_service.dart';
 import 'package:circlesapp/shared/goal.dart';
+import 'package:circlesapp/shared/goalscreen.dart';
 import 'package:flutter/material.dart';
 
 class GoalsDisp extends StatefulWidget {
@@ -136,6 +137,7 @@ class _GoalsDispState extends State<GoalsDisp>
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isNotEmpty) {
+                    snapshot.data!.sort();
                     return ListView.builder(
                       itemCount:
                           snapshot.data != null ? snapshot.data!.length : 0,
@@ -152,7 +154,7 @@ class _GoalsDispState extends State<GoalsDisp>
                     return const SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("No Goals made yet..."),
+                        child: Text("You have no goals yet..."),
                       ),
                     );
                   }
@@ -197,6 +199,15 @@ class GoalWidget extends StatelessWidget {
         context,
         goals[index],
       ),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => GoalScreen(
+              goal: goals[index],
+            ),
+          ),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.all(10.0),
         height: 175.0,
@@ -214,7 +225,7 @@ class GoalWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    DataService.truncateWithEllipsis(10, goals[index].name),
+                    DataService.truncateWithEllipsis(8, goals[index].name),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -281,7 +292,7 @@ class GoalWidget extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
-                  "Time: ${goals[index].endDate.subtract(Duration(days: DateTime.now().day)).month} months",
+                  "Time Left: ${timeLeft(goals[index].endDate)}",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -297,7 +308,12 @@ class GoalWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                DataService.truncateWithEllipsis(20, goals[index].description),
+                DataService.truncateWithEllipsis(
+                  20,
+                  (goals[index].description != "null")
+                      ? goals[index].description!
+                      : "",
+                ),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -316,5 +332,38 @@ class GoalWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+String timeLeft(DateTime date) {
+  int years = (date.difference(DateTime.now()).inHours / 8760).round();
+  int months = (date.difference(DateTime.now()).inHours / 730).round();
+  int days = (date.difference(DateTime.now()).inHours / 24).round();
+  int hours = (date.difference(DateTime.now()).inHours).round();
+
+  if (years != 0) {
+    if (years > 1) {
+      return "$years years";
+    } else {
+      return "$years year";
+    }
+  } else if (months != 0) {
+    if (months > 1) {
+      return "$months months";
+    } else {
+      return "$months month";
+    }
+  } else if (days != 0) {
+    if (days > 1) {
+      return "$days days";
+    } else {
+      return "$days day";
+    }
+  } else {
+    if (hours > 1) {
+      return "$hours hours";
+    } else {
+      return "$hours hour";
+    }
   }
 }

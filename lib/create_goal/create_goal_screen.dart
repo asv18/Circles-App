@@ -125,7 +125,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         width: 275.0,
                         height: 50.0,
                         child: TextField(
-                          maxLength: 32,
+                          maxLength: 100,
                           decoration: const InputDecoration(
                             counterText: "",
                             focusedBorder: UnderlineInputBorder(
@@ -459,7 +459,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         Goal newGoal = Goal.newGoal(
                           name: _goalName!,
                           endDate: _selectedDate,
-                          description: _description!,
+                          description: _description,
                           tasks: tasks,
                         );
 
