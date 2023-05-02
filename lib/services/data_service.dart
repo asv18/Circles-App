@@ -71,6 +71,15 @@ class DataService {
   }
 
   static Future<http.Response> createGoal(Goal newGoal) {
+    late String body;
+    if (newGoal.tasks != null) {
+      body = json.encode(newGoal.tasks!.map((e) {
+        return e.toJson();
+      }));
+
+      print(body);
+    }
+
     return http.post(
       Uri.parse(
         '$link/api/v1/user/$userID/goals/',
@@ -83,7 +92,7 @@ class DataService {
           'name': newGoal.name,
           'finish_date': newGoal.endDate.toIso8601String(),
           'description': newGoal.description,
-          'tasks': newGoal.tasks,
+          'tasks': body,
         },
       ),
     );

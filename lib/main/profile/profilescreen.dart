@@ -4,7 +4,7 @@ import 'package:circlesapp/services/auth_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/taskscreen/taskscreen.dart';
+import 'package:circlesapp/shared/taskscreen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {

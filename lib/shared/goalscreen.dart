@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:circlesapp/services/data_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/taskscreen/taskscreen.dart';
+import 'package:circlesapp/shared/taskscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -101,20 +101,97 @@ class _GoalScreenState extends State<GoalScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // DataService.updateTasks(widget.goal.tasks);
         if (tasks != null) {
-          int i = 0;
+          List<Task> updatedTasks = List.empty(growable: true);
 
-          while (i < tasks!.length) {
-            if (widget.goal.tasks![i].complete != tasks![i].complete) {
-              DataService.updateTasks(widget.goal.tasks!, widget.goal);
+          for (int i = 0; i < tasks!.length; i++) {
+            if (tasks![i].complete! &&
+                DateTime.now().compareTo(tasks![i].nextDate!) >= 0) {
+              Task updateTask = widget.goal.tasks![i];
+              DateTime startingPointDate = updateTask.nextDate!;
 
-              return true;
+              if (DateTime.now().compareTo(startingPointDate) == 1) {
+                startingPointDate = DateTime.now();
+
+                if (updateTask.repeat == "Weekly") {
+                  startingPointDate = startingPointDate.add(
+                    Duration(
+                      days: DateTime.daysPerWeek - startingPointDate.weekday,
+                    ),
+                  );
+                }
+              }
+
+              switch (updateTask.repeat) {
+                case "Daily":
+                  if (updateTask.complete!) {
+                    startingPointDate = DateTime(
+                      startingPointDate.year,
+                      startingPointDate.month,
+                      startingPointDate.day + 1,
+                    );
+                  } else if (DateTime(
+                        startingPointDate.year,
+                        startingPointDate.month,
+                        startingPointDate.day - 1,
+                      ).compareTo(
+                        DateTime.now(),
+                      ) ==
+                      1) {
+                    startingPointDate = DateTime(
+                      startingPointDate.year,
+                      startingPointDate.month,
+                      startingPointDate.day - 1,
+                    );
+                  }
+                  break;
+                case "Weekly":
+                  if (updateTask.complete!) {
+                    startingPointDate = DateTime(
+                      startingPointDate.year,
+                      startingPointDate.month,
+                      startingPointDate.day + 7,
+                    );
+                  } else {
+                    startingPointDate = DateTime(
+                      startingPointDate.year,
+                      startingPointDate.month,
+                      startingPointDate.day - 7,
+                    );
+                  }
+                  break;
+                case "Monthly":
+                  if (updateTask.complete!) {
+                    startingPointDate = DateTime(
+                      startingPointDate.year,
+                      startingPointDate.month + 2,
+                      0,
+                    );
+                  } else if (DateTime(
+                        startingPointDate.year,
+                        startingPointDate.month - 1,
+                        0,
+                      ).compareTo(
+                        DateTime.now(),
+                      ) ==
+                      1) {
+                    startingPointDate = DateTime(
+                      startingPointDate.year,
+                      startingPointDate.month - 1,
+                      0,
+                    );
+                  }
+                  break;
+              }
+
+              updateTask.nextDate = startingPointDate;
+
+              updatedTasks.add(updateTask);
             }
-
-            i++;
           }
+          await DataService.updateTasks(updatedTasks, widget.goal);
         }
+
         return true;
       },
       child: Scaffold(
@@ -158,9 +235,13 @@ class _GoalScreenState extends State<GoalScreen> {
                         margin: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.0),
-                          color: (widget.goal.tasks![index].complete!)
-                              ? Colors.green[400]
-                              : Colors.blue,
+                          color: (widget.goal.tasks![index].nextDate!
+                                      .compareTo(DateTime.now()) <
+                                  0)
+                              ? Colors.red[400]
+                              : (widget.goal.tasks![index].complete!)
+                                  ? Colors.green[400]
+                                  : Colors.blue,
                         ),
                         child: InkWell(
                           onTapDown: (details) => _getTapPosition(details),
