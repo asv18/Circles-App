@@ -46,6 +46,14 @@ class Task {
     };
   }
 
+  Map<String, dynamic> toJsonNew() {
+    return {
+      "name": name,
+      "repeat": repeat,
+      "owner": owner,
+    };
+  }
+
   @override
   bool operator ==(Object other) {
     return other is Task && id == other.id;

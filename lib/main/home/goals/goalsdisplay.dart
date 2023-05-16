@@ -154,7 +154,12 @@ class _GoalsDispState extends State<GoalsDisp>
                     return const SizedBox(
                       width: double.infinity,
                       child: Center(
-                        child: Text("You have no goals yet..."),
+                        child: Text(
+                          "You have no goals yet...",
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),
                       ),
                     );
                   }

@@ -6,10 +6,12 @@ import 'package:http/http.dart' as http;
 
 class DataService {
   static String? userID;
-  static String link = "http://localhost:3000";
+  static String link = "http://localhost:3000/api/v1/";
+
+  //fetching
   static Future<List<Goal>> fetchGoals() async {
     final response = await http.get(
-      Uri.parse('$link/api/v1/user/$userID/goals'),
+      Uri.parse('${link}user/$userID/goals'),
     );
 
     if (response.statusCode == 200) {
@@ -31,15 +33,9 @@ class DataService {
     }
   }
 
-  static String truncateWithEllipsis(int cutoff, String myString) {
-    return (myString.length <= cutoff)
-        ? myString
-        : '${myString.substring(0, cutoff)}...';
-  }
-
   static Future<User> fetchUser() async {
     final response = await http.get(
-      Uri.parse('$link/api/v1/user/$userID'),
+      Uri.parse('${link}user/$userID'),
     );
 
     if (response.statusCode == 200) {
@@ -55,7 +51,7 @@ class DataService {
 
   static Future<User> fetchUserFromAuth(String? authID) async {
     final response = await http.get(
-      Uri.parse('$link/api/v1/user/authenticate/$authID'),
+      Uri.parse('${link}user/authenticate/$authID'),
     );
 
     if (response.statusCode == 200) {
@@ -71,18 +67,18 @@ class DataService {
   }
 
   static Future<http.Response> createGoal(Goal newGoal) {
-    late String body;
+    String body = "";
     if (newGoal.tasks != null) {
-      body = json.encode(newGoal.tasks!.map((e) {
-        return e.toJson();
-      }));
+      var tasks = newGoal.tasks!.map((e) {
+        return e.toJsonNew();
+      }).toList();
 
-      print(body);
+      body = json.encode(tasks);
     }
 
     return http.post(
       Uri.parse(
-        '$link/api/v1/user/$userID/goals/',
+        '${link}user/$userID/goals/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -98,10 +94,11 @@ class DataService {
     );
   }
 
+  //delete
   static Future<http.Response> deleteGoal(String id) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '$link/api/v1/user/$userID/goals/$id',
+        '${link}user/$userID/goals/$id',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -111,6 +108,20 @@ class DataService {
     return response;
   }
 
+  static Future<http.Response> deleteTask(String goalID, BigInt taskID) async {
+    final http.Response response = await http.delete(
+      Uri.parse(
+        '${link}user/$userID/goals/$goalID/tasks/${taskID.toString()}',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    return response;
+  }
+
+  //update tasks
   static Future<http.Response> updateTasks(List<Task> tasks, Goal owner) async {
     var body = json.encode({
       "tasks": tasks.map((e) => e.toJson()).toList(),
@@ -118,7 +129,7 @@ class DataService {
 
     final http.Response response = await http.patch(
       Uri.parse(
-        '$link/api/v1/user/$userID/goals/${owner.id}/tasks/',
+        '${link}user/$userID/goals/${owner.id}/tasks/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -127,5 +138,12 @@ class DataService {
     );
 
     return response;
+  }
+
+  //other
+  static String truncateWithEllipsis(int cutoff, String myString) {
+    return (myString.length <= cutoff)
+        ? myString
+        : '${myString.substring(0, cutoff)}...';
   }
 }
