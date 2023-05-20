@@ -78,15 +78,8 @@ class _GoalsDispState extends State<GoalsDisp>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     goals = DataService.fetchGoals();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
@@ -168,7 +161,9 @@ class _GoalsDispState extends State<GoalsDisp>
                 }
 
                 // By default, show a loading spinner.
-                return const CircularProgressIndicator();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               },
             ),
           ),
@@ -178,7 +173,6 @@ class _GoalsDispState extends State<GoalsDisp>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 

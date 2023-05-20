@@ -46,7 +46,10 @@ class Goal implements Comparable<Goal> {
       endDate: DateTime.parse(json["finish_date"]),
       startDate: DateTime.parse(json["start_date"]),
       description: json["description"] as String,
-      progress: int.parse(json["progress"]),
+      progress: ((DateTime.now().millisecondsSinceEpoch) /
+              (DateTime.parse(json["finish_date"]).millisecondsSinceEpoch) *
+              5.0)
+          .floor(),
       owner: json["owner"] as String,
       tasks: tasks,
     );

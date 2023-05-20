@@ -122,14 +122,30 @@ class DataService {
   }
 
   //update tasks
-  static Future<http.Response> updateTasks(List<Task> tasks, Goal owner) async {
-    var body = json.encode({
-      "tasks": tasks.map((e) => e.toJson()).toList(),
-    });
+  // static Future<http.Response> updateTasks(List<Task> tasks, Goal owner) async {
+  //   var body = json.encode({
+  //     "tasks": tasks.map((e) => e.toJson()).toList(),
+  //   });
+
+  //   final http.Response response = await http.patch(
+  //     Uri.parse(
+  //       '${link}user/$userID/goals/${owner.id}/tasks/',
+  //     ),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: body,
+  //   );
+
+  //   return response;
+  // }
+
+  static Future<http.Response> updateTask(Task task) async {
+    var body = json.encode(task.toJson());
 
     final http.Response response = await http.patch(
       Uri.parse(
-        '${link}user/$userID/goals/${owner.id}/tasks/',
+        '${link}user/$userID/goals/${task.owner}/tasks/${task.id}',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           child: Text("Edit ${task.name}"),
         ),
         PopupMenuItem(
-          value: "Mark Task",
+          value: "Complete Task",
           child: Text(
               "Mark ${task.name} as ${(task.complete!) ? "incomplete" : "complete"}"),
         ),
@@ -121,10 +121,12 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
         ),
       );
-    } else if (result == "Mark Task") {
+    } else if (result == "Complete Task") {
       setState(() {
         task.complete = !task.complete!;
       });
+
+      DataService.updateTask(task);
     }
   }
 
@@ -245,13 +247,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                   "Tasks",
                   style: TextStyle(fontSize: 24),
                 ),
-                FutureBuilder(
+                FutureBuilder<List<Goal>>(
                   future: goals,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else if (snapshot.hasData) {
-                      if (snapshot.data!.isEmpty) {
+                      for (Goal goal in snapshot.data!) {
+                        if (goal.tasks != null) {
+                          for (Task task in goal.tasks!) {
+                            if (!task.complete!) {
+                              tasks.add(task);
+                            }
+                          }
+                        }
+                      }
+
+                      if (tasks.isEmpty) {
                         return Container(
                           margin: const EdgeInsets.only(
                             top: 20,
@@ -273,15 +285,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                         );
                       } else {
-                        for (Goal goal in snapshot.data!) {
-                          if (goal.tasks != null) {
-                            for (Task task in goal.tasks!) {
-                              if (!task.complete!) {
-                                tasks.add(task);
-                              }
-                            }
-                          }
-                        }
                         return Container(
                           margin: const EdgeInsets.only(bottom: 20.0),
                           height: 170.0,
@@ -296,7 +299,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   borderRadius: BorderRadius.circular(20.0),
                                   color: (tasks[index].complete!)
                                       ? Colors.green[400]
-                                      : Colors.blue,
+                                      : (tasks[index].repeat != "Never")
+                                          ? (tasks[index].nextDate!.compareTo(
+                                                      DateTime.now()) <
+                                                  0)
+                                              ? Colors.red[400]
+                                              : Colors.blue
+                                          : Colors.blue,
                                 ),
                                 child: InkWell(
                                   onTapDown: (details) =>
@@ -365,7 +374,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                       }
                     }
 
-                    return const CircularProgressIndicator();
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   },
                 ),
                 const Divider(
@@ -427,7 +438,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                             }
                           }
 
-                          return const CircularProgressIndicator();
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         },
                       ),
                     ],
