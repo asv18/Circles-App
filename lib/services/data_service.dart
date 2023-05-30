@@ -2,16 +2,22 @@ import 'dart:convert';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/shared/user.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'auth_service.dart';
+
 class DataService {
-  static String? userID;
-  static String link = "http://localhost:3000/api/v1/";
+  static User dataUser = User.newUser(
+    exists: false,
+  );
+
+  String link = "http://localhost:3000/api/v1/";
 
   //fetching
-  static Future<List<Goal>> fetchGoals() async {
+  Future<List<Goal>> fetchGoals() async {
     final response = await http.get(
-      Uri.parse('${link}user/$userID/goals'),
+      Uri.parse('${link}user/${dataUser.id}/goals'),
     );
 
     if (response.statusCode == 200) {
@@ -19,13 +25,11 @@ class DataService {
       // then parse the JSON.
       List<dynamic> body = jsonDecode(response.body)["data"];
 
-      List<Goal> goals = body
+      return body
           .map(
             (dynamic item) => Goal.fromJson(item),
           )
           .toList();
-
-      return goals;
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -33,14 +37,17 @@ class DataService {
     }
   }
 
-  static Future<User> fetchUser() async {
+  Future<User> fetchUser() async {
     final response = await http.get(
-      Uri.parse('${link}user/$userID'),
+      Uri.parse('${link}user/${dataUser.id}'),
     );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
+
+      dataUser = User.fromJson(jsonDecode(response.body));
+
       return User.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
@@ -49,7 +56,7 @@ class DataService {
     }
   }
 
-  static Future<User> fetchUserFromAuth(String? authID) async {
+  Future<User> fetchUserFromAuth(String? authID) async {
     final response = await http.get(
       Uri.parse('${link}user/authenticate/$authID'),
     );
@@ -57,7 +64,7 @@ class DataService {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      userID = jsonDecode(response.body)["data"]["id"];
+      dataUser.id = jsonDecode(response.body)["data"]["id"];
       return fetchUser();
     } else {
       // If the server did not return a 200 OK response,
@@ -66,7 +73,7 @@ class DataService {
     }
   }
 
-  static Future<http.Response> createGoal(Goal newGoal) {
+  Future<http.Response> createGoal(Goal newGoal) {
     String body = "";
     if (newGoal.tasks != null) {
       var tasks = newGoal.tasks!.map((e) {
@@ -78,7 +85,7 @@ class DataService {
 
     return http.post(
       Uri.parse(
-        '${link}user/$userID/goals/',
+        '${link}user/${dataUser.id}/goals/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -94,11 +101,38 @@ class DataService {
     );
   }
 
+  Future<void> createNewUser(User newUser) async {
+    await createUser(newUser);
+
+    dataUser = await fetchUserFromAuth(AuthService().user!.uid);
+  }
+
+  Future<http.Response> createUser(User newUser) {
+    dataUser = newUser;
+    return http.post(
+      Uri.parse(
+        '${link}user',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "first_name": newUser.firstName,
+          "last_name": newUser.lastName,
+          "username": newUser.username,
+          "email": newUser.email,
+          "authID": AuthService().user!.uid,
+        },
+      ),
+    );
+  }
+
   //delete
-  static Future<http.Response> deleteGoal(String id) async {
+  Future<http.Response> deleteGoal(String id) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '${link}user/$userID/goals/$id',
+        '${link}user/${dataUser.id}/goals/$id',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -108,10 +142,10 @@ class DataService {
     return response;
   }
 
-  static Future<http.Response> deleteTask(String goalID, BigInt taskID) async {
+  Future<http.Response> deleteTask(String goalID, BigInt taskID) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '${link}user/$userID/goals/$goalID/tasks/${taskID.toString()}',
+        '${link}user/${dataUser.id}/goals/$goalID/tasks/${taskID.toString()}',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -129,7 +163,7 @@ class DataService {
 
   //   final http.Response response = await http.patch(
   //     Uri.parse(
-  //       '${link}user/$userID/goals/${owner.id}/tasks/',
+  //       '${link}user/${user.id}/goals/${owner.id}/tasks/',
   //     ),
   //     headers: <String, String>{
   //       'Content-Type': 'application/json; charset=UTF-8',
@@ -140,12 +174,12 @@ class DataService {
   //   return response;
   // }
 
-  static Future<http.Response> updateTask(Task task) async {
+  Future<http.Response> updateTask(Task task) async {
     var body = json.encode(task.toJson());
 
     final http.Response response = await http.patch(
       Uri.parse(
-        '${link}user/$userID/goals/${task.owner}/tasks/${task.id}',
+        '${link}user/${dataUser.id}/goals/${task.owner}/tasks/${task.id}',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

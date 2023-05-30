@@ -463,7 +463,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                           tasks: tasks,
                         );
 
-                        await DataService.createGoal(newGoal);
+                        await DataService().createGoal(newGoal);
 
                         Navigator.pop(context, "Goal Created");
                       }

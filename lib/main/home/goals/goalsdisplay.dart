@@ -25,11 +25,7 @@ class _GoalsDispState extends State<GoalsDisp>
 
     if (!mounted) return;
 
-    if (response == "Goal Created") {
-      setState(() {
-        goals = DataService.fetchGoals();
-      });
-    }
+    if (response == "Goal Created") {}
   }
 
   void _getTapPosition(TapDownDetails details) {
@@ -69,9 +65,9 @@ class _GoalsDispState extends State<GoalsDisp>
     if (result == "Edit Goal") {
       return;
     } else if (result == "Delete Goal") {
-      await DataService.deleteGoal(goal.id!);
+      await DataService().deleteGoal(goal.id!);
       setState(() {
-        goals = DataService.fetchGoals();
+        goals = DataService().fetchGoals();
       });
     }
   }
@@ -79,7 +75,7 @@ class _GoalsDispState extends State<GoalsDisp>
   @override
   void initState() {
     super.initState();
-    goals = DataService.fetchGoals();
+    goals = DataService().fetchGoals();
   }
 
   @override
@@ -88,7 +84,7 @@ class _GoalsDispState extends State<GoalsDisp>
     return RefreshIndicator(
       onRefresh: () async {
         setState(() {
-          goals = DataService.fetchGoals();
+          goals = DataService().fetchGoals();
         });
       },
       child: Column(

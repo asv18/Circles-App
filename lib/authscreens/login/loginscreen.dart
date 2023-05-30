@@ -1,4 +1,5 @@
 import 'package:circlesapp/services/auth_service.dart';
+import 'package:circlesapp/services/data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,9 +9,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      backgroundColor: Colors.transparent,
       body: Container(
         padding: const EdgeInsets.all(30),
         child: Column(
@@ -63,6 +62,7 @@ class LoginButton extends StatelessWidget {
           backgroundColor: color,
         ),
         onPressed: () {
+          DataService.dataUser.exists = true;
           loginMethod();
         },
         label: Text(text, textAlign: TextAlign.center),

@@ -19,15 +19,13 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = PageController();
-    user = DataService.fetchUserFromAuth(AuthService.user?.uid);
+    user = DataService().fetchUserFromAuth(AuthService().user?.uid);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }

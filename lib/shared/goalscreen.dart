@@ -78,7 +78,7 @@ void markCompleteOrUncomplete(Task task, Goal goal) async {
   }
 
   task.nextDate = startingPointDate;
-  await DataService.updateTask(task);
+  await DataService().updateTask(task);
 }
 
 class GoalScreen extends StatefulWidget {
@@ -164,7 +164,7 @@ class _GoalScreenState extends State<GoalScreen> {
         widget.goal.tasks!.removeAt(index);
       });
 
-      DataService.deleteTask(task.owner!, task.id!);
+      DataService().deleteTask(task.owner!, task.id!);
     }
   }
 

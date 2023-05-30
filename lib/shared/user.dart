@@ -1,14 +1,22 @@
 class User {
-  final String id;
-  final String firstName;
-  final String lastName;
-  final String username;
+  String? id;
+  String? firstName;
+  String? lastName;
+  String? username;
+  String? email;
+  bool exists = false;
 
-  const User(
-      {required this.id,
-      required this.firstName,
-      required this.lastName,
-      required this.username});
+  User({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.username,
+    required this.email,
+  });
+
+  User.newUser({
+    required this.exists,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -16,6 +24,7 @@ class User {
       firstName: json["data"]["first_name"] as String,
       lastName: json["data"]["last_name"] as String,
       username: json["data"]["username"] as String,
+      email: json["data"]["email"] as String,
     );
   }
 }

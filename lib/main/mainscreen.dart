@@ -1,9 +1,14 @@
+import 'package:circlesapp/authscreens/authscreen.dart';
 import 'package:circlesapp/main/friends/friendspage.dart';
 import 'package:circlesapp/main/home/homepage.dart';
-import 'package:circlesapp/login/loginscreen.dart';
 import 'package:circlesapp/main/profile/profilescreen.dart';
+import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/shared/user.dart';
+// import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
 import 'package:circlesapp/services/auth_service.dart';
+
+import '../shared/goal.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,9 +25,28 @@ class HomeScreen extends StatelessWidget {
             child: Text("Error"),
           );
         } else if (snapshot.hasData) {
+          if (!DataService.dataUser.exists) {
+            User newUser = User.newUser(
+              exists: true,
+            );
+
+            //print(AuthService().user!.displayName!.split(" "));
+
+            newUser.email = AuthService().user!.email;
+
+            List<String> firstLastName =
+                AuthService().user!.displayName!.split(" ");
+            newUser.firstName = firstLastName[0];
+            newUser.lastName = firstLastName[1];
+            newUser.username = AuthService().user!.displayName!;
+            newUser.email = AuthService().user!.email;
+
+            DataService().createUser(newUser);
+          }
+
           return const MainPage();
         } else {
-          return const LoginScreen();
+          return const AuthScreen();
         }
       },
     );
@@ -41,21 +65,19 @@ class _MainPageState extends State<MainPage> {
   late final PageController pageController;
 
   final pages = [
-    HomePage(),
-    FriendsPage(),
-    ProfileScreen(),
+    const HomePage(),
+    const FriendsPage(),
+    const ProfileScreen(),
   ];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageController = PageController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     pageController.dispose();
     super.dispose();
   }

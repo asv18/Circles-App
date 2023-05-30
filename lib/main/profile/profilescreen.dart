@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (!mounted) return;
 
     if (response == "Goal Created") {
-      goals = DataService.fetchGoals();
+      goals = DataService().fetchGoals();
     }
   }
 
@@ -75,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     // TODO: implement initState
     super.initState();
 
-    goals = DataService.fetchGoals();
+    goals = DataService().fetchGoals();
   }
 
   void _getTapPosition(TapDownDetails details) {
@@ -126,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         task.complete = !task.complete!;
       });
 
-      DataService.updateTask(task);
+      DataService().updateTask(task);
     }
   }
 

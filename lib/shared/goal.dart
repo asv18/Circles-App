@@ -46,13 +46,28 @@ class Goal implements Comparable<Goal> {
       endDate: DateTime.parse(json["finish_date"]),
       startDate: DateTime.parse(json["start_date"]),
       description: json["description"] as String,
-      progress: ((DateTime.now().millisecondsSinceEpoch) /
-              (DateTime.parse(json["finish_date"]).millisecondsSinceEpoch) *
+      progress: ((DateTime.now().millisecondsSinceEpoch -
+                  DateTime.parse(json["start_date"]).millisecondsSinceEpoch) /
+              (DateTime.parse(json["finish_date"]).millisecondsSinceEpoch -
+                  DateTime.parse(json["start_date"]).millisecondsSinceEpoch) *
               5.0)
           .floor(),
       owner: json["owner"] as String,
       tasks: tasks,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "end_date": endDate,
+      "start_date": startDate,
+      "description": description,
+      "progress": progress,
+      "owner": owner,
+      "tasks": tasks,
+    };
   }
 
   @override
@@ -64,7 +79,7 @@ class Goal implements Comparable<Goal> {
   int get hashCode => endDate.hashCode;
 
   @override
-  String toString() => '{ id: $id }';
+  String toString() => toJson().toString();
 
   @override
   int compareTo(Goal other) {
