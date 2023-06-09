@@ -50,7 +50,7 @@ class AuthService {
 
   Future<void> signOut() async {
     DataService.dataUser = local.User.newUser(
-      exists: false,
+      exists: true,
     );
 
     await FirebaseAuth.instance.signOut();
