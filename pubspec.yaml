@@ -45,6 +45,7 @@ dependencies:
   sign_in_with_apple: ^4.2.0
   http: ^0.13.5
   animated_background: ^2.0.0
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
