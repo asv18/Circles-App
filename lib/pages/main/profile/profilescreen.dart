@@ -254,7 +254,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     } else if (snapshot.hasData) {
-                      print("running");
                       tasks = List.empty(growable: true);
                       for (var goal in snapshot.data!) {
                         for (var task in goal.tasks!) {
@@ -292,7 +291,92 @@ class _ProfileScreenState extends State<ProfileScreen>
                             itemCount: tasks.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return task(index, context);
+                              return Container(
+                                width: 225.0,
+                                margin: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  color: (tasks[index].complete!)
+                                      ? Colors.green[400]
+                                      : (tasks[index].repeat != "Never")
+                                          ? (tasks[index].nextDate!.compareTo(
+                                                        DateTime.now(),
+                                                      ) <
+                                                  0)
+                                              ? Colors.red[400]
+                                              : Colors.blue
+                                          : Colors.blue,
+                                ),
+                                child: InkWell(
+                                  onTapDown: (details) => _getTapPosition(
+                                    details,
+                                  ),
+                                  onLongPress: () => _showActionsTaskMenu(
+                                    context,
+                                    tasks[index],
+                                  ),
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 30.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              margin: const EdgeInsets.only(
+                                                bottom: 10.0,
+                                              ),
+                                              child: AutoSizeText(
+                                                maxLines: 1,
+                                                maxFontSize: 32,
+                                                minFontSize: 18,
+                                                wrapWords: false,
+                                                overflow: TextOverflow.visible,
+                                                softWrap: false,
+                                                textAlign: TextAlign.center,
+                                                tasks[index].name,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              (tasks[index].repeat == "Never")
+                                                  ? "Not Recurring"
+                                                  : tasks[index].repeat,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Transform.scale(
+                                          scale: 1.5,
+                                          child: Checkbox(
+                                            checkColor: Colors.green[400],
+                                            fillColor: MaterialStateProperty
+                                                .resolveWith(
+                                              (states) => Colors.white,
+                                            ),
+                                            value: tasks[index].complete,
+                                            onChanged: (bool? value) {
+                                              setState(() {
+                                                tasks[index].complete = value!;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         );
@@ -442,92 +526,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container task(int index, BuildContext context) {
-    return Container(
-      width: 225.0,
-      margin: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        color: (tasks[index].complete!)
-            ? Colors.green[400]
-            : (tasks[index].repeat != "Never")
-                ? (tasks[index].nextDate!.compareTo(
-                              DateTime.now(),
-                            ) <
-                        0)
-                    ? Colors.red[400]
-                    : Colors.blue
-                : Colors.blue,
-      ),
-      child: InkWell(
-        onTapDown: (details) => _getTapPosition(
-          details,
-        ),
-        onLongPress: () => _showActionsTaskMenu(
-          context,
-          tasks[index],
-        ),
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 30.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100,
-                    margin: const EdgeInsets.only(
-                      bottom: 10.0,
-                    ),
-                    child: AutoSizeText(
-                      maxLines: 1,
-                      maxFontSize: 32,
-                      minFontSize: 18,
-                      wrapWords: false,
-                      overflow: TextOverflow.visible,
-                      softWrap: false,
-                      textAlign: TextAlign.center,
-                      tasks[index].name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    (tasks[index].repeat == "Never")
-                        ? "Not Recurring"
-                        : tasks[index].repeat,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              Transform.scale(
-                scale: 1.5,
-                child: Checkbox(
-                  checkColor: Colors.green[400],
-                  fillColor: MaterialStateProperty.resolveWith(
-                    (states) => Colors.white,
-                  ),
-                  value: tasks[index].complete,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      tasks[index].complete = value!;
-                    });
-                  },
-                ),
-              ),
-            ],
           ),
         ),
       ),
