@@ -1,5 +1,4 @@
 import 'package:circlesapp/shared/task.dart';
-import 'dart:convert';
 
 class Goal implements Comparable<Goal> {
   String? id;

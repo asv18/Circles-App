@@ -340,7 +340,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               ),
               CircleAvatar(
                 radius: 30,
-                backgroundColor: Colors.blue,
+                backgroundColor: Theme.of(context).primaryColor,
                 child: Center(
                   child: IconButton(
                     onPressed: () {
@@ -407,7 +407,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                       borderRadius: BorderRadius.circular(15.0),
                       color: (toggled[index])
                           ? Colors.deepPurple[200]
-                          : Colors.blue,
+                          : Theme.of(context).primaryColor,
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -429,7 +429,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               ),
               CircleAvatar(
                 radius: 30,
-                backgroundColor: Colors.blue,
+                backgroundColor: Theme.of(context).primaryColor,
                 child: Center(
                   child: IconButton(
                     onPressed: () async {
@@ -495,10 +495,10 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
 }
 
 class TaskWidget extends StatefulWidget {
-  List<Task> tasks;
-  int index;
+  final List<Task> tasks;
+  final int index;
 
-  TaskWidget({super.key, required this.tasks, required this.index});
+  const TaskWidget({super.key, required this.tasks, required this.index});
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();

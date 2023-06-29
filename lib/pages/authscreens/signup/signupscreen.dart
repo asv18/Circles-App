@@ -63,7 +63,7 @@ class LoginButton extends StatelessWidget {
       child: ElevatedButton.icon(
         icon: Icon(
           icon,
-          color: Colors.blue,
+          color: Theme.of(context).primaryColor,
           size: 20,
         ),
         style: TextButton.styleFrom(
@@ -77,8 +77,8 @@ class LoginButton extends StatelessWidget {
         label: Text(
           text,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.blue,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),

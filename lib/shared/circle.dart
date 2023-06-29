@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Circle {
   String name;
   int updates;

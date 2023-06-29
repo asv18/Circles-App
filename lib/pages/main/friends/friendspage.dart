@@ -1,3 +1,4 @@
+import 'package:circlesapp/components/search_appbar.dart';
 import 'package:circlesapp/services/data_service.dart';
 import 'package:flutter/material.dart';
 
@@ -23,29 +24,38 @@ class _FriendsPageState extends State<FriendsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          FutureBuilder<List<User>>(
-            future: potentialFriends,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-                return const Text("ERROR!!!!!");
-              } else if (snapshot.hasData) {
-                List<User> users = snapshot.data!;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    return Text("dan,.. ${users[index].firstName}");
-                  },
-                );
-              }
+      appBar: AppBar(
+        toolbarHeight: 100,
+        centerTitle: true,
+        title: SearchAppBar(
+          onChanged: (value) {},
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            FutureBuilder<List<User>>(
+              future: potentialFriends,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return const Text("ERROR!!!!!");
+                } else if (snapshot.hasData) {
+                  List<User> users = snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      return Text("dan,.. ${users[index].firstName}");
+                    },
+                  );
+                }
 
-              return const CircularProgressIndicator();
-            },
-          ),
-        ],
+                return const CircularProgressIndicator();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -39,8 +39,10 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           color: (_index == 0)
-              ? Color.lerp(Colors.blue[900], Colors.grey[50], 1)
-              : Color.lerp(Colors.grey[50], Colors.blue[900], 1),
+              ? Color.lerp(
+                  Theme.of(context).primaryColorDark, Colors.grey[50], 1)
+              : Color.lerp(
+                  Colors.grey[50], Theme.of(context).primaryColorDark, 1),
         ),
         child: AnimatedBackground(
           behaviour: BubblesBehaviour(),
@@ -74,7 +76,9 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                         ? "Don't have an account? Sign up instead."
                         : "Already have an account? Log in instead",
                     style: TextStyle(
-                      color: (_index == 1) ? Colors.white : Colors.blue,
+                      color: (_index == 1)
+                          ? Colors.white
+                          : Theme.of(context).primaryColor,
                     ),
                   ),
                 ),

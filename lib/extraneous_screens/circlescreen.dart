@@ -2,12 +2,14 @@ import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
 class CircleScreen extends StatefulWidget {
-  CircleScreen({
+  const CircleScreen({
     super.key,
     required this.circle,
+    required this.tag,
   });
 
-  Circle circle;
+  final Circle circle;
+  final String tag;
 
   @override
   State<CircleScreen> createState() => _CircleScreenState();
@@ -22,7 +24,7 @@ class _CircleScreenState extends State<CircleScreen> {
         elevation: 2,
         backgroundColor: Colors.transparent,
         flexibleSpace: Hero(
-          tag: widget.circle.name,
+          tag: widget.tag,
           child: Image(
             image: NetworkImage(widget.circle.image),
             fit: BoxFit.cover,

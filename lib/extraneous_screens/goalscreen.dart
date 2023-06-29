@@ -1,7 +1,7 @@
 import 'package:circlesapp/services/data_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/shared/taskscreen.dart';
+import 'package:circlesapp/extraneous_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
 
 void markCompleteOrUncomplete(Task task, Goal goal) async {
@@ -179,7 +179,7 @@ class _GoalScreenState extends State<GoalScreen> {
       appBar: AppBar(
         toolbarHeight: (MediaQuery.of(context).size.height / 10),
         elevation: 2,
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           DataService.truncateWithEllipsis(
             32,
@@ -223,8 +223,8 @@ class _GoalScreenState extends State<GoalScreen> {
                                             .compareTo(DateTime.now()) <
                                         0)
                                     ? Colors.red[400]
-                                    : Colors.blue
-                                : Colors.blue,
+                                    : Theme.of(context).primaryColor
+                                : Theme.of(context).primaryColor,
                       ),
                       child: InkWell(
                         onTapDown: (details) => _getTapPosition(details),

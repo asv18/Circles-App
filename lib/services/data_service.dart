@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/shared/user.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth_service.dart';
@@ -10,6 +13,8 @@ class DataService {
   static User dataUser = User.newUser(
     exists: true,
   );
+
+  static Future<List<Goal>>? goals;
 
   String link = "http://localhost:3000/api/v1/";
 
@@ -36,7 +41,7 @@ class DataService {
     }
   }
 
-  Future<User> fetchUser() async {
+  Future<void> fetchUser() async {
     final response = await http.get(
       Uri.parse('${link}user/${dataUser.id}'),
     );
@@ -47,7 +52,38 @@ class DataService {
 
       dataUser = User.fromJson(jsonDecode(response.body));
 
-      return User.fromJson(jsonDecode(response.body));
+      const secureStorage = FlutterSecureStorage();
+
+      dynamic userIDKey = await secureStorage.read(
+        key: "idKey",
+      );
+
+      if (userIDKey == null) {
+        String newKey = generateRandomString(64);
+
+        await secureStorage.write(
+          key: "idKey",
+          value: newKey,
+        );
+      }
+
+      userIDKey = await secureStorage.read(
+        key: "idKey",
+      );
+
+      final openedBox = Hive.box("userBox");
+
+      await openedBox.putAll(
+        {
+          userIDKey: dataUser.id,
+          "first_name": dataUser.firstName,
+          "last_name": dataUser.lastName,
+          "username": dataUser.username,
+          "email": dataUser.email,
+        },
+      );
+
+      print(openedBox.values);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -55,7 +91,7 @@ class DataService {
     }
   }
 
-  Future<User> fetchUserFromAuth(String? authID) async {
+  Future<void> fetchUserFromAuth(String? authID) async {
     final response = await http.get(
       Uri.parse('${link}user/authenticate/$authID'),
     );
@@ -120,10 +156,10 @@ class DataService {
     );
   }
 
-  Future<void> createNewUser(User newUser) async {
+  void createNewUser(User newUser) async {
     await createUser(newUser);
 
-    dataUser = await fetchUserFromAuth(AuthService().user!.uid);
+    fetchUserFromAuth(AuthService().user!.uid);
   }
 
   Future<http.Response> createUser(User newUser) {
@@ -172,6 +208,17 @@ class DataService {
     );
 
     return response;
+  }
+
+  String generateRandomString(int length) {
+    final random = Random();
+    const availableChars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    final randomString = List.generate(length,
+            (index) => availableChars[random.nextInt(availableChars.length)])
+        .join();
+
+    return randomString;
   }
 
   //update tasks

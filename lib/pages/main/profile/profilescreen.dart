@@ -1,12 +1,12 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:circlesapp/components/circles_list_widget.dart';
+import 'package:circlesapp/components/goals_list_widget.dart';
+import 'package:circlesapp/components/task_widget.dart';
 import 'package:circlesapp/services/data_service.dart';
-import 'package:circlesapp/shared/circlescreen.dart';
 import 'package:circlesapp/services/auth_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
-import 'package:circlesapp/shared/goalscreen.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/shared/taskscreen.dart';
+import 'package:circlesapp/extraneous_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -166,78 +166,78 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.build(context);
     return Scaffold(
       body: NestedScrollView(
-        headerSliverBuilder: ((context, innerBoxIsScrolled) => [
-              SliverAppBar(
-                toolbarHeight: MediaQuery.of(context).size.height / 6.0,
-                flexibleSpace: const Image(
-                  image: NetworkImage(
-                    'https://picsum.photos/600/600?&blur=2',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-                backgroundColor: Colors.transparent,
-                bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(48.0),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Transform.translate(
-                      offset: const Offset(0, 60.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 20.0),
-                            child: PhysicalModel(
-                              color: Colors.transparent,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            toolbarHeight: MediaQuery.of(context).size.height / 6.0,
+            flexibleSpace: const Image(
+              image: NetworkImage(
+                'https://picsum.photos/600/600?&blur=2',
+              ),
+              fit: BoxFit.cover,
+            ),
+            backgroundColor: Colors.transparent,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(48.0),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Transform.translate(
+                  offset: const Offset(0, 60.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 20.0),
+                        child: PhysicalModel(
+                          color: Colors.transparent,
+                          shape: BoxShape.circle,
+                          elevation: 5,
+                          child: Container(
+                            width: 150.0,
+                            height: 150.0,
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
-                              elevation: 5,
-                              child: Container(
-                                width: 150.0,
-                                height: 150.0,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                                    ),
-                                  ),
+                              color: Colors.white,
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                                 ),
                               ),
                             ),
                           ),
-                          PhysicalModel(
-                            borderRadius: BorderRadius.circular(20.0),
-                            elevation: 5,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colors.blue,
-                              ),
-                              height: 50.0,
-                              width: 50.0,
-                              alignment: Alignment.center,
-                              child: Center(
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    Icons.settings,
-                                    size: 25.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      PhysicalModel(
+                        borderRadius: BorderRadius.circular(20.0),
+                        elevation: 5,
+                        color: Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          height: 50.0,
+                          width: 50.0,
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: InkWell(
+                              onTap: () {},
+                              child: const Icon(
+                                Icons.settings,
+                                size: 25.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ]),
+            ),
+          ),
+        ],
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0),
@@ -284,97 +284,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                         );
                       } else {
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 20.0),
+                        return SizedBox(
                           height: 170.0,
                           child: ListView.builder(
                             itemCount: tasks.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return Container(
-                                width: 225.0,
-                                margin: const EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  color: (tasks[index].complete!)
-                                      ? Colors.green[400]
-                                      : (tasks[index].repeat != "Never")
-                                          ? (tasks[index].nextDate!.compareTo(
-                                                        DateTime.now(),
-                                                      ) <
-                                                  0)
-                                              ? Colors.red[400]
-                                              : Colors.blue
-                                          : Colors.blue,
+                              return InkWell(
+                                onTapDown: (details) => _getTapPosition(
+                                  details,
                                 ),
-                                child: InkWell(
-                                  onTapDown: (details) => _getTapPosition(
-                                    details,
-                                  ),
-                                  onLongPress: () => _showActionsTaskMenu(
-                                    context,
-                                    tasks[index],
-                                  ),
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 30.0,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 100,
-                                              margin: const EdgeInsets.only(
-                                                bottom: 10.0,
-                                              ),
-                                              child: AutoSizeText(
-                                                maxLines: 1,
-                                                maxFontSize: 32,
-                                                minFontSize: 18,
-                                                wrapWords: false,
-                                                overflow: TextOverflow.visible,
-                                                softWrap: false,
-                                                textAlign: TextAlign.center,
-                                                tasks[index].name,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              (tasks[index].repeat == "Never")
-                                                  ? "Not Recurring"
-                                                  : tasks[index].repeat,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Transform.scale(
-                                          scale: 1.5,
-                                          child: Checkbox(
-                                            checkColor: Colors.green[400],
-                                            fillColor: MaterialStateProperty
-                                                .resolveWith(
-                                              (states) => Colors.white,
-                                            ),
-                                            value: tasks[index].complete,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                tasks[index].complete = value!;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                onLongPress: () => _showActionsTaskMenu(
+                                  context,
+                                  tasks[index],
+                                ),
+                                child: TaskWidget(
+                                  task: tasks[index],
                                 ),
                               );
                             },
@@ -407,8 +332,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ),
                             Container(
                               margin: const EdgeInsets.only(left: 20.0),
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
                                 shape: BoxShape.circle,
                               ),
                               child: IconButton(
@@ -476,8 +401,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                               width: 50.0,
                               height: 50.0,
                               margin: const EdgeInsets.only(left: 20.0),
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
                                 shape: BoxShape.circle,
                               ),
                               child: InkWell(
@@ -500,8 +425,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         itemCount: circles.length,
                         itemBuilder: (context, index) {
                           return CircleListWidget(
-                            circles: circles,
-                            index: index,
+                            circle: circles[index],
                           );
                         },
                       ),
@@ -534,220 +458,4 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class CircleListWidget extends StatelessWidget {
-  const CircleListWidget({
-    super.key,
-    required this.circles,
-    required this.index,
-  });
-
-  final List<Circle> circles;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: circles[index].image,
-      child: Material(
-        child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 100),
-                pageBuilder: (
-                  BuildContext context,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                ) {
-                  return CircleScreen(
-                    circle: circles[index],
-                  );
-                },
-                transitionsBuilder: (
-                  BuildContext context,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                  Widget child,
-                ) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              ),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              image: DecorationImage(
-                image: NetworkImage(circles[index].image),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 10.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    circles[index].name,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 30.0,
-                        width: 75.0,
-                        child: Stack(
-                          children: List.generate(
-                            (circles[index].userCount <= 3)
-                                ? circles[index].userCount
-                                : 3,
-                            (index) {
-                              return Positioned(
-                                left: index * 15,
-                                child: Container(
-                                  width: 30.0,
-                                  height: 30.0,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        'https://picsum.photos/200/200?random=$index',
-                                      ),
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                        child: Visibility(
-                          visible: circles[index].userCount > 3,
-                          child: Text(
-                            "+${circles[index].userCount - 3}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              shadows: [
-                                Shadow(
-                                  offset: const Offset(2.5, 2.5),
-                                  blurRadius: 10.0,
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GoalsListWidget extends StatefulWidget {
-  const GoalsListWidget({
-    super.key,
-    required this.goals,
-  });
-
-  final List<Goal> goals;
-
-  @override
-  State<GoalsListWidget> createState() => _GoalsListWidgetState();
-}
-
-class _GoalsListWidgetState extends State<GoalsListWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(0),
-      itemCount: widget.goals.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => GoalScreen(
-                  goal: widget.goals[index],
-                ),
-              ),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 5.0),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              color: Theme.of(context).primaryColorDark,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  DataService.truncateWithEllipsis(
-                    15,
-                    widget.goals[index].name,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white,
-                  ),
-                ),
-                Row(
-                  children: List.generate(
-                    5,
-                    (i) {
-                      if (i < widget.goals[index].progress!.toInt()) {
-                        return Container(
-                          margin: const EdgeInsets.only(right: 5.0),
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.green[500],
-                          ),
-                        );
-                      } else {
-                        return Container(
-                          margin: const EdgeInsets.only(right: 5.0),
-                          child: Icon(
-                            Icons.circle_outlined,
-                            color: Colors.green[500],
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

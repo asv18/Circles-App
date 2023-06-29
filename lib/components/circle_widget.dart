@@ -1,115 +1,6 @@
-import 'package:circlesapp/shared/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
+import 'package:circlesapp/extraneous_screens/circlescreen.dart';
 import 'package:flutter/material.dart';
-
-class CirclesDisp extends StatefulWidget {
-  const CirclesDisp({super.key});
-
-  @override
-  State<CirclesDisp> createState() => _CirclesDispState();
-}
-
-class _CirclesDispState extends State<CirclesDisp> {
-  final List<Circle> _circles = [
-    Circle(
-        name: "circle 1",
-        updates: 3,
-        userCount: 5,
-        image: "https://picsum.photos/400/400?random=1"),
-    Circle(
-        name: "circle 2",
-        updates: 8,
-        userCount: 8,
-        image: "https://picsum.photos/400/400?random=2"),
-    Circle(
-        name: "circle 3",
-        updates: 10,
-        userCount: 3,
-        image: "https://picsum.photos/400/400?random=3"),
-    Circle(
-        name: "circle 4",
-        updates: 7,
-        userCount: 2,
-        image: "https://picsum.photos/400/400?random=4"),
-    Circle(
-        name: "circle 5",
-        updates: 2,
-        userCount: 6,
-        image: "https://picsum.photos/400/400?random=5"),
-    Circle(
-        name: "circle 6",
-        updates: 6,
-        userCount: 10,
-        image: "https://picsum.photos/400/400?random=6"),
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              CreateButton(text: "Join"),
-              CreateButton(text: "Create"),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _circles.length,
-            itemBuilder: (BuildContext context, int index) {
-              return CircleWidget(
-                circle: _circles[index],
-              );
-            },
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class CreateButton extends StatelessWidget {
-  const CreateButton({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blue[800],
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      width: 100.0,
-      height: 40.0,
-      child: TextButton(
-        onPressed: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class CircleWidget extends StatelessWidget {
   const CircleWidget({
@@ -126,7 +17,7 @@ class CircleWidget extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 500),
+              transitionDuration: const Duration(milliseconds: 400),
               pageBuilder: (
                 BuildContext context,
                 Animation<double> animation,
@@ -134,6 +25,7 @@ class CircleWidget extends StatelessWidget {
               ) {
                 return CircleScreen(
                   circle: circle,
+                  tag: circle.name,
                 );
               },
               transitionsBuilder: (
@@ -154,7 +46,7 @@ class CircleWidget extends StatelessWidget {
           tag: circle.name,
           child: Container(
             clipBehavior: Clip.antiAlias,
-            margin: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
             height: 175.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -171,8 +63,7 @@ class CircleWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    circle.name,
+                  DefaultTextStyle(
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -185,11 +76,13 @@ class CircleWidget extends StatelessWidget {
                         ),
                       ],
                     ),
+                    child: Text(
+                      circle.name,
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Text(
-                      "${circle.updates} new updates",
+                    child: DefaultTextStyle(
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -201,6 +94,9 @@ class CircleWidget extends StatelessWidget {
                             color: Colors.black.withOpacity(0.8),
                           ),
                         ],
+                      ),
+                      child: Text(
+                        "${circle.updates} new updates",
                       ),
                     ),
                   ),
@@ -234,8 +130,7 @@ class CircleWidget extends StatelessWidget {
                       ),
                       Visibility(
                         visible: circle.userCount > 3,
-                        child: Text(
-                          "+${circle.userCount - 3}",
+                        child: DefaultTextStyle(
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -247,6 +142,9 @@ class CircleWidget extends StatelessWidget {
                                 color: Colors.black.withOpacity(0.8),
                               ),
                             ],
+                          ),
+                          child: Text(
+                            "+${circle.userCount - 3}",
                           ),
                         ),
                       ),

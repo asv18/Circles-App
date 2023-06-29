@@ -2,11 +2,11 @@ import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 
 class TaskScreen extends StatefulWidget {
-  TaskScreen({
+  const TaskScreen({
     super.key,
     required this.task,
   });
-  Task task;
+  final Task task;
   @override
   State<TaskScreen> createState() => _TaskScreenState();
 }
