@@ -25,6 +25,8 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(length: pages.length, vsync: this);
+
+    DataService().fetchGoals();
   }
 
   @override
@@ -44,12 +46,14 @@ class _HomePageState extends State<HomePage>
               width: 120.0,
               height: 120.0,
               margin: const EdgeInsets.only(right: 20.0),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,
                 image: DecorationImage(
+                  fit: BoxFit.cover,
                   image: NetworkImage(
-                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                    DataService.dataUser.photoUrl ??
+                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                   ),
                 ),
               ),

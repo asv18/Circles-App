@@ -29,14 +29,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final userID = await openedBox.get(userIDKey);
 
-    print("$userID fetched");
-
     if (userID != null) {
       DataService.dataUser.id = userID;
       DataService.dataUser.firstName = await openedBox.get("first_name");
       DataService.dataUser.lastName = await openedBox.get("last_name");
       DataService.dataUser.username = await openedBox.get("username");
       DataService.dataUser.email = await openedBox.get("email");
+
+      String photoUrl = await openedBox.get("photo_url");
+      DataService.dataUser.photoUrl = (photoUrl != "null") ? photoUrl : null;
 
       return const MainPage();
     }
@@ -58,23 +59,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<Widget> _returnHomePage() async {
-    if (!DataService.dataUser.exists) {
-      User newUser = User.newUser(
-        exists: true,
-      );
+    List<String> firstLastName = AuthService().user!.displayName!.split(" ");
 
-      newUser.email = AuthService().user!.email;
+    DataService.dataUser = User(
+      id: null,
+      firstName: firstLastName[0],
+      lastName: firstLastName[1],
+      username: AuthService().user!.displayName!,
+      email: AuthService().user!.email,
+      photoUrl: AuthService().user!.photoURL,
+    );
 
-      List<String> firstLastName = AuthService().user!.displayName!.split(" ");
-      newUser.firstName = firstLastName[0];
-      newUser.lastName = firstLastName[1];
-      newUser.username = AuthService().user!.displayName!;
-      newUser.email = AuthService().user!.email;
-
-      await DataService().createUser(newUser);
-    } else {
-      await DataService().fetchUserFromAuth(AuthService().user!.uid);
-    }
+    await DataService().fetchUserFromAuth(AuthService().user!.uid);
 
     return const MainPage();
   }

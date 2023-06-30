@@ -100,12 +100,14 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                     width: 100.0,
                     height: 100.0,
                     margin: const EdgeInsets.only(right: 20.0),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                       image: DecorationImage(
+                        fit: BoxFit.cover,
                         image: NetworkImage(
-                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                          DataService.dataUser.photoUrl ??
+                              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                         ),
                       ),
                     ),
@@ -374,9 +376,9 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     FlutterLogo(
                       size: 50.0,
                     ),
@@ -465,7 +467,13 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
 
                         await DataService().createGoal(newGoal);
 
-                        Navigator.pop(context, "Goal Created");
+                        Navigator.pop(
+                          context,
+                          [
+                            "Goal Created",
+                            newGoal,
+                          ],
+                        );
                       }
                     },
                     icon: const Center(

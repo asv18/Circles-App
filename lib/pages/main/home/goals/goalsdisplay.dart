@@ -11,22 +11,24 @@ class GoalsDisp extends StatefulWidget {
   State<GoalsDisp> createState() => _GoalsDispState();
 }
 
-class _GoalsDispState extends State<GoalsDisp>
-    with AutomaticKeepAliveClientMixin {
-  late Future<List<Goal>> goals;
+class _GoalsDispState extends State<GoalsDisp> {
   Offset _tapPosition = Offset.zero;
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    final response = await Navigator.pushNamed(
+    final response = (await Navigator.pushNamed(
       context,
       '/creategoal',
-    );
+    )) as List;
 
     if (!mounted) return;
 
-    if (response == "Goal Created") {}
+    if (response[0] == "Goal Created") {
+      await DataService().fetchGoals();
+
+      setState(() {});
+    }
   }
 
   void _getTapPosition(TapDownDetails details) {
@@ -67,8 +69,22 @@ class _GoalsDispState extends State<GoalsDisp>
       return;
     } else if (result == "Delete Goal") {
       await DataService().deleteGoal(goal.id!);
+
       setState(() {
-        goals = DataService().fetchGoals();
+        List<Goal> goals = List.empty(growable: true);
+        DataService.goals.then(
+          (value) {
+            for (Goal obj in value) {
+              if (obj.id != goal.id) {
+                goals.add(obj);
+              }
+            }
+          },
+        );
+
+        DataService.goals = Future.value(
+          goals,
+        );
       });
     }
   }
@@ -76,17 +92,13 @@ class _GoalsDispState extends State<GoalsDisp>
   @override
   void initState() {
     super.initState();
-    goals = DataService().fetchGoals();
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
-        setState(() {
-          goals = DataService().fetchGoals();
-        });
+        await DataService().fetchGoals();
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
@@ -107,7 +119,7 @@ class _GoalsDispState extends State<GoalsDisp>
             ),
             Expanded(
               child: FutureBuilder<List<Goal>>(
-                future: goals,
+                future: DataService.goals,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isNotEmpty) {
@@ -153,7 +165,4 @@ class _GoalsDispState extends State<GoalsDisp>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

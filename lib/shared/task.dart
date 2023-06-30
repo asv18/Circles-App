@@ -39,7 +39,7 @@ class Task {
       "id": id.toString(),
       "name": name,
       "repeat": repeat,
-      "start_date": startDate!.toIso8601String(),
+      "start_date": (startDate ?? DateTime.now()).toIso8601String(),
       "next_date": nextDate!.toIso8601String(),
       "complete": complete,
       "owner": owner,
@@ -65,6 +65,6 @@ class Task {
   @override
   String toString() {
     // TODO: implement toString
-    return toJson().toString();
+    return toJsonNew().toString();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:circlesapp/services/auth_service.dart';
-import 'package:circlesapp/services/data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -62,7 +61,6 @@ class LoginButton extends StatelessWidget {
           backgroundColor: color,
         ),
         onPressed: () {
-          DataService.dataUser.exists = true;
           loginMethod();
         },
         label: Text(text, textAlign: TextAlign.center),

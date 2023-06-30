@@ -10,16 +10,16 @@ import 'package:http/http.dart' as http;
 import 'auth_service.dart';
 
 class DataService {
-  static User dataUser = User.newUser(
-    exists: true,
-  );
+  static User dataUser = User.empty();
 
-  static Future<List<Goal>>? goals;
+  static Future<List<Goal>> goals = Future.value(
+    List.empty(growable: true),
+  );
 
   String link = "http://localhost:3000/api/v1/";
 
   //fetching
-  Future<List<Goal>> fetchGoals() async {
+  Future<void> fetchGoals() async {
     final response = await http.get(
       Uri.parse('${link}user/${dataUser.id}/goals'),
     );
@@ -29,11 +29,13 @@ class DataService {
       // then parse the JSON.
       List<dynamic> body = jsonDecode(response.body)["data"];
 
-      return body
-          .map(
-            (dynamic item) => Goal.fromJson(item),
-          )
-          .toList();
+      goals = Future.value(
+        body
+            .map(
+              (dynamic item) => Goal.fromJson(item),
+            )
+            .toList(),
+      );
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -47,10 +49,9 @@ class DataService {
     );
 
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-
-      dataUser = User.fromJson(jsonDecode(response.body));
+      dataUser = User.fromJson(
+        jsonDecode(response.body),
+      );
 
       const secureStorage = FlutterSecureStorage();
 
@@ -79,14 +80,11 @@ class DataService {
           "first_name": dataUser.firstName,
           "last_name": dataUser.lastName,
           "username": dataUser.username,
+          "photo_url": dataUser.photoUrl ?? "null",
           "email": dataUser.email,
         },
       );
-
-      print(openedBox.values);
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load user');
     }
   }
@@ -100,7 +98,12 @@ class DataService {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       dataUser.id = jsonDecode(response.body)["data"]["id"];
-      return fetchUser();
+
+      if (dataUser.id != null) {
+        return fetchUser();
+      }
+
+      return createNewUser(DataService.dataUser);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -177,6 +180,7 @@ class DataService {
           "last_name": newUser.lastName,
           "username": newUser.username,
           "email": newUser.email,
+          "photo_url": newUser.photoUrl,
           "authID": AuthService().user!.uid,
         },
       ),

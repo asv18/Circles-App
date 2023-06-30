@@ -16,23 +16,23 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with AutomaticKeepAliveClientMixin {
-  late Future<List<Goal>> goals;
+class _ProfileScreenState extends State<ProfileScreen> {
   Offset _tapPosition = Offset.zero;
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    final response = await Navigator.pushNamed(
+    final response = (await Navigator.pushNamed(
       context,
       '/creategoal',
-    );
+    )) as List;
 
     if (!mounted) return;
 
-    if (response == "Goal Created") {
-      goals = DataService().fetchGoals();
+    if (response[0] == "Goal Created") {
+      await DataService().fetchGoals();
+
+      setState(() {});
     }
   }
 
@@ -75,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   void initState() {
     super.initState();
 
-    goals = DataService().fetchGoals();
+    // goals = DataService().fetchGoals();
   }
 
   void _getTapPosition(TapDownDetails details) {
@@ -163,7 +163,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -195,12 +194,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                           child: Container(
                             width: 150.0,
                             height: 150.0,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.white,
                               image: DecorationImage(
+                                fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                                  DataService.dataUser.photoUrl ??
+                                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                                 ),
                               ),
                             ),
@@ -249,7 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   style: TextStyle(fontSize: 24),
                 ),
                 FutureBuilder<List<Goal>>(
-                  future: goals,
+                  future: DataService.goals,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text("${snapshot.error}");
@@ -350,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       ),
                       FutureBuilder(
-                        future: goals,
+                        future: DataService.goals,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Text("${snapshot.error}");
@@ -455,7 +456,4 @@ class _ProfileScreenState extends State<ProfileScreen>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

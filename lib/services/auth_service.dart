@@ -23,8 +23,6 @@ class AuthService {
       idToken: googleAuth?.idToken,
     );
 
-    DataService.dataUser.exists = true;
-
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
@@ -43,16 +41,12 @@ class AuthService {
       idToken: googleAuth?.idToken,
     );
 
-    DataService.dataUser.exists = false;
-
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Future<void> signOut() async {
-    DataService.dataUser = local.User.newUser(
-      exists: true,
-    );
+    DataService.dataUser = local.User.empty();
 
     final openedBox = Hive.box("userBox");
 

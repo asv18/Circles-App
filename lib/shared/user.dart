@@ -4,7 +4,7 @@ class User {
   String? lastName;
   String? username;
   String? email;
-  bool exists = true;
+  String? photoUrl;
 
   User({
     required this.id,
@@ -12,17 +12,17 @@ class User {
     required this.lastName,
     required this.username,
     required this.email,
-  });
-
-  User.newUser({
-    required this.exists,
+    required this.photoUrl,
   });
 
   User.skeleton({
     required this.firstName,
     required this.lastName,
     required this.username,
+    required this.photoUrl,
   });
+
+  User.empty();
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -31,6 +31,7 @@ class User {
       lastName: json["data"]["last_name"] as String,
       username: json["data"]["username"] as String,
       email: json["data"]["email"] as String,
+      photoUrl: json["data"]["photo_url"],
     );
   }
 
@@ -39,12 +40,12 @@ class User {
       firstName: json["first_name"] as String,
       lastName: json["last_name"] as String,
       username: json["username"] as String,
+      photoUrl: json["data"]["photo_url"],
     );
   }
 
   @override
   String toString() {
-    // TODO: implement toString
     return "hmm";
   }
 }
