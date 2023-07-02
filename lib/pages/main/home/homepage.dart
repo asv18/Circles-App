@@ -2,7 +2,8 @@ import 'package:circlesapp/components/notifcation_button.dart';
 import 'package:circlesapp/components/tab_button.dart';
 import 'package:circlesapp/pages/main/home/circles/circlesdisplay.dart';
 import 'package:circlesapp/pages/main/home/goals/goalsdisplay.dart';
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,8 +13,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
 
   final pages = const [
@@ -26,7 +26,9 @@ class _HomePageState extends State<HomePage>
     super.initState();
     _tabController = TabController(length: pages.length, vsync: this);
 
-    DataService().fetchGoals();
+    if (UserService.dataUser.exists) {
+      GoalService().fetchGoals();
+    }
   }
 
   @override
@@ -37,7 +39,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage>
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    DataService.dataUser.photoUrl ??
+                    UserService.dataUser.photoUrl ??
                         'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                   ),
                 ),
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Hi ${DataService.dataUser.firstName} ${DataService.dataUser.lastName}!",
+                    "Hi ${UserService.dataUser.firstName} ${UserService.dataUser.lastName}!",
                   ),
                   const SizedBox(
                     height: 10,
@@ -106,7 +107,4 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

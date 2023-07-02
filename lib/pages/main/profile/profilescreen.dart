@@ -1,7 +1,10 @@
 import 'package:circlesapp/components/circles_list_widget.dart';
 import 'package:circlesapp/components/goals_list_widget.dart';
+import 'package:circlesapp/components/task_complete_dialog.dart';
 import 'package:circlesapp/components/task_widget.dart';
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/extraneous_screens/goalscreen.dart';
+import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/services/auth_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
@@ -30,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (!mounted) return;
 
     if (response[0] == "Goal Created") {
-      await DataService().fetchGoals();
+      await GoalService().fetchGoals();
 
       setState(() {});
     }
@@ -74,8 +77,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+  }
 
-    // goals = DataService().fetchGoals();
+  void _markTaskCompleteOrUncomplete(Task task) {
+    GoalService().updateTask(task);
+
+    if (task.complete!) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return TaskCompleteDialog(
+            onPressedShare: () {},
+            onPressedDismiss: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    }
   }
 
   void _getTapPosition(TapDownDetails details) {
@@ -114,19 +133,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (result == "Edit Task") {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => TaskScreen(
-            task: task,
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => TaskScreen(
+              task: task,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } else if (result == "Complete Task") {
       setState(() {
         task.complete = !task.complete!;
+        _markTaskCompleteOrUncomplete(task);
       });
-
-      DataService().updateTask(task);
     }
   }
 
@@ -159,6 +179,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (result == "Join Circle") {
     } else if (result == "Create Circle") {}
+  }
+
+  void _showActionsGoalMenu(BuildContext context, Goal goal) async {
+    final RenderObject? overlay =
+        Overlay.of(context).context.findRenderObject();
+
+    final result = await showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy + 60 + 178, 100, 100),
+        Rect.fromLTWH(
+          0,
+          0,
+          overlay!.paintBounds.size.width,
+          overlay.paintBounds.size.height,
+        ),
+      ),
+      items: [
+        PopupMenuItem(
+          value: "Edit Task",
+          child: Text("Edit ${goal.name}"),
+        ),
+        PopupMenuItem(
+          value: "Delete Goal",
+          child: Text("Delete ${goal.name}"),
+        ),
+      ],
+    );
+
+    if (result == "Edit Goal") {
+      return;
+    } else if (result == "Delete Goal") {
+      await GoalService().deleteGoal(goal.id!);
+
+      setState(() {
+        List<Goal> goals = List.empty(growable: true);
+        GoalService.goals.then(
+          (value) {
+            for (Goal obj in value) {
+              if (obj.id != goal.id) {
+                goals.add(obj);
+              }
+            }
+          },
+        );
+
+        GoalService.goals = Future.value(
+          goals,
+        );
+      });
+    }
   }
 
   @override
@@ -200,7 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  DataService.dataUser.photoUrl ??
+                                  UserService.dataUser.photoUrl ??
                                       'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                                 ),
                               ),
@@ -250,7 +321,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 24),
                 ),
                 FutureBuilder<List<Goal>>(
-                  future: DataService.goals,
+                  future: GoalService.goals,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text("${snapshot.error}");
@@ -258,7 +329,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       tasks = List.empty(growable: true);
                       for (var goal in snapshot.data!) {
                         for (var task in goal.tasks!) {
-                          if (!task.complete!) {
+                          if (!task.complete! ||
+                              task.nextDate!.compareTo(
+                                    DateTime.now(),
+                                  ) >=
+                                  0) {
                             tasks.add(task);
                           }
                         }
@@ -301,6 +376,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 child: TaskWidget(
                                   task: tasks[index],
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      tasks[index].complete = value!;
+                                      _markTaskCompleteOrUncomplete(
+                                        tasks[index],
+                                      );
+                                    });
+                                  },
                                 ),
                               );
                             },
@@ -351,7 +434,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       FutureBuilder(
-                        future: DataService.goals,
+                        future: GoalService.goals,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Text("${snapshot.error}");
@@ -369,7 +452,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               );
                             } else {
-                              return GoalsListWidget(goals: snapshot.data!);
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.all(0),
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => GoalScreen(
+                                            goal: snapshot.data![index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    onLongPress: () => _showActionsGoalMenu(
+                                      context,
+                                      snapshot.data![index],
+                                    ),
+                                    onTapDown: (details) => _getTapPosition(
+                                      details,
+                                    ),
+                                    child: GoalsListWidget(
+                                      goal: snapshot.data![index],
+                                    ),
+                                  );
+                                },
+                              );
                             }
                           }
 
@@ -443,8 +554,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text('Signout'),
                       onPressed: () async {
                         await AuthService().signOut();
-                        Navigator.of(context)
-                            .pushNamedAndRemoveUntil('/', (route) => false);
+                        if (context.mounted) {
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/', (route) => false);
+                        }
                       },
                     ),
                   ),

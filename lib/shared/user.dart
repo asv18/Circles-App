@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   String? id;
   String? firstName;
@@ -5,6 +7,7 @@ class User {
   String? username;
   String? email;
   String? photoUrl;
+  bool exists = true;
 
   User({
     required this.id,
@@ -40,12 +43,18 @@ class User {
       firstName: json["first_name"] as String,
       lastName: json["last_name"] as String,
       username: json["username"] as String,
-      photoUrl: json["data"]["photo_url"],
+      photoUrl: json["photo_url"],
     );
   }
 
   @override
   String toString() {
-    return "hmm";
+    return jsonEncode({
+      "username": username,
+      "first_name": firstName,
+      "last_name": lastName,
+      "email": email,
+      "photo_url": photoUrl,
+    });
   }
 }

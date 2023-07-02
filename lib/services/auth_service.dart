@@ -1,4 +1,5 @@
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -46,7 +47,12 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    DataService.dataUser = local.User.empty();
+    UserService.dataUser = local.User.empty();
+    GoalService.goals = Future.value(
+      List.empty(
+        growable: true,
+      ),
+    );
 
     final openedBox = Hive.box("userBox");
 

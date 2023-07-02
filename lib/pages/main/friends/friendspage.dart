@@ -1,5 +1,5 @@
 import 'package:circlesapp/components/search_appbar.dart';
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/friend_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared/user.dart';
@@ -18,7 +18,7 @@ class _FriendsPageState extends State<FriendsPage> {
   void initState() {
     super.initState();
 
-    potentialFriends = DataService().fetchUserSkeletons();
+    potentialFriends = FriendService().fetchUserSkeletons();
   }
 
   @override

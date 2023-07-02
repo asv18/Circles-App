@@ -1,6 +1,6 @@
 import 'package:circlesapp/components/create_button.dart';
 import 'package:circlesapp/components/goal_widget.dart';
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _GoalsDispState extends State<GoalsDisp> {
     if (!mounted) return;
 
     if (response[0] == "Goal Created") {
-      await DataService().fetchGoals();
+      await GoalService().fetchGoals();
 
       setState(() {});
     }
@@ -68,11 +68,11 @@ class _GoalsDispState extends State<GoalsDisp> {
     if (result == "Edit Goal") {
       return;
     } else if (result == "Delete Goal") {
-      await DataService().deleteGoal(goal.id!);
+      await GoalService().deleteGoal(goal.id!);
 
       setState(() {
         List<Goal> goals = List.empty(growable: true);
-        DataService.goals.then(
+        GoalService.goals.then(
           (value) {
             for (Goal obj in value) {
               if (obj.id != goal.id) {
@@ -82,7 +82,7 @@ class _GoalsDispState extends State<GoalsDisp> {
           },
         );
 
-        DataService.goals = Future.value(
+        GoalService.goals = Future.value(
           goals,
         );
       });
@@ -98,7 +98,7 @@ class _GoalsDispState extends State<GoalsDisp> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await DataService().fetchGoals();
+        await GoalService().fetchGoals();
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
@@ -119,7 +119,7 @@ class _GoalsDispState extends State<GoalsDisp> {
             ),
             Expanded(
               child: FutureBuilder<List<Goal>>(
-                future: DataService.goals,
+                future: GoalService.goals,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isNotEmpty) {

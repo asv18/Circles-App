@@ -1,4 +1,5 @@
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
@@ -106,7 +107,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                          DataService.dataUser.photoUrl ??
+                          UserService.dataUser.photoUrl ??
                               'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                         ),
                       ),
@@ -465,15 +466,17 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                           tasks: tasks,
                         );
 
-                        await DataService().createGoal(newGoal);
+                        await GoalService().createGoal(newGoal);
 
-                        Navigator.pop(
-                          context,
-                          [
-                            "Goal Created",
-                            newGoal,
-                          ],
-                        );
+                        if (context.mounted) {
+                          Navigator.pop(
+                            context,
+                            [
+                              "Goal Created",
+                              newGoal,
+                            ],
+                          );
+                        }
                       }
                     },
                     icon: const Center(

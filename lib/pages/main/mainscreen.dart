@@ -3,7 +3,7 @@ import 'package:circlesapp/pages/authscreens/authscreen.dart';
 import 'package:circlesapp/pages/main/friends/friendspage.dart';
 import 'package:circlesapp/pages/main/home/homepage.dart';
 import 'package:circlesapp/pages/main/profile/profilescreen.dart';
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
 import 'package:circlesapp/services/auth_service.dart';
@@ -30,14 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final userID = await openedBox.get(userIDKey);
 
     if (userID != null) {
-      DataService.dataUser.id = userID;
-      DataService.dataUser.firstName = await openedBox.get("first_name");
-      DataService.dataUser.lastName = await openedBox.get("last_name");
-      DataService.dataUser.username = await openedBox.get("username");
-      DataService.dataUser.email = await openedBox.get("email");
+      UserService.dataUser.id = userID;
+      UserService.dataUser.firstName = await openedBox.get("first_name");
+      UserService.dataUser.lastName = await openedBox.get("last_name");
+      UserService.dataUser.username = await openedBox.get("username");
+      UserService.dataUser.email = await openedBox.get("email");
 
       String photoUrl = await openedBox.get("photo_url");
-      DataService.dataUser.photoUrl = (photoUrl != "null") ? photoUrl : null;
+      UserService.dataUser.photoUrl = (photoUrl != "null") ? photoUrl : null;
 
       return const MainPage();
     }
@@ -61,16 +61,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<Widget> _returnHomePage() async {
     List<String> firstLastName = AuthService().user!.displayName!.split(" ");
 
-    DataService.dataUser = User(
+    bool exists = UserService.dataUser.exists;
+
+    UserService.dataUser = User(
       id: null,
       firstName: firstLastName[0],
       lastName: firstLastName[1],
-      username: AuthService().user!.displayName!,
+      username: AuthService().user!.displayName,
       email: AuthService().user!.email,
       photoUrl: AuthService().user!.photoURL,
     );
 
-    await DataService().fetchUserFromAuth(AuthService().user!.uid);
+    UserService.dataUser.exists = exists;
+
+    if (UserService.dataUser.exists) {
+      await UserService().fetchUserFromAuth(AuthService().user!.uid);
+    } else {
+      await UserService().createNewUser(UserService.dataUser);
+    }
 
     return const MainPage();
   }

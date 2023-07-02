@@ -33,7 +33,7 @@ class SearchAppBar extends StatelessWidget {
           ),
           filled: true,
           fillColor: Colors.white,
-          hintText: 'Search',
+          hintText: 'Search...',
           hintStyle: TextStyle(
             color: Colors.black.withOpacity(.75),
           ),

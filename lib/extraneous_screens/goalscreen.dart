@@ -1,85 +1,10 @@
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/components/task_complete_dialog.dart';
+import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/extraneous_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
-
-void markCompleteOrUncomplete(Task task, Goal goal) async {
-  DateTime startingPointDate = DateTime.now();
-
-  if (task.repeat == "Weekly") {
-    startingPointDate = startingPointDate.add(
-      Duration(
-        days: DateTime.daysPerWeek - startingPointDate.weekday,
-      ),
-    );
-  }
-
-  switch (task.repeat) {
-    case "Daily":
-      if (task.complete!) {
-        startingPointDate = DateTime(
-          startingPointDate.year,
-          startingPointDate.month,
-          startingPointDate.day + 1,
-        );
-      } else if (DateTime(
-            startingPointDate.year,
-            startingPointDate.month,
-            startingPointDate.day - 1,
-          ).compareTo(
-            DateTime.now(),
-          ) ==
-          1) {
-        startingPointDate = DateTime(
-          startingPointDate.year,
-          startingPointDate.month,
-          startingPointDate.day - 1,
-        );
-      }
-      break;
-    case "Weekly":
-      if (task.complete!) {
-        startingPointDate = DateTime(
-          startingPointDate.year,
-          startingPointDate.month,
-          startingPointDate.day + 7,
-        );
-      } else {
-        startingPointDate = DateTime(
-          startingPointDate.year,
-          startingPointDate.month,
-          startingPointDate.day - 7,
-        );
-      }
-      break;
-    case "Monthly":
-      if (task.complete!) {
-        startingPointDate = DateTime(
-          startingPointDate.year,
-          startingPointDate.month + 2,
-          0,
-        );
-      } else if (DateTime(
-            startingPointDate.year,
-            startingPointDate.month - 1,
-            0,
-          ).compareTo(
-            DateTime.now(),
-          ) ==
-          1) {
-        startingPointDate = DateTime(
-          startingPointDate.year,
-          startingPointDate.month - 1,
-          0,
-        );
-      }
-      break;
-  }
-
-  task.nextDate = startingPointDate;
-  await DataService().updateTask(task);
-}
 
 class GoalScreen extends StatefulWidget {
   const GoalScreen({
@@ -101,6 +26,24 @@ class _GoalScreenState extends State<GoalScreen> {
     setState(() {
       _tapPosition = renderBox.globalToLocal(details.globalPosition);
     });
+  }
+
+  void _markTaskCompleteOrUncomplete(Task task) {
+    GoalService().updateTask(task);
+
+    if (task.complete!) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return TaskCompleteDialog(
+            onPressedShare: () {},
+            onPressedDismiss: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    }
   }
 
   void _showActionsTaskMenu(
@@ -157,14 +100,14 @@ class _GoalScreenState extends State<GoalScreen> {
         task.complete = !task.complete!;
 
         // DataService.updateTask(task, widget.goal);
-        markCompleteOrUncomplete(task, widget.goal);
+        _markTaskCompleteOrUncomplete(task);
       });
     } else if (result == "Delete Task") {
       setState(() {
         widget.goal.tasks!.removeAt(index);
       });
 
-      DataService().deleteTask(task.owner!, task.id!);
+      GoalService().deleteTask(task.owner!, task.id!);
     }
   }
 
@@ -181,7 +124,7 @@ class _GoalScreenState extends State<GoalScreen> {
         elevation: 2,
         backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
-          DataService.truncateWithEllipsis(
+          UserService.truncateWithEllipsis(
             32,
             widget.goal.name,
           ),
@@ -249,7 +192,7 @@ class _GoalScreenState extends State<GoalScreen> {
                                     margin: const EdgeInsets.only(bottom: 10.0),
                                     child: Text(
                                       textAlign: TextAlign.center,
-                                      DataService.truncateWithEllipsis(
+                                      UserService.truncateWithEllipsis(
                                         15,
                                         widget.goal.tasks![index].name,
                                       ),
@@ -283,13 +226,8 @@ class _GoalScreenState extends State<GoalScreen> {
                                       widget.goal.tasks![index].complete =
                                           value!;
 
-                                      // DataService.updateTask(
-                                      //   widget.goal.tasks![index],
-                                      //   widget.goal,
-                                      // );
-                                      markCompleteOrUncomplete(
+                                      _markTaskCompleteOrUncomplete(
                                         widget.goal.tasks![index],
-                                        widget.goal,
                                       );
                                     });
                                   },

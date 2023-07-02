@@ -1,5 +1,5 @@
 import 'package:circlesapp/extraneous_screens/goalscreen.dart';
-import 'package:circlesapp/services/data_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class GoalWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    DataService.truncateWithEllipsis(8, goals[index].name),
+                    UserService.truncateWithEllipsis(8, goals[index].name),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -134,7 +134,7 @@ class GoalWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                DataService.truncateWithEllipsis(
+                UserService.truncateWithEllipsis(
                   20,
                   (goals[index].description != "null")
                       ? goals[index].description!

@@ -2,26 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 
-class TaskWidget extends StatefulWidget {
+class TaskWidget extends StatelessWidget {
   const TaskWidget({
     super.key,
     required this.task,
+    required this.onChanged,
   });
 
   final Task task;
-
-  @override
-  State<TaskWidget> createState() => _TaskWidgetState();
-}
-
-class _TaskWidgetState extends State<TaskWidget> {
-  late Task task;
-  @override
-  void initState() {
-    super.initState();
-
-    task = widget.task;
-  }
+  final Function onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +77,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     (states) => Colors.white,
                   ),
                   value: task.complete,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      task.complete = value!;
-                    });
-                  },
+                  onChanged: (value) => onChanged(value),
                 ),
               ),
             ],
