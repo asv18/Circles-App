@@ -8,18 +8,13 @@ class Task {
   String? owner;
 
   Task({
-    required this.id,
+    this.id,
     required this.name,
     required this.repeat,
-    required this.startDate,
-    required this.nextDate,
-    required this.complete,
-    required this.owner,
-  });
-
-  Task.newTask({
-    required this.name,
-    required this.repeat,
+    this.startDate,
+    this.nextDate,
+    this.complete,
+    this.owner,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {

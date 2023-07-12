@@ -2,6 +2,7 @@ import 'package:circlesapp/extraneous_screens/goalscreen.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GoalWidget extends StatelessWidget {
   const GoalWidget({
@@ -52,7 +53,7 @@ class GoalWidget extends StatelessWidget {
                 children: [
                   Text(
                     UserService.truncateWithEllipsis(8, goals[index].name),
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,

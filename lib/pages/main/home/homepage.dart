@@ -1,5 +1,6 @@
-import 'package:circlesapp/components/notifcation_button.dart';
-import 'package:circlesapp/components/tab_button.dart';
+import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/components/UI/notifcation_button.dart';
+import 'package:circlesapp/components/UI/tab_button.dart';
 import 'package:circlesapp/pages/main/home/circles/circlesdisplay.dart';
 import 'package:circlesapp/pages/main/home/goals/goalsdisplay.dart';
 import 'package:circlesapp/services/goal_service.dart';
@@ -43,21 +44,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         title: Row(
           children: [
-            Container(
-              width: 120.0,
-              height: 120.0,
-              margin: const EdgeInsets.only(right: 20.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    UserService.dataUser.photoUrl ??
-                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                  ),
-                ),
-              ),
+            CircleImageWidget(
+              photoUrl: UserService.dataUser.photoUrl,
+              dimensions: 120.0,
+              margin: 20,
             ),
             Expanded(
               child: Column(

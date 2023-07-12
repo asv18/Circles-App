@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:circlesapp/services/user_service.dart';
+
 class User {
   String? id;
   String? firstName;
@@ -7,43 +9,43 @@ class User {
   String? username;
   String? email;
   String? photoUrl;
+  String? fKey;
   bool exists = true;
 
   User({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.username,
-    required this.email,
-    required this.photoUrl,
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.username,
+    this.email,
+    this.photoUrl,
+    this.fKey,
+    exists,
   });
-
-  User.skeleton({
-    required this.firstName,
-    required this.lastName,
-    required this.username,
-    required this.photoUrl,
-  });
-
-  User.empty();
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["data"]["id"] as String,
-      firstName: json["data"]["first_name"] as String,
-      lastName: json["data"]["last_name"] as String,
-      username: json["data"]["username"] as String,
-      email: json["data"]["email"] as String,
-      photoUrl: json["data"]["photo_url"],
+      id: json["id"] as String,
+      firstName: json["first_name"] as String,
+      lastName: json["last_name"] as String,
+      username: json["username"] as String,
+      email: json["email"] as String,
+      photoUrl: json["photo_url"],
+      fKey: json["user_foreign_key"] as String,
     );
   }
 
   factory User.fromSkeletonJson(Map<String, dynamic> json) {
-    return User.skeleton(
+    return User(
       firstName: json["first_name"] as String,
       lastName: json["last_name"] as String,
       username: json["username"] as String,
       photoUrl: json["photo_url"],
+      email: json["email"] as String,
+      fKey: (json["user_foreign_key"] ??
+              ((json["user1"] as String) == UserService.dataUser.fKey)
+          ? json["user2"]
+          : json["user1"]) as String,
     );
   }
 

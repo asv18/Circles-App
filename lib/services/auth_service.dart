@@ -7,47 +7,47 @@ import 'package:circlesapp/shared/user.dart' as local;
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AuthService {
-  final userStream = FirebaseAuth.instance.authStateChanges();
-  var user = FirebaseAuth.instance.currentUser;
+  Stream<User?> get userStream => FirebaseAuth.instance.authStateChanges();
+
+  final _firebaseAuth = FirebaseAuth.instance;
+  User? get user => _firebaseAuth.currentUser;
 
   Future<UserCredential> googleLogin() async {
-    // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
-    // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return await _firebaseAuth.signInWithCredential(credential);
   }
 
-  Future<UserCredential> googleSignUp() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+  Future<UserCredential> emailAndPasswordLogin(
+    String email,
+    String password,
+  ) async {
+    return await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
     );
+  }
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+  Future<UserCredential> emailAndPasswordRegister(
+    String email,
+    String password,
+  ) async {
+    return await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
   Future<void> signOut() async {
-    UserService.dataUser = local.User.empty();
+    UserService.dataUser = local.User();
     GoalService.goals = Future.value(
       List.empty(
         growable: true,

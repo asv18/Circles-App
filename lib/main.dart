@@ -72,6 +72,7 @@ class _AppState extends State<MyApp> {
               ),
               primaryColorDark: Colors.blue[800],
               primaryColorLight: const Color.fromARGB(255, 145, 220, 255),
+              fontFamily: "Hind",
             ),
           );
         }

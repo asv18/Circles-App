@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TabButton extends StatelessWidget {
   const TabButton({
@@ -15,7 +16,7 @@ class TabButton extends StatelessWidget {
       child: Tab(
         child: Text(
           name,
-          style: const TextStyle(
+          style: GoogleFonts.montserrat(
             fontSize: 16,
             fontWeight: FontWeight.w800,
           ),

@@ -1,4 +1,4 @@
-import 'package:circlesapp/components/bottom_appbar_button.dart';
+import 'package:circlesapp/components/UI/bottom_appbar_button.dart';
 import 'package:circlesapp/pages/authscreens/authscreen.dart';
 import 'package:circlesapp/pages/main/friends/friendspage.dart';
 import 'package:circlesapp/pages/main/home/homepage.dart';
@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       UserService.dataUser.lastName = await openedBox.get("last_name");
       UserService.dataUser.username = await openedBox.get("username");
       UserService.dataUser.email = await openedBox.get("email");
+      UserService.dataUser.fKey = await openedBox.get("f_key");
 
       String photoUrl = await openedBox.get("photo_url");
       UserService.dataUser.photoUrl = (photoUrl != "null") ? photoUrl : null;
@@ -70,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       username: AuthService().user!.displayName,
       email: AuthService().user!.email,
       photoUrl: AuthService().user!.photoURL,
+      fKey: null,
     );
 
     UserService.dataUser.exists = exists;

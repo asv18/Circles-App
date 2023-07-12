@@ -1,6 +1,7 @@
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/extraneous_screens/circlescreen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CircleWidget extends StatelessWidget {
   const CircleWidget({
@@ -64,7 +65,7 @@ class CircleWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DefaultTextStyle(
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,

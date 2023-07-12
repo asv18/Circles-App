@@ -1,5 +1,5 @@
-import 'package:circlesapp/components/circle_widget.dart';
-import 'package:circlesapp/components/create_button.dart';
+import 'package:circlesapp/components/type_based/Circles/circle_widget.dart';
+import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 

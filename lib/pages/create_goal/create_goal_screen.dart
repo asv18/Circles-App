@@ -59,7 +59,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
   String _dateText = "mm / dd / yyyy";
   DateTime _selectedDate = DateTime.now();
   List<Task> tasks = [
-    Task.newTask(
+    Task(
       name: "",
       repeat: "Never",
     ),
@@ -352,7 +352,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                       } else {
                         setState(() {
                           tasks.add(
-                            Task.newTask(
+                            Task(
                               name: "",
                               repeat: "Never",
                             ),
@@ -459,7 +459,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                           duration: const Duration(seconds: 5),
                         ));
                       } else {
-                        Goal newGoal = Goal.newGoal(
+                        Goal newGoal = Goal(
                           name: _goalName!,
                           endDate: _selectedDate,
                           description: _description,

@@ -1,5 +1,6 @@
-import 'package:circlesapp/components/create_button.dart';
-import 'package:circlesapp/components/goal_widget.dart';
+import 'package:circlesapp/components/UI/create_button.dart';
+import 'package:circlesapp/components/type_based/Goals/goal_widget.dart';
+import 'package:circlesapp/extraneous_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +33,8 @@ class _GoalsDispState extends State<GoalsDisp> {
   }
 
   void _getTapPosition(TapDownDetails details) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
     setState(() {
-      _tapPosition = renderBox.globalToLocal(details.globalPosition);
+      _tapPosition = details.globalPosition;
     });
   }
 
@@ -45,7 +45,7 @@ class _GoalsDispState extends State<GoalsDisp> {
     final result = await showMenu(
       context: context,
       position: RelativeRect.fromRect(
-        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy + 60 + 178, 100, 100),
+        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
         Rect.fromLTWH(
           0,
           0,
@@ -55,7 +55,7 @@ class _GoalsDispState extends State<GoalsDisp> {
       ),
       items: [
         PopupMenuItem(
-          value: "Edit Task",
+          value: "Edit Goal",
           child: Text("Edit ${goal.name}"),
         ),
         PopupMenuItem(
@@ -66,7 +66,15 @@ class _GoalsDispState extends State<GoalsDisp> {
     );
 
     if (result == "Edit Goal") {
-      return;
+      if (context.mounted) {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => GoalScreen(
+              goal: goal,
+            ),
+          ),
+        );
+      }
     } else if (result == "Delete Goal") {
       await GoalService().deleteGoal(goal.id!);
 

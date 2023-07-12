@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class SearchAppBar extends StatelessWidget {
   const SearchAppBar({
     Key? key,
+    required this.controller,
     required this.onChanged,
   }) : super(key: key);
 
+  final TextEditingController controller;
   final Function onChanged;
 
   @override
@@ -23,7 +25,8 @@ class SearchAppBar extends StatelessWidget {
         ],
       ),
       child: TextField(
-        textAlign: TextAlign.center,
+        controller: controller,
+        textAlign: TextAlign.start,
         style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
           prefixIcon: const Icon(

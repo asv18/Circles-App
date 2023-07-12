@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TaskWidget extends StatelessWidget {
   const TaskWidget({
@@ -56,8 +57,9 @@ class TaskWidget extends StatelessWidget {
                       softWrap: false,
                       textAlign: TextAlign.center,
                       task.name,
-                      style: const TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),

@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 import 'auth_service.dart';
 
 class UserService {
-  static User dataUser = User.empty();
+  static User dataUser = User();
 
   String link = "http://localhost:3000/api/v1/";
 
@@ -18,12 +18,12 @@ class UserService {
 
   Future<void> fetchUser() async {
     final response = await http.get(
-      Uri.parse('${link}user/${dataUser.id}'),
+      Uri.parse('${link}user/${dataUser.id}/'),
     );
 
     if (response.statusCode == 200) {
       dataUser = User.fromJson(
-        jsonDecode(response.body),
+        jsonDecode(response.body)["data"],
       );
 
       const secureStorage = FlutterSecureStorage();
@@ -55,6 +55,7 @@ class UserService {
           "username": dataUser.username,
           "photo_url": dataUser.photoUrl ?? "null",
           "email": dataUser.email,
+          "f_key": dataUser.fKey,
         },
       );
 
@@ -68,7 +69,7 @@ class UserService {
 
   Future<void> fetchUserFromAuth(String? authID) async {
     final response = await http.get(
-      Uri.parse('${link}user/authenticate/$authID'),
+      Uri.parse('${link}user/authenticate/$authID/'),
     );
 
     if (response.statusCode == 200) {

@@ -14,7 +14,7 @@ class GoalService {
 
   Future<void> fetchGoals() async {
     final response = await http.get(
-      Uri.parse('${link}user/${UserService.dataUser.id}/goals'),
+      Uri.parse('${link}user/${UserService.dataUser.id}/goals/'),
     );
 
     if (response.statusCode == 200) {
@@ -68,7 +68,7 @@ class GoalService {
   Future<http.Response> deleteGoal(String id) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/$id',
+        '${link}user/${UserService.dataUser.id}/goals/$id/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -81,7 +81,7 @@ class GoalService {
   Future<http.Response> deleteTask(String goalID, BigInt taskID) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/$goalID/tasks/${taskID.toString()}',
+        '${link}user/${UserService.dataUser.id}/goals/$goalID/tasks/${taskID.toString()}/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -96,7 +96,7 @@ class GoalService {
 
     final http.Response response = await http.patch(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/${task.owner}/tasks/${task.id}',
+        '${link}user/${UserService.dataUser.id}/goals/${task.owner}/tasks/${task.id}/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

@@ -1,6 +1,7 @@
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GoalsListWidget extends StatelessWidget {
   const GoalsListWidget({
@@ -23,14 +24,20 @@ class GoalsListWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            UserService.truncateWithEllipsis(
-              15,
-              goal.name,
+          Container(
+            margin: const EdgeInsets.only(
+              left: 10,
             ),
-            style: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.white,
+            child: Text(
+              UserService.truncateWithEllipsis(
+                15,
+                goal.name,
+              ),
+              style: GoogleFonts.montserrat(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           Row(

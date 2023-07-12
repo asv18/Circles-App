@@ -1,7 +1,8 @@
-import 'package:circlesapp/components/circles_list_widget.dart';
-import 'package:circlesapp/components/goals_list_widget.dart';
-import 'package:circlesapp/components/task_complete_dialog.dart';
-import 'package:circlesapp/components/task_widget.dart';
+import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dart';
+import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
+import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
+import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
 import 'package:circlesapp/extraneous_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
@@ -188,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final result = await showMenu(
       context: context,
       position: RelativeRect.fromRect(
-        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy + 60 + 178, 100, 100),
+        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
         Rect.fromLTWH(
           0,
           0,
@@ -198,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       items: [
         PopupMenuItem(
-          value: "Edit Task",
+          value: "Edit Goal",
           child: Text("Edit ${goal.name}"),
         ),
         PopupMenuItem(
@@ -209,7 +210,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (result == "Edit Goal") {
-      return;
+      if (context.mounted) {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => GoalScreen(
+              goal: goal,
+            ),
+          ),
+        );
+      }
     } else if (result == "Delete Goal") {
       await GoalService().deleteGoal(goal.id!);
 
@@ -262,20 +271,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.transparent,
                           shape: BoxShape.circle,
                           elevation: 5,
-                          child: Container(
-                            width: 150.0,
-                            height: 150.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  UserService.dataUser.photoUrl ??
-                                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                                ),
-                              ),
-                            ),
+                          child: CircleImageWidget(
+                            photoUrl: UserService.dataUser.photoUrl,
+                            dimensions: 150.0,
+                            margin: 10,
                           ),
                         ),
                       ),

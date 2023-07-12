@@ -5,27 +5,20 @@ class Goal implements Comparable<Goal> {
   final String name;
   final DateTime endDate;
   DateTime? startDate;
-  final String? description;
+  String? description;
   List<Task>? tasks;
   int? progress;
   String? owner;
 
   Goal({
-    required this.id,
+    this.id,
     required this.name,
     required this.endDate,
-    required this.startDate,
-    required this.description,
-    required this.progress,
-    required this.owner,
-    required this.tasks,
-  });
-
-  Goal.newGoal({
-    required this.name,
-    required this.endDate,
-    required this.description,
-    required this.tasks,
+    this.startDate,
+    this.description,
+    this.progress,
+    this.owner,
+    this.tasks,
   });
 
   factory Goal.fromJson(Map<String, dynamic> json) {
@@ -82,7 +75,6 @@ class Goal implements Comparable<Goal> {
 
   @override
   int compareTo(Goal other) {
-    // TODO: implement compareTo
     return endDate.compareTo(other.endDate);
   }
 }
