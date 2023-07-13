@@ -32,8 +32,6 @@ class FriendService {
       Uri.parse('${link}user/friendships/${UserService.dataUser.fKey}/'),
     );
 
-    print(response.body);
-
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body)["data"];
 

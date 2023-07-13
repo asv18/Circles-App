@@ -10,6 +10,7 @@ class User {
   String? email;
   String? photoUrl;
   String? fKey;
+  String? phoneNumber;
   bool exists = true;
 
   User({
@@ -20,7 +21,7 @@ class User {
     this.email,
     this.photoUrl,
     this.fKey,
-    exists,
+    this.phoneNumber,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -30,8 +31,9 @@ class User {
       lastName: json["last_name"] as String,
       username: json["username"] as String,
       email: json["email"] as String,
-      photoUrl: json["photo_url"],
+      photoUrl: (json["photo_url"] == "null") ? null : json["photo_url"],
       fKey: json["user_foreign_key"] as String,
+      phoneNumber: json["phone_number"],
     );
   }
 
@@ -40,12 +42,12 @@ class User {
       firstName: json["first_name"] as String,
       lastName: json["last_name"] as String,
       username: json["username"] as String,
-      photoUrl: json["photo_url"],
+      photoUrl: (json["photo_url"] == "null") ? null : json["photo_url"],
       email: json["email"] as String,
       fKey: (json["user_foreign_key"] ??
-              ((json["user1"] as String) == UserService.dataUser.fKey)
-          ? json["user2"]
-          : json["user1"]) as String,
+          (((json["user1"] as String) == UserService.dataUser.fKey)
+              ? json["user2"]
+              : json["user1"])) as String,
     );
   }
 
@@ -57,6 +59,7 @@ class User {
       "last_name": lastName,
       "email": email,
       "photo_url": photoUrl,
+      "phone_number": phoneNumber,
     });
   }
 }

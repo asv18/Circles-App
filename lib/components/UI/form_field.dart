@@ -29,6 +29,7 @@ class FormTextField extends StatelessWidget {
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
+        keyboardType: (hintText == "Phone Number") ? TextInputType.phone : null,
         onChanged: (value) => onChanged(),
         controller: controller,
         obscureText: visibility,

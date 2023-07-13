@@ -39,7 +39,13 @@ class AuthService {
   Future<UserCredential> emailAndPasswordRegister(
     String email,
     String password,
+    String name,
   ) async {
+    final splitName = name.split(" ");
+    UserService.dataUser.firstName = splitName[0];
+    UserService.dataUser.lastName = splitName[1];
+    UserService.dataUser.email = email;
+
     return await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,

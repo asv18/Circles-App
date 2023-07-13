@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       future: _returnHomePage(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text("${snapshot.error}");
+          return Text("${snapshot.error} :(");
         } else if (snapshot.hasData) {
           return snapshot.data!;
         }
@@ -60,21 +60,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<Widget> _returnHomePage() async {
-    List<String> firstLastName = AuthService().user!.displayName!.split(" ");
+    if (!UserService.dataUser.exists) {
+      List<String> firstLastName =
+          (AuthService().user!.displayName ?? "").split(" ");
 
-    bool exists = UserService.dataUser.exists;
+      bool exists = UserService.dataUser.exists;
 
-    UserService.dataUser = User(
-      id: null,
-      firstName: firstLastName[0],
-      lastName: firstLastName[1],
-      username: AuthService().user!.displayName,
-      email: AuthService().user!.email,
-      photoUrl: AuthService().user!.photoURL,
-      fKey: null,
-    );
+      UserService.dataUser = User(
+        id: null,
+        firstName: UserService.dataUser.firstName ?? firstLastName[0],
+        lastName: UserService.dataUser.lastName ?? firstLastName[1],
+        username: AuthService().user!.displayName,
+        email: UserService.dataUser.email ?? AuthService().user!.email,
+        photoUrl: UserService.dataUser.photoUrl ?? AuthService().user!.photoURL,
+        fKey: null,
+      );
 
-    UserService.dataUser.exists = exists;
+      UserService.dataUser.exists = exists;
+    }
 
     if (UserService.dataUser.exists) {
       await UserService().fetchUserFromAuth(AuthService().user!.uid);

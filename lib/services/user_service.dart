@@ -56,6 +56,7 @@ class UserService {
           "photo_url": dataUser.photoUrl ?? "null",
           "email": dataUser.email,
           "f_key": dataUser.fKey,
+          "phone_number": dataUser.phoneNumber,
         },
       );
 

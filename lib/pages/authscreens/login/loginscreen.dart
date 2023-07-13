@@ -1,5 +1,4 @@
 import 'package:circlesapp/components/UI/form_field.dart';
-import 'package:circlesapp/components/UI/provider_button.dart';
 import 'package:circlesapp/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,165 +57,104 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const FlutterLogo(
-              size: 150,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  (_invalidUser)
-                      ? Container(
-                          height: 30,
-                          margin: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            "Invalid email or password",
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.montserrat(
-                              color: Colors.red,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        )
-                      : const SizedBox(
-                          height: 30,
-                        ),
-                  FormTextField(
-                    visibility: false,
-                    controller: _emailController,
-                    hintText: "Email",
-                    validator: (value) {
-                      if (!RegExp(_emailRegex).hasMatch(value) || value == "") {
-                        return "Invalid email!";
-                      }
-                    },
-                    onChanged: () {
-                      setState(() {
-                        _invalidUser = false;
-                      });
-                    },
-                  ),
-                  FormTextField(
-                    visibility: _passNotVisibile,
-                    controller: _passwordController,
-                    hintText: "Password",
-                    suffixIcon: IconButton(
-                      onPressed: () => _toggleVisibility(),
-                      icon: Icon(
-                        (_passNotVisibile)
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == "") {
-                        return "Invalid password!";
-                      }
-                    },
-                    onChanged: () {
-                      setState(() {
-                        _invalidUser = false;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 30),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
-                    child: ElevatedButton(
-                      onPressed: loginEmailPassword,
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 14,
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).primaryColor,
-                        ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        "LOGIN",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Row(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                    child: const Divider(
-                      color: Colors.black,
-                      height: 36,
+                (_invalidUser)
+                    ? Container(
+                        height: 30,
+                        margin: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          "Invalid email or password",
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.montserrat(
+                            color: Colors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(
+                        height: 30,
+                      ),
+                FormTextField(
+                  visibility: false,
+                  controller: _emailController,
+                  hintText: "Email",
+                  validator: (value) {
+                    if (!RegExp(_emailRegex).hasMatch(value) || value == "") {
+                      return "Invalid email!";
+                    }
+                  },
+                  onChanged: () {
+                    setState(() {
+                      _invalidUser = false;
+                    });
+                  },
+                ),
+                FormTextField(
+                  visibility: _passNotVisibile,
+                  controller: _passwordController,
+                  hintText: "Password",
+                  suffixIcon: IconButton(
+                    onPressed: () => _toggleVisibility(),
+                    icon: Icon(
+                      (_passNotVisibile)
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == "") {
+                      return "Invalid password!";
+                    }
+                  },
+                  onChanged: () {
+                    setState(() {
+                      _invalidUser = false;
+                    });
+                  },
+                ),
+                const SizedBox(height: 30),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  child: ElevatedButton(
+                    onPressed: loginEmailPassword,
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 14,
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor,
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      "LOGIN",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-                const Text("OR"),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                    child: const Divider(
-                      color: Colors.black,
-                      height: 36,
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 10),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProviderButton(
-                  icon: const AssetImage(
-                    'assets/google_logo.png',
-                  ),
-                  backgroundColor: Colors.white,
-                  loginMethod: AuthService().googleLogin,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                ProviderButton(
-                  icon: const AssetImage(
-                    'assets/apple_logo.png',
-                  ),
-                  backgroundColor: Colors.black,
-                  loginMethod: AuthService().googleLogin,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                ProviderButton(
-                  icon: const AssetImage(
-                    'assets/facebook_logo.png',
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 66, 103, 178),
-                  loginMethod: AuthService().googleLogin,
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

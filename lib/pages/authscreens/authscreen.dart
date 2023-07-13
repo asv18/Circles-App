@@ -1,6 +1,9 @@
 import 'package:animated_background/animated_background.dart';
+import 'package:circlesapp/components/UI/provider_button.dart';
 import 'package:circlesapp/pages/authscreens/login/loginscreen.dart';
 import 'package:circlesapp/pages/authscreens/signup/signupscreen.dart';
+import 'package:circlesapp/services/auth_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -12,7 +15,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   int _index = 0;
-  late final PageController pageController;
+  late final PageController _pageController;
 
   final pages = [
     const LoginScreen(),
@@ -22,12 +25,12 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
+    _pageController = PageController();
   }
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -37,53 +40,114 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-          color: (_index == 0)
-              ? Color.lerp(
-                  Theme.of(context).primaryColorDark, Colors.grey[50], 1)
-              : Color.lerp(
-                  Colors.grey[50], Theme.of(context).primaryColorDark, 1),
-        ),
         child: AnimatedBackground(
           behaviour: BubblesBehaviour(),
           vsync: this,
-          child: Column(
-            children: [
-              Flexible(
-                flex: 5,
-                child: PageView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: pageController,
-                  children: pages,
-                ),
-              ),
-              Flexible(
-                child: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _index = (_index == 0) ? 1 : 0;
-                    });
-                    pageController.animateToPage(
-                      _index,
-                      duration: const Duration(
-                        milliseconds: 500,
-                      ),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Text(
-                    (_index == 0)
-                        ? "Don't have an account? Sign up instead."
-                        : "Already have an account? Log in instead",
-                    style: TextStyle(
-                      color: (_index == 1)
-                          ? Colors.white
-                          : Theme.of(context).primaryColor,
+          child: SafeArea(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const FlutterLogo(
+                    size: 150,
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      children: pages,
                     ),
                   ),
-                ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin:
+                              const EdgeInsets.only(left: 10.0, right: 20.0),
+                          child: const Divider(
+                            color: Colors.black,
+                            height: 36,
+                          ),
+                        ),
+                      ),
+                      const Text("OR"),
+                      Expanded(
+                        child: Container(
+                          margin:
+                              const EdgeInsets.only(left: 20.0, right: 10.0),
+                          child: const Divider(
+                            color: Colors.black,
+                            height: 36,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ProviderButton(
+                          icon: const AssetImage(
+                            'assets/google_logo.png',
+                          ),
+                          backgroundColor: Colors.white,
+                          loginMethod: AuthService().googleLogin,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ProviderButton(
+                          icon: const AssetImage(
+                            'assets/apple_logo.png',
+                          ),
+                          backgroundColor: Colors.black,
+                          loginMethod: AuthService().googleLogin,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ProviderButton(
+                          icon: const AssetImage(
+                            'assets/facebook_logo.png',
+                          ),
+                          backgroundColor:
+                              const Color.fromARGB(255, 66, 103, 178),
+                          loginMethod: AuthService().googleLogin,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          UserService.dataUser.exists = _index == 0;
+                          _index = (_index == 0) ? 1 : 0;
+                        });
+                        _pageController.animateToPage(
+                          _index,
+                          duration: const Duration(
+                            milliseconds: 500,
+                          ),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: Text(
+                        (_index == 0)
+                            ? "Don't have an account? Sign up instead."
+                            : "Already have an account? Log in instead",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
