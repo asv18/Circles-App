@@ -28,10 +28,38 @@ class _GoalScreenState extends State<GoalScreen> {
     });
   }
 
-  void _markTaskCompleteOrUncomplete(Task task) {
-    GoalService().updateTask(task);
+  Future<void> _markTaskCompleteOrIncomplete(Task task) async {
+    if (task.complete! && context.mounted) {
+      DateTime nextDate = DateTime.now();
 
-    if (task.complete!) {
+      switch (task.repeat) {
+        case "Daily":
+          {
+            nextDate = DateTime(
+              nextDate.year,
+              nextDate.month,
+              nextDate.day + 1,
+            );
+            break;
+          }
+        case "Weekly":
+          {
+            nextDate = DateTime(
+              nextDate.year,
+              nextDate.month,
+              nextDate.day - nextDate.weekday % 7,
+            );
+            break;
+          }
+        case "Monthly":
+          {
+            nextDate = DateTime(nextDate.year, nextDate.month + 1, 0);
+            break;
+          }
+      }
+
+      task.nextDate = nextDate;
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -43,7 +71,30 @@ class _GoalScreenState extends State<GoalScreen> {
           );
         },
       );
+    } else {
+      DateTime nextDate = DateTime.now();
+
+      switch (task.repeat) {
+        case "Weekly":
+          {
+            nextDate = DateTime(
+              nextDate.year,
+              nextDate.month,
+              nextDate.day - nextDate.weekday % 7,
+            );
+            break;
+          }
+        case "Monthly":
+          {
+            nextDate = DateTime(nextDate.year, nextDate.month - 1, 0);
+            break;
+          }
+      }
+
+      task.nextDate = nextDate;
     }
+
+    await GoalService().updateTask(task);
   }
 
   void _showActionsTaskMenu(
@@ -98,10 +149,9 @@ class _GoalScreenState extends State<GoalScreen> {
     } else if (result == "Mark Task") {
       setState(() {
         task.complete = !task.complete!;
-
-        // DataService.updateTask(task, widget.goal);
-        _markTaskCompleteOrUncomplete(task);
       });
+
+      await _markTaskCompleteOrIncomplete(task);
     } else if (result == "Delete Task") {
       setState(() {
         widget.goal.tasks!.removeAt(index);
@@ -221,15 +271,15 @@ class _GoalScreenState extends State<GoalScreen> {
                                     (states) => Colors.white,
                                   ),
                                   value: widget.goal.tasks![index].complete,
-                                  onChanged: (bool? value) {
+                                  onChanged: (bool? value) async {
                                     setState(() {
                                       widget.goal.tasks![index].complete =
                                           value!;
-
-                                      _markTaskCompleteOrUncomplete(
-                                        widget.goal.tasks![index],
-                                      );
                                     });
+
+                                    await _markTaskCompleteOrIncomplete(
+                                      widget.goal.tasks![index],
+                                    );
                                   },
                                 ),
                               ),

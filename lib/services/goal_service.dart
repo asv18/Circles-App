@@ -104,6 +104,8 @@ class GoalService {
       body: body,
     );
 
+    await fetchGoals();
+
     return response;
   }
 }

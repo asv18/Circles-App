@@ -80,10 +80,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  void _markTaskCompleteOrUncomplete(Task task) {
-    GoalService().updateTask(task);
+  Future<void> _markTaskCompleteOrIncomplete(Task task) async {
+    if (task.complete! && context.mounted) {
+      DateTime nextDate = DateTime.now();
 
-    if (task.complete!) {
+      switch (task.repeat) {
+        case "Daily":
+          {
+            nextDate = DateTime(
+              nextDate.year,
+              nextDate.month,
+              nextDate.day + 1,
+            );
+            break;
+          }
+        case "Weekly":
+          {
+            nextDate = DateTime(
+              nextDate.year,
+              nextDate.month,
+              nextDate.day - nextDate.weekday % 7,
+            );
+            break;
+          }
+        case "Monthly":
+          {
+            nextDate = DateTime(nextDate.year, nextDate.month + 1, 0);
+            break;
+          }
+      }
+
+      task.nextDate = nextDate;
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -95,7 +123,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         },
       );
+    } else {
+      DateTime nextDate = DateTime.now();
+
+      switch (task.repeat) {
+        case "Weekly":
+          {
+            nextDate = DateTime(
+              nextDate.year,
+              nextDate.month,
+              nextDate.day - nextDate.weekday % 7,
+            );
+            break;
+          }
+        case "Monthly":
+          {
+            nextDate = DateTime(nextDate.year, nextDate.month - 1, 0);
+            break;
+          }
+      }
+
+      task.nextDate = nextDate;
     }
+
+    await GoalService().updateTask(task);
   }
 
   void _getTapPosition(TapDownDetails details) {
@@ -146,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else if (result == "Complete Task") {
       setState(() {
         task.complete = !task.complete!;
-        _markTaskCompleteOrUncomplete(task);
+        _markTaskCompleteOrIncomplete(task);
       });
     }
   }
@@ -244,324 +295,329 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            toolbarHeight: MediaQuery.of(context).size.height / 6.0,
-            flexibleSpace: const Image(
-              image: NetworkImage(
-                'https://picsum.photos/600/600?&blur=2',
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await GoalService().fetchGoals();
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              toolbarHeight: MediaQuery.of(context).size.height / 6.0,
+              flexibleSpace: const Image(
+                image: NetworkImage(
+                  'https://picsum.photos/600/600?&blur=2',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
-            ),
-            backgroundColor: Colors.transparent,
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(48.0),
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Transform.translate(
-                  offset: const Offset(0, 60.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 20.0),
-                        child: PhysicalModel(
-                          color: Colors.transparent,
-                          shape: BoxShape.circle,
+              backgroundColor: Colors.transparent,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(48.0),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Transform.translate(
+                    offset: const Offset(0, 60.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 20.0),
+                          child: PhysicalModel(
+                            color: Colors.transparent,
+                            shape: BoxShape.circle,
+                            elevation: 5,
+                            child: CircleImageWidget(
+                              photoUrl: UserService.dataUser.photoUrl,
+                              dimensions: 150.0,
+                              margin: 10,
+                            ),
+                          ),
+                        ),
+                        PhysicalModel(
+                          borderRadius: BorderRadius.circular(20.0),
                           elevation: 5,
-                          child: CircleImageWidget(
-                            photoUrl: UserService.dataUser.photoUrl,
-                            dimensions: 150.0,
-                            margin: 10,
-                          ),
-                        ),
-                      ),
-                      PhysicalModel(
-                        borderRadius: BorderRadius.circular(20.0),
-                        elevation: 5,
-                        color: Colors.transparent,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          height: 50.0,
-                          width: 50.0,
-                          alignment: Alignment.center,
-                          child: Center(
-                            child: InkWell(
-                              onTap: () {},
-                              child: const Icon(
-                                Icons.settings,
-                                size: 25.0,
-                                color: Colors.white,
-                              ),
+                          color: Colors.transparent,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Theme.of(context).primaryColor,
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-        body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Tasks",
-                  style: TextStyle(fontSize: 24),
-                ),
-                FutureBuilder<List<Goal>>(
-                  future: GoalService.goals,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
-                    } else if (snapshot.hasData) {
-                      tasks = List.empty(growable: true);
-                      for (var goal in snapshot.data!) {
-                        for (var task in goal.tasks!) {
-                          if (!task.complete! ||
-                              task.nextDate!.compareTo(
-                                    DateTime.now(),
-                                  ) >=
-                                  0) {
-                            tasks.add(task);
-                          }
-                        }
-                      }
-                      if (tasks.isEmpty) {
-                        return Container(
-                          margin: const EdgeInsets.only(
-                            top: 20,
-                          ),
-                          child: Center(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 40,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "You have no tasks for today...",
-                                  style: TextStyle(
-                                    fontSize: 17.5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox(
-                          height: 170.0,
-                          child: ListView.builder(
-                            itemCount: tasks.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTapDown: (details) => _getTapPosition(
-                                  details,
-                                ),
-                                onLongPress: () => _showActionsTaskMenu(
-                                  context,
-                                  tasks[index],
-                                ),
-                                child: TaskWidget(
-                                  task: tasks[index],
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      tasks[index].complete = value!;
-                                      _markTaskCompleteOrUncomplete(
-                                        tasks[index],
-                                      );
-                                    });
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-                const Divider(
-                  thickness: 1.0,
-                  color: Colors.black,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Goals",
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 20.0),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  _navigateAndRefresh(context);
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      FutureBuilder(
-                        future: GoalService.goals,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          } else if (snapshot.hasData) {
-                            if (snapshot.data!.isEmpty) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 40,
-                                ),
-                                child: const Text(
-                                  "You have no goals yet...",
-                                  style: TextStyle(
-                                    fontSize: 17.5,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.all(0),
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => GoalScreen(
-                                            goal: snapshot.data![index],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    onLongPress: () => _showActionsGoalMenu(
-                                      context,
-                                      snapshot.data![index],
-                                    ),
-                                    onTapDown: (details) => _getTapPosition(
-                                      details,
-                                    ),
-                                    child: GoalsListWidget(
-                                      goal: snapshot.data![index],
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          }
-
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(
-                  thickness: 1.0,
-                  color: Colors.black,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Circles",
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            Container(
-                              width: 50.0,
-                              height: 50.0,
-                              margin: const EdgeInsets.only(left: 20.0),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                shape: BoxShape.circle,
-                              ),
+                            height: 50.0,
+                            width: 50.0,
+                            alignment: Alignment.center,
+                            child: Center(
                               child: InkWell(
-                                onTapDown: (details) =>
-                                    _getTapPosition(details),
-                                onTap: () => _showActionsCircleMenu(context),
+                                onTap: () {},
                                 child: const Icon(
-                                  Icons.add,
+                                  Icons.settings,
+                                  size: 25.0,
                                   color: Colors.white,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(0),
-                        itemCount: circles.length,
-                        itemBuilder: (context, index) {
-                          return CircleListWidget(
-                            circle: circles[index],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 30.0),
-                  child: Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      child: const Text('Signout'),
-                      onPressed: () async {
-                        await AuthService().signOut();
-                        if (context.mounted) {
-                          Navigator.of(context)
-                              .pushNamedAndRemoveUntil('/', (route) => false);
-                        }
-                      },
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
+            ),
+          ],
+          body: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Tasks",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  FutureBuilder<List<Goal>>(
+                    future: GoalService.goals,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      } else if (snapshot.hasData) {
+                        tasks = List.empty(growable: true);
+                        for (var goal in snapshot.data!) {
+                          for (var task in goal.tasks!) {
+                            if (!task.complete! ||
+                                task.nextDate!.compareTo(
+                                      DateTime.now(),
+                                    ) >=
+                                    0) {
+                              tasks.add(task);
+                            }
+                          }
+                        }
+                        if (tasks.isEmpty) {
+                          return Container(
+                            margin: const EdgeInsets.only(
+                              top: 20,
+                            ),
+                            child: Center(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 40,
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "You have no tasks for today...",
+                                    style: TextStyle(
+                                      fontSize: 17.5,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return SizedBox(
+                            height: 170.0,
+                            child: ListView.builder(
+                              itemCount: tasks.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTapDown: (details) => _getTapPosition(
+                                    details,
+                                  ),
+                                  onLongPress: () => _showActionsTaskMenu(
+                                    context,
+                                    tasks[index],
+                                  ),
+                                  child: TaskWidget(
+                                    task: tasks[index],
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        tasks[index].complete = value!;
+                                        _markTaskCompleteOrIncomplete(
+                                          tasks[index],
+                                        );
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      }
+
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                  const Divider(
+                    thickness: 1.0,
+                    color: Colors.black,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Goals",
+                                style: TextStyle(fontSize: 24),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(left: 20.0),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    _navigateAndRefresh(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        FutureBuilder(
+                          future: GoalService.goals,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            } else if (snapshot.hasData) {
+                              if (snapshot.data!.isEmpty) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 40,
+                                  ),
+                                  child: const Text(
+                                    "You have no goals yet...",
+                                    style: TextStyle(
+                                      fontSize: 17.5,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.all(0),
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => GoalScreen(
+                                              goal: snapshot.data![index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      onLongPress: () => _showActionsGoalMenu(
+                                        context,
+                                        snapshot.data![index],
+                                      ),
+                                      onTapDown: (details) => _getTapPosition(
+                                        details,
+                                      ),
+                                      child: GoalsListWidget(
+                                        goal: snapshot.data![index],
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                            }
+
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    thickness: 1.0,
+                    color: Colors.black,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Circles",
+                                style: TextStyle(fontSize: 24),
+                              ),
+                              Container(
+                                width: 50.0,
+                                height: 50.0,
+                                margin: const EdgeInsets.only(left: 20.0),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: InkWell(
+                                  onTapDown: (details) =>
+                                      _getTapPosition(details),
+                                  onTap: () => _showActionsCircleMenu(context),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.all(0),
+                          itemCount: circles.length,
+                          itemBuilder: (context, index) {
+                            return CircleListWidget(
+                              circle: circles[index],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Signout'),
+                        onPressed: () async {
+                          await AuthService().signOut();
+                          if (context.mounted) {
+                            Navigator.of(context)
+                                .pushNamedAndRemoveUntil('/', (route) => false);
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
