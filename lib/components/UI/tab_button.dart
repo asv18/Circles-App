@@ -16,9 +16,9 @@ class TabButton extends StatelessWidget {
       child: Tab(
         child: Text(
           name,
-          style: GoogleFonts.montserrat(
-            fontSize: 16,
-            fontWeight: FontWeight.w800,
+          style: GoogleFonts.karla(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

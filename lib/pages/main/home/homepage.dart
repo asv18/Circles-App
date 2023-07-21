@@ -6,6 +6,7 @@ import 'package:circlesapp/pages/main/home/goals/goalsdisplay.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -54,7 +55,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Hi ${UserService.dataUser.firstName} ${UserService.dataUser.lastName}!",
+                    "Hey ${UserService.dataUser.firstName}!",
+                    style: GoogleFonts.karla(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,

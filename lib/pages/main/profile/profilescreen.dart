@@ -3,15 +3,16 @@ import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dar
 import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
-import 'package:circlesapp/extraneous_screens/goalscreen.dart';
+import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/services/auth_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/extraneous_screens/taskscreen.dart';
+import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -45,32 +46,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         name: "circle 1",
         updates: 3,
         userCount: 5,
-        image: "https://picsum.photos/400/400?random=1"),
+        image: "https://picsum.photos/600/600?random=1"),
     Circle(
         name: "circle 2",
         updates: 8,
         userCount: 8,
-        image: "https://picsum.photos/400/400?random=2"),
+        image: "https://picsum.photos/600/600?random=2"),
     Circle(
         name: "circle 3",
         updates: 10,
         userCount: 3,
-        image: "https://picsum.photos/400/400?random=3"),
+        image: "https://picsum.photos/600/600?random=3"),
     Circle(
         name: "circle 4",
         updates: 7,
         userCount: 2,
-        image: "https://picsum.photos/400/400?random=4"),
+        image: "https://picsum.photos/600/600?random=4"),
     Circle(
         name: "circle 5",
         updates: 2,
         userCount: 6,
-        image: "https://picsum.photos/400/400?random=5"),
+        image: "https://picsum.photos/600/600?random=5"),
     Circle(
         name: "circle 6",
         updates: 6,
         userCount: 10,
-        image: "https://picsum.photos/400/400?random=6"),
+        image: "https://picsum.photos/600/600?random=6"),
   ];
 
   List<Task> tasks = List.empty(growable: true);
@@ -305,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               toolbarHeight: MediaQuery.of(context).size.height / 6.0,
               flexibleSpace: const Image(
                 image: NetworkImage(
-                  'https://picsum.photos/600/600?&blur=2',
+                  'https://picsum.photos/600/600',
                 ),
                 fit: BoxFit.cover,
               ),
@@ -370,9 +371,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Tasks",
-                    style: TextStyle(fontSize: 24),
+                    style: GoogleFonts.karla(fontSize: 24),
                   ),
                   FutureBuilder<List<Goal>>(
                     future: GoalService.goals,
@@ -464,9 +465,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 "Goals",
-                                style: TextStyle(fontSize: 24),
+                                style: GoogleFonts.karla(fontSize: 24),
                               ),
                               Container(
                                 margin: const EdgeInsets.only(left: 20.0),
@@ -559,9 +560,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 "Circles",
-                                style: TextStyle(fontSize: 24),
+                                style: GoogleFonts.karla(fontSize: 24),
                               ),
                               Container(
                                 width: 50.0,

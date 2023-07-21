@@ -51,6 +51,7 @@ dependencies:
   hive_flutter: ^1.1.0
   uuid: ^3.0.7
   expandable_page_view: ^1.0.17
+  web_socket_channel: ^2.4.0
 
 dev_dependencies:
   flutter_test:

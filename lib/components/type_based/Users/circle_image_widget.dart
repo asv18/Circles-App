@@ -5,7 +5,7 @@ class CircleImageWidget extends StatelessWidget {
     super.key,
     required this.photoUrl,
     required this.dimensions,
-    required this.margin,
+    this.margin = 0,
   });
 
   final String? photoUrl;

@@ -1,5 +1,6 @@
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({
@@ -26,7 +27,15 @@ class _TaskScreenState extends State<TaskScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        leading: const BackButton(color: Colors.black),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            FontAwesomeIcons.arrowLeft,
+            color: Colors.black,
+          ),
+        ),
         elevation: 0,
         centerTitle: true,
         title: const Text(

@@ -1,5 +1,5 @@
 import 'package:circlesapp/shared/circle.dart';
-import 'package:circlesapp/extraneous_screens/circlescreen.dart';
+import 'package:circlesapp/variable_screens/circlescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

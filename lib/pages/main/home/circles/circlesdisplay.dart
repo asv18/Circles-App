@@ -16,32 +16,32 @@ class _CirclesDispState extends State<CirclesDisp> {
         name: "circle 1",
         updates: 3,
         userCount: 5,
-        image: "https://picsum.photos/400/400?random=1"),
+        image: "https://picsum.photos/600/600?random=1"),
     Circle(
         name: "circle 2",
         updates: 8,
         userCount: 8,
-        image: "https://picsum.photos/400/400?random=2"),
+        image: "https://picsum.photos/600/600?random=2"),
     Circle(
         name: "circle 3",
         updates: 10,
         userCount: 3,
-        image: "https://picsum.photos/400/400?random=3"),
+        image: "https://picsum.photos/600/600?random=3"),
     Circle(
         name: "circle 4",
         updates: 7,
         userCount: 2,
-        image: "https://picsum.photos/400/400?random=4"),
+        image: "https://picsum.photos/600/600?random=4"),
     Circle(
         name: "circle 5",
         updates: 2,
         userCount: 6,
-        image: "https://picsum.photos/400/400?random=5"),
+        image: "https://picsum.photos/600/600?random=5"),
     Circle(
         name: "circle 6",
         updates: 6,
         userCount: 10,
-        image: "https://picsum.photos/400/400?random=6"),
+        image: "https://picsum.photos/600/600?random=6"),
   ];
   @override
   Widget build(BuildContext context) {

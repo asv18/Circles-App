@@ -1,4 +1,4 @@
-import 'package:circlesapp/extraneous_screens/circlescreen.dart';
+import 'package:circlesapp/variable_screens/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,6 +68,13 @@ class CircleListWidget extends StatelessWidget {
                       fontSize: 16.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(2.5, 2.5),
+                          blurRadius: 10.0,
+                          color: Colors.black.withOpacity(0.8),
+                        ),
+                      ],
                     ),
                     child: Text(
                       circle.name,

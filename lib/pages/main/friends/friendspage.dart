@@ -3,6 +3,7 @@ import 'package:circlesapp/components/UI/search_appbar.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../shared/user.dart';
 
@@ -19,6 +20,8 @@ class _FriendsPageState extends State<FriendsPage> {
       TextEditingController();
   List<User> users = List.empty(growable: true);
 
+  String searchTerm = "";
+
   @override
   void initState() {
     super.initState();
@@ -30,40 +33,46 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        backgroundColor: Theme.of(context).primaryColorLight,
+        elevation: 2,
+        toolbarHeight: MediaQuery.of(context).size.height / 6.0,
         centerTitle: true,
-        title: SearchAppBar(
-          controller: _textEditingControllerSearchFriends,
-          onChanged: (value) {
-            setState(() {
-              users = List.empty(growable: true);
-
-              friends.then((value) {
-                for (User user in value) {
-                  if ("${user.firstName}${user.lastName}"
-                          .contains(_textEditingControllerSearchFriends.text) ||
-                      user.username!
-                          .contains(_textEditingControllerSearchFriends.text)) {
-                    users.add(user);
-                  }
-                }
-              });
-            });
-          },
-        ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(
-              right: 20,
-            ),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                FontAwesomeIcons.userPlus,
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Conversations",
+                    style: GoogleFonts.karla(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      FontAwesomeIcons.userPlus,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            SearchAppBar(
+              controller: _textEditingControllerSearchFriends,
+              onChanged: (value) {
+                setState(() {
+                  searchTerm = value.toString().toLowerCase();
+                });
+              },
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Container(
@@ -76,40 +85,29 @@ class _FriendsPageState extends State<FriendsPage> {
                 print(snapshot.error);
                 return const Text("ERROR!!!!!");
               } else if (snapshot.hasData) {
-                if (_textEditingControllerSearchFriends.value !=
-                    TextEditingValue.empty) {
-                  users = List.empty(growable: true);
-                  for (User user in snapshot.data!) {
-                    if ("${user.firstName}${user.lastName}"
-                            .toLowerCase()
-                            .contains(
-                              _textEditingControllerSearchFriends.text
-                                  .toLowerCase(),
-                            ) ||
-                        user.username!.toLowerCase().contains(
-                              _textEditingControllerSearchFriends.text
-                                  .toLowerCase(),
-                            )) {
-                      users.add(user);
-                    }
-                  }
-                } else {
-                  users = snapshot.data!;
-                }
-                return ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        FriendWidget(
-                          friend: snapshot.data![index],
-                        ),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                      ],
-                    );
-                  },
+                return ListView(
+                  children: [
+                    ...snapshot.data!
+                        .where(
+                          (prospect) =>
+                              searchTerm.isEmpty ||
+                              prospect.firstName!
+                                  .toLowerCase()
+                                  .contains(searchTerm) ||
+                              prospect.lastName!
+                                  .toLowerCase()
+                                  .contains(searchTerm) ||
+                              prospect.username!
+                                  .toLowerCase()
+                                  .contains(searchTerm),
+                        )
+                        .map(
+                          (prospect) => FriendWidget(
+                            friend: prospect,
+                          ),
+                        )
+                        .toList(),
+                  ],
                 );
               }
 

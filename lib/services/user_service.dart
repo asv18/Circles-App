@@ -105,7 +105,7 @@ class UserService {
 
     return http.post(
       Uri.parse(
-        '${link}user',
+        '${link}user/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

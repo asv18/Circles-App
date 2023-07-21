@@ -1,5 +1,6 @@
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CircleScreen extends StatefulWidget {
   const CircleScreen({
@@ -22,6 +23,15 @@ class _CircleScreenState extends State<CircleScreen> {
       appBar: AppBar(
         toolbarHeight: (MediaQuery.of(context).size.height / 4.6),
         elevation: 2,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            FontAwesomeIcons.arrowLeft,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         flexibleSpace: Hero(
           tag: widget.tag,

@@ -3,8 +3,9 @@ import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/extraneous_screens/taskscreen.dart';
+import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GoalScreen extends StatefulWidget {
   const GoalScreen({
@@ -172,6 +173,15 @@ class _GoalScreenState extends State<GoalScreen> {
       appBar: AppBar(
         toolbarHeight: (MediaQuery.of(context).size.height / 10),
         elevation: 2,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            FontAwesomeIcons.arrowLeft,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           UserService.truncateWithEllipsis(

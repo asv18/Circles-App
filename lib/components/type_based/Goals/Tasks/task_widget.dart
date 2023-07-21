@@ -57,7 +57,7 @@ class TaskWidget extends StatelessWidget {
                       softWrap: false,
                       textAlign: TextAlign.center,
                       task.name,
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.karla(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),

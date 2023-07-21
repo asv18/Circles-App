@@ -1,6 +1,6 @@
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/type_based/Goals/goal_widget.dart';
-import 'package:circlesapp/extraneous_screens/goalscreen.dart';
+import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';

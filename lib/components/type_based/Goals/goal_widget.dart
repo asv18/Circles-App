@@ -1,4 +1,4 @@
-import 'package:circlesapp/extraneous_screens/goalscreen.dart';
+import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
