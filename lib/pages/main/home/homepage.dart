@@ -3,6 +3,7 @@ import 'package:circlesapp/components/UI/notifcation_button.dart';
 import 'package:circlesapp/components/UI/tab_button.dart';
 import 'package:circlesapp/pages/main/home/circles/circlesdisplay.dart';
 import 'package:circlesapp/pages/main/home/goals/goalsdisplay.dart';
+import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     if (UserService.dataUser.exists) {
       GoalService().fetchGoals();
+      CircleService().fetchCircles();
     }
   }
 

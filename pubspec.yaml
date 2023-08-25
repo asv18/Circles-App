@@ -52,6 +52,9 @@ dependencies:
   uuid: ^3.0.7
   expandable_page_view: ^1.0.17
   web_socket_channel: ^2.4.0
+  cached_network_image: ^3.2.3
+  flutter_slidable: ^3.0.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

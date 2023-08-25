@@ -3,6 +3,8 @@ import 'package:circlesapp/pages/authscreens/authscreen.dart';
 import 'package:circlesapp/pages/main/friends/friendspage.dart';
 import 'package:circlesapp/pages/main/home/homepage.dart';
 import 'package:circlesapp/pages/main/profile/profilescreen.dart';
+import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
         photoUrl: UserService.dataUser.photoUrl ?? AuthService().user!.photoURL,
         fKey: null,
       );
+
+      await CircleService().fetchCircles();
+      await GoalService().fetchGoals();
 
       UserService.dataUser.exists = exists;
     }

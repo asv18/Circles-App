@@ -1,4 +1,7 @@
 import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/services/friend_service.dart';
+import 'package:circlesapp/shared/friendship.dart';
+import 'package:circlesapp/shared/message.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:circlesapp/variable_screens/messagescreen.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +18,27 @@ class FriendWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       splashFactory: InkRipple.splashFactory,
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MessageScreen(
-              friend: friend,
-            ),
-          ),
+      onTap: () async {
+        Friendship friendship = await FriendService().fetchFriendship(
+          friend.fKey!,
         );
+
+        List<Message> messages = await FriendService().fetchMessages(
+          friendship.id!,
+          BigInt.zero,
+        );
+
+        if (context.mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => MessageScreen(
+                friend: friend,
+                friendship: friendship,
+                messages: messages,
+              ),
+            ),
+          );
+        }
       },
       child: Container(
         margin: const EdgeInsets.symmetric(

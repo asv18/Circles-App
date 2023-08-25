@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,12 +54,9 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    UserService.dataUser = local.User();
-    GoalService.goals = Future.value(
-      List.empty(
-        growable: true,
-      ),
-    );
+    UserService.dataUser = local.User.empty();
+    GoalService.goals = null;
+    CircleService.circles = null;
 
     final openedBox = Hive.box("userBox");
 

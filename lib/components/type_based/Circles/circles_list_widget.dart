@@ -26,7 +26,7 @@ class CircleListWidget extends StatelessWidget {
               ) {
                 return CircleScreen(
                   circle: circle,
-                  tag: circle.image,
+                  tag: circle.image!,
                 );
               },
               transitionsBuilder: (
@@ -44,13 +44,13 @@ class CircleListWidget extends StatelessWidget {
           );
         },
         child: Hero(
-          tag: circle.image,
+          tag: circle.image!,
           child: Container(
             margin: const EdgeInsets.only(bottom: 10.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
               image: DecorationImage(
-                image: NetworkImage(circle.image),
+                image: NetworkImage(circle.image!),
                 fit: BoxFit.cover,
               ),
             ),
@@ -77,7 +77,7 @@ class CircleListWidget extends StatelessWidget {
                       ],
                     ),
                     child: Text(
-                      circle.name,
+                      circle.name!,
                     ),
                   ),
                   Row(
@@ -87,17 +87,19 @@ class CircleListWidget extends StatelessWidget {
                         width: 75.0,
                         child: Stack(
                           children: List.generate(
-                            (circle.userCount <= 3) ? circle.userCount : 3,
+                            (circle.users!.length <= 3)
+                                ? circle.users!.length
+                                : 3,
                             (index) {
                               return Positioned(
                                 left: index * 15,
                                 child: Container(
                                   width: 30.0,
                                   height: 30.0,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                        'https://picsum.photos/200/200?random=$index',
+                                        'https://picsum.photos/200/200',
                                       ),
                                     ),
                                     shape: BoxShape.circle,
@@ -111,7 +113,7 @@ class CircleListWidget extends StatelessWidget {
                       SizedBox(
                         width: 20.0,
                         child: Visibility(
-                          visible: circle.userCount > 3,
+                          visible: circle.users!.length > 3,
                           child: DefaultTextStyle(
                             style: TextStyle(
                               color: Colors.white,
@@ -126,7 +128,7 @@ class CircleListWidget extends StatelessWidget {
                               ],
                             ),
                             child: Text(
-                              "+${circle.userCount - 3}",
+                              "+${circle.users!.length - 3}",
                             ),
                           ),
                         ),

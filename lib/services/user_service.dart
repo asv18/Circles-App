@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,8 +18,16 @@ class UserService {
   //fetching
 
   Future<void> fetchUser() async {
-    final response = await http.get(
-      Uri.parse('${link}user/${dataUser.id}/'),
+    final response = await http.post(
+      Uri.parse('${link}user/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "id": dataUser.id,
+        },
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -61,6 +70,7 @@ class UserService {
       );
 
       await GoalService().fetchGoals();
+      await CircleService().fetchCircles();
 
       UserService.dataUser.exists = true;
     } else {
@@ -69,8 +79,16 @@ class UserService {
   }
 
   Future<void> fetchUserFromAuth(String? authID) async {
-    final response = await http.get(
-      Uri.parse('${link}user/authenticate/$authID/'),
+    final response = await http.post(
+      Uri.parse('${link}user/authenticate/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "auth_id": authID,
+        },
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -105,7 +123,7 @@ class UserService {
 
     return http.post(
       Uri.parse(
-        '${link}user/',
+        '${link}user/new/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

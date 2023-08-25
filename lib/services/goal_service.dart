@@ -8,13 +8,19 @@ import 'package:circlesapp/services/user_service.dart';
 class GoalService {
   String link = "http://localhost:3000/api/v1/";
 
-  static Future<List<Goal>> goals = Future.value(
-    List.empty(growable: true),
-  );
+  static Future<List<Goal>>? goals;
 
   Future<void> fetchGoals() async {
-    final response = await http.get(
-      Uri.parse('${link}user/${UserService.dataUser.id}/goals/'),
+    final response = await http.post(
+      Uri.parse('${link}user/goals/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "id": UserService.dataUser.id,
+        },
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -48,7 +54,7 @@ class GoalService {
 
     return http.post(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/',
+        '${link}user/goals/new/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -59,6 +65,7 @@ class GoalService {
           'finish_date': newGoal.endDate.toIso8601String(),
           'description': newGoal.description,
           'tasks': body,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -68,11 +75,16 @@ class GoalService {
   Future<http.Response> deleteGoal(String id) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/$id/',
+        '${link}user/goals/$id/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
+      body: jsonEncode(
+        <String, dynamic>{
+          'user_id': UserService.dataUser.id,
+        },
+      ),
     );
 
     return response;
@@ -81,27 +93,36 @@ class GoalService {
   Future<http.Response> deleteTask(String goalID, BigInt taskID) async {
     final http.Response response = await http.delete(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/$goalID/tasks/${taskID.toString()}/',
+        '${link}user/goals/$goalID/tasks/${taskID.toString()}/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
+      body: jsonEncode(
+        <String, dynamic>{
+          'user_id': UserService.dataUser.id,
+        },
+      ),
     );
 
     return response;
   }
 
   Future<http.Response> updateTask(Task task) async {
-    var body = json.encode(task.toJson());
+    var body = task.toJson();
+
+    body['user_id'] = UserService.dataUser.id;
 
     final http.Response response = await http.patch(
       Uri.parse(
-        '${link}user/${UserService.dataUser.id}/goals/${task.owner}/tasks/${task.id}/',
+        '${link}user/goals/${task.owner}/tasks/${task.id}/',
       ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: body,
+      body: jsonEncode(
+        body,
+      ),
     );
 
     await fetchGoals();

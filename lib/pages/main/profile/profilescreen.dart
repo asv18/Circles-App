@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
 import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
@@ -13,6 +14,8 @@ import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../services/circles_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -40,39 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {});
     }
   }
-
-  final List<Circle> circles = [
-    Circle(
-        name: "circle 1",
-        updates: 3,
-        userCount: 5,
-        image: "https://picsum.photos/600/600?random=1"),
-    Circle(
-        name: "circle 2",
-        updates: 8,
-        userCount: 8,
-        image: "https://picsum.photos/600/600?random=2"),
-    Circle(
-        name: "circle 3",
-        updates: 10,
-        userCount: 3,
-        image: "https://picsum.photos/600/600?random=3"),
-    Circle(
-        name: "circle 4",
-        updates: 7,
-        userCount: 2,
-        image: "https://picsum.photos/600/600?random=4"),
-    Circle(
-        name: "circle 5",
-        updates: 2,
-        userCount: 6,
-        image: "https://picsum.photos/600/600?random=5"),
-    Circle(
-        name: "circle 6",
-        updates: 6,
-        userCount: 10,
-        image: "https://picsum.photos/600/600?random=6"),
-  ];
 
   List<Task> tasks = List.empty(growable: true);
 
@@ -276,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       setState(() {
         List<Goal> goals = List.empty(growable: true);
-        GoalService.goals.then(
+        GoalService.goals!.then(
           (value) {
             for (Goal obj in value) {
               if (obj.id != goal.id) {
@@ -305,7 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SliverAppBar(
               toolbarHeight: MediaQuery.of(context).size.height / 6.0,
               flexibleSpace: const Image(
-                image: NetworkImage(
+                image: CachedNetworkImageProvider(
                   'https://picsum.photos/600/600',
                 ),
                 fit: BoxFit.cover,
@@ -585,14 +555,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.all(0),
-                          itemCount: circles.length,
-                          itemBuilder: (context, index) {
-                            return CircleListWidget(
-                              circle: circles[index],
+                        FutureBuilder<List<Circle>>(
+                          future: CircleService.circles,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.isNotEmpty) {
+                                return ListView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return CircleListWidget(
+                                      circle: snapshot.data![index],
+                                    );
+                                  },
+                                );
+                              } else {
+                                return const SizedBox(
+                                  width: double.infinity,
+                                  child: Center(
+                                    child: Text(
+                                      "You are not a part of any circles yet...",
+                                      style: TextStyle(
+                                        fontSize: 26,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+
+                            // By default, show a loading spinner.
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
                           },
                         ),

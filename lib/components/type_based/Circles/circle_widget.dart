@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/variable_screens/circlescreen.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class CircleWidget extends StatelessWidget {
               ) {
                 return CircleScreen(
                   circle: circle,
-                  tag: circle.name,
+                  tag: circle.name!,
                 );
               },
               transitionsBuilder: (
@@ -44,7 +45,7 @@ class CircleWidget extends StatelessWidget {
           );
         },
         child: Hero(
-          tag: circle.name,
+          tag: circle.name!,
           child: Container(
             clipBehavior: Clip.antiAlias,
             margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -53,15 +54,15 @@ class CircleWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(
-                  circle.image,
+                image: CachedNetworkImageProvider(
+                  circle.image!,
                 ),
               ),
             ),
             child: Container(
-              margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 0),
+              margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 15.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DefaultTextStyle(
@@ -78,29 +79,29 @@ class CircleWidget extends StatelessWidget {
                       ],
                     ),
                     child: Text(
-                      circle.name,
+                      circle.name!,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: DefaultTextStyle(
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        shadows: [
-                          Shadow(
-                            offset: const Offset(2.5, 2.5),
-                            blurRadius: 10.0,
-                            color: Colors.black.withOpacity(0.8),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        "${circle.updates} new updates",
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  // margin: const EdgeInsets.symmetric(vertical: 20.0),
+                  // child: DefaultTextStyle(
+                  //   style: TextStyle(
+                  //     color: Colors.white,
+                  //     fontSize: 24,
+                  //     fontWeight: FontWeight.w400,
+                  //     shadows: [
+                  //       Shadow(
+                  //         offset: const Offset(2.5, 2.5),
+                  //         blurRadius: 10.0,
+                  //         color: Colors.black.withOpacity(0.8),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Text(
+                  //     "${circle.updates} new updates",
+                  //   ),
+                  // ),
+                  // ),
                   Row(
                     children: [
                       SizedBox(
@@ -108,7 +109,9 @@ class CircleWidget extends StatelessWidget {
                         width: 120.0,
                         child: Stack(
                           children: List.generate(
-                            circle.userCount <= 3 ? circle.userCount : 3,
+                            circle.users!.length <= 3
+                                ? circle.users!.length
+                                : 3,
                             (index) {
                               return Positioned(
                                 left: index * 30,
@@ -117,8 +120,8 @@ class CircleWidget extends StatelessWidget {
                                   height: 40.0,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                        'https://picsum.photos/200/200?random=${index}',
+                                      image: CachedNetworkImageProvider(
+                                        circle.users![index].photoUrl!,
                                       ),
                                     ),
                                     shape: BoxShape.circle,
@@ -130,7 +133,7 @@ class CircleWidget extends StatelessWidget {
                         ),
                       ),
                       Visibility(
-                        visible: circle.userCount > 3,
+                        visible: circle.users!.length > 3,
                         child: DefaultTextStyle(
                           style: TextStyle(
                             color: Colors.white,
@@ -145,7 +148,7 @@ class CircleWidget extends StatelessWidget {
                             ],
                           ),
                           child: Text(
-                            "+${circle.userCount - 3}",
+                            "+${circle.users!.length - 3}",
                           ),
                         ),
                       ),

@@ -1,19 +1,28 @@
 import 'dart:convert';
 
 import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/components/type_based/messages/message_widget.dart';
+import 'package:circlesapp/services/friend_service.dart';
 import 'package:circlesapp/services/user_service.dart';
+import 'package:circlesapp/shared/friendship.dart';
+import 'package:circlesapp/shared/message.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({
     super.key,
     required this.friend,
+    required this.friendship,
+    required this.messages,
   });
 
   final User friend;
+  final Friendship friendship;
+  final List<Message> messages;
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -22,19 +31,74 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   late WebSocketChannel channel;
 
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  BigInt? replyId;
 
-  Map<String, String> messages = <String, String>{};
+  late List<Message> messages;
+
+  BigInt offset = BigInt.zero;
+
+  final _scrollController = ScrollController();
+
+  String getFormattedTime(DateTime time) {
+    var timeFormat = DateFormat("h:mm");
+    String timePortion = timeFormat.format(time);
+    return timePortion;
+  }
+
+  String getFormattedDate(DateTime time) {
+    var timeFormat = DateFormat("M/d/yy h:mm");
+    String timePortion = timeFormat.format(time);
+    return timePortion;
+  }
+
+  void connectToWebsocket() {
+    channel = WebSocketChannel.connect(
+      Uri.parse(
+        "ws://localhost:3000/ws/v1/messages/",
+      ),
+    );
+
+    var params = jsonEncode({
+      "type": "connection_id",
+      "friendship_id": widget.friendship.id.toString(),
+    });
+
+    channel.sink.add(params);
+  }
 
   @override
   void initState() {
     super.initState();
 
-    channel = WebSocketChannel.connect(
-      Uri.parse(
-        "ws://localhost:3000/messages",
-      ),
-    );
+    messages = widget.messages;
+
+    connectToWebsocket();
+
+    _scrollController.addListener(() async {
+      if (_scrollController.position.atEdge) {
+        bool isTop = _scrollController.position.pixels == 0;
+
+        if (!isTop) {
+          offset = BigInt.from(messages.length);
+
+          if (offset.modPow(BigInt.one, BigInt.from(20)) == BigInt.zero) {
+            List<Message> newMessages = await FriendService().fetchMessages(
+              widget.friendship.id!,
+              offset,
+            );
+
+            setState(() {
+              offset = BigInt.from(messages.length);
+
+              messages.insertAll(0, newMessages);
+            });
+          }
+
+          print('At the bottom: $offset');
+        }
+      }
+    });
   }
 
   @override
@@ -91,22 +155,233 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
         ),
       ),
-      body: StreamBuilder(
-        stream: channel.stream,
-        builder: (context, snapshot) {
-          messages.addAll(snapshot.data);
-          if (snapshot.hasData || messages.isNotEmpty) {
-            messages.addAll(snapshot.data);
-            return ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, builder) {
-                return Text(messages.toString());
-              },
-            );
-          }
+      body: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        child: StreamBuilder(
+          stream: channel.stream,
+          builder: (context, snapshot) {
+            if (messages.isEmpty && !snapshot.hasData) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "This is the beginning of your conversation history with ${widget.friend.firstName}",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
 
-          return const CircularProgressIndicator();
-        },
+            if (snapshot.hasData || messages.isNotEmpty) {
+              if (snapshot.data != null) {
+                messages.add(
+                  Message.fromJson(
+                    jsonDecode(
+                      snapshot.data,
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                controller: _scrollController,
+                reverse: true,
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  if (index + 1 != messages.length) {
+                    Duration separation =
+                        messages.reversed.toList()[index].dateSent!.difference(
+                              messages.reversed.toList()[index + 1].dateSent!,
+                            );
+
+                    if (messages.reversed.toList()[index].dateSent!.day !=
+                        messages.reversed.toList()[index + 1].dateSent!.day) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 40.0,
+                                    right: 10.0,
+                                  ),
+                                  child: const Divider(
+                                    color: Colors.black,
+                                    height: 36,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                getFormattedDate(
+                                  messages.reversed.toList()[index].dateSent!,
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 40.0,
+                                  ),
+                                  child: const Divider(
+                                    color: Colors.black,
+                                    height: 36,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          MessageWidget(
+                            message: messages.reversed.toList()[index],
+                            margin: 20,
+                            replyFunction: (context) {
+                              setState(() {
+                                replyId = messages.reversed.toList()[index].id;
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    }
+
+                    if (separation.inHours >= 1) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 40.0,
+                                    right: 10.0,
+                                  ),
+                                  child: const Divider(
+                                    color: Colors.black,
+                                    height: 36,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                getFormattedTime(
+                                  messages.reversed.toList()[index].dateSent!,
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 40.0,
+                                  ),
+                                  child: const Divider(
+                                    color: Colors.black,
+                                    height: 36,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          MessageWidget(
+                            message: messages.reversed.toList()[index],
+                            margin: 20,
+                            replyFunction: (context) {
+                              setState(() {
+                                replyId = messages.reversed.toList()[index].id;
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    }
+
+                    if (separation.inMinutes >= 3) {
+                      return MessageWidget(
+                        message: messages.reversed.toList()[index],
+                        margin: 20,
+                        replyFunction: (context) {
+                          setState(() {
+                            replyId = messages.reversed.toList()[index].id;
+                          });
+                        },
+                      );
+                    }
+                  } else if (messages.length - 1 == index) {
+                    return Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 40.0,
+                                  right: 10.0,
+                                ),
+                                child: const Divider(
+                                  color: Colors.black,
+                                  height: 36,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              getFormattedDate(
+                                messages.reversed.toList()[index].dateSent!,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 40.0,
+                                ),
+                                child: const Divider(
+                                  color: Colors.black,
+                                  height: 36,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        MessageWidget(
+                          message: messages.reversed.toList()[index],
+                          margin: 20,
+                          replyFunction: (context) {
+                            setState(() {
+                              replyId = messages.reversed.toList()[index].id;
+                            });
+                          },
+                        ),
+                      ],
+                    );
+                  }
+
+                  return MessageWidget(
+                    message: messages.reversed.toList()[index],
+                    margin: 5,
+                    replyFunction: (context) {
+                      setState(() {
+                        replyId = messages.reversed.toList()[index].id;
+                      });
+                    },
+                  );
+                },
+              );
+            }
+
+            return const CircularProgressIndicator();
+          },
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         child: SafeArea(
@@ -138,7 +413,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
                 Expanded(
                   child: TextField(
-                    controller: _controller,
+                    controller: _messageController,
                     decoration: const InputDecoration(
                       hintText: "Write message...",
                       hintStyle: TextStyle(
@@ -163,16 +438,21 @@ class _MessageScreenState extends State<MessageScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    onPressed: () {
-                      if (_controller.value != TextEditingValue.empty) {
-                        final message = jsonEncode(
-                          {
-                            "message": _controller.text,
-                            "id": UserService.dataUser.id,
-                          },
-                        );
-                        channel.sink.add(message);
+                    onPressed: () async {
+                      if (_messageController.text.trim() != "") {
+                        final message = {
+                          "type": "message",
+                          "contents": _messageController.text,
+                          "friendship_id": widget.friendship.id.toString(),
+                          "user_fkey": UserService.dataUser.fKey,
+                          "reply_id": replyId.toString(),
+                          "date_sent": DateTime.now().toIso8601String(),
+                        };
+
+                        channel.sink.add(jsonEncode(message));
                       }
+
+                      _messageController.clear();
                     },
                     icon: const Icon(
                       Icons.send,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
@@ -21,38 +22,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
     duration: Duration(seconds: 5),
   );
 
-  final List<Circle> _circles = [
-    Circle(
-        name: "circle 1",
-        updates: 3,
-        userCount: 5,
-        image: "https://source.unsplash.com/random/400x400?sig=1"),
-    Circle(
-        name: "circle 2",
-        updates: 8,
-        userCount: 8,
-        image: "https://source.unsplash.com/random/400x400?sig=2"),
-    Circle(
-        name: "circle 3",
-        updates: 10,
-        userCount: 3,
-        image: "https://source.unsplash.com/random/400x400?sig=3"),
-    Circle(
-        name: "circle 4",
-        updates: 7,
-        userCount: 2,
-        image: "https://source.unsplash.com/random/400x400?sig=4"),
-    Circle(
-        name: "circle 5",
-        updates: 2,
-        userCount: 6,
-        image: "https://source.unsplash.com/random/400x400?sig=5"),
-    Circle(
-        name: "circle 6",
-        updates: 6,
-        userCount: 10,
-        image: "https://source.unsplash.com/random/400x400?sig=6"),
-  ];
+  final List<Circle> _circles = [];
 
   String? _goalName;
   String? _description;
@@ -106,7 +76,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                       color: Colors.white,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(
+                        image: CachedNetworkImageProvider(
                           UserService.dataUser.photoUrl ??
                               'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                         ),
@@ -419,7 +389,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         },
                         child: Center(
                           child: Text(
-                            _circles[index].name,
+                            _circles[index].name!,
                             style: const TextStyle(
                               color: Colors.white,
                             ),

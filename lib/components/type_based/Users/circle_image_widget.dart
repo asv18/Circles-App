@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CircleImageWidget extends StatelessWidget {
@@ -23,7 +24,7 @@ class CircleImageWidget extends StatelessWidget {
         color: Colors.white,
         image: DecorationImage(
           fit: BoxFit.contain,
-          image: NetworkImage(
+          image: CachedNetworkImageProvider(
             photoUrl ??
                 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
           ),

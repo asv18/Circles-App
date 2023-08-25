@@ -57,13 +57,6 @@ class GoalWidget extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(2.5, 2.5),
-                          blurRadius: 10.0,
-                          color: Colors.black.withOpacity(0.8),
-                        ),
-                      ],
                     ),
                   ),
                   Row(
@@ -73,41 +66,17 @@ class GoalWidget extends StatelessWidget {
                         if (i < goals[index].progress!.toInt()) {
                           return Container(
                             margin: const EdgeInsets.only(right: 5.0),
-                            child: Stack(
-                              children: [
-                                const Positioned(
-                                  left: 1.0,
-                                  top: 2.0,
-                                  child: Icon(
-                                    Icons.circle,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.circle,
-                                  color: Colors.green[500],
-                                ),
-                              ],
+                            child: Icon(
+                              Icons.circle,
+                              color: Colors.green[500],
                             ),
                           );
                         } else {
                           return Container(
                             margin: const EdgeInsets.only(right: 5.0),
-                            child: Stack(
-                              children: [
-                                const Positioned(
-                                  left: 1.0,
-                                  top: 2.0,
-                                  child: Icon(
-                                    Icons.circle_outlined,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.circle_outlined,
-                                  color: Colors.green[500],
-                                ),
-                              ],
+                            child: Icon(
+                              Icons.circle_outlined,
+                              color: Colors.green[500],
                             ),
                           );
                         }
@@ -120,17 +89,10 @@ class GoalWidget extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
                   "Time Left: ${timeLeft(goals[index].endDate)}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w400,
-                    shadows: [
-                      Shadow(
-                        offset: const Offset(2.5, 2.5),
-                        blurRadius: 10.0,
-                        color: Colors.black.withOpacity(0.8),
-                      ),
-                    ],
                   ),
                 ),
               ),
@@ -141,17 +103,10 @@ class GoalWidget extends StatelessWidget {
                       ? goals[index].description!
                       : "",
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.w400,
-                  shadows: [
-                    Shadow(
-                      offset: const Offset(2.5, 2.5),
-                      blurRadius: 10.0,
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ],
                 ),
               )
             ],

@@ -8,7 +8,6 @@ class Goal implements Comparable<Goal> {
   String? description;
   List<Task>? tasks;
   int? progress;
-  String? owner;
 
   Goal({
     this.id,
@@ -17,16 +16,15 @@ class Goal implements Comparable<Goal> {
     this.startDate,
     this.description,
     this.progress,
-    this.owner,
     this.tasks,
   });
 
   factory Goal.fromJson(Map<String, dynamic> json) {
-    List<dynamic> list = json["tasks"];
+    List<dynamic> rawTasks = json["tasks"];
 
-    List<Task> tasks = [];
+    List<Task> tasks = List.empty(growable: true);
 
-    for (var e in list) {
+    for (var e in rawTasks) {
       Task task = Task.fromJson(e);
 
       tasks.add(task);
@@ -38,13 +36,16 @@ class Goal implements Comparable<Goal> {
       endDate: DateTime.parse(json["finish_date"]),
       startDate: DateTime.parse(json["start_date"]),
       description: json["description"] as String,
-      progress: ((DateTime.now().millisecondsSinceEpoch -
-                  DateTime.parse(json["start_date"]).millisecondsSinceEpoch) /
-              (DateTime.parse(json["finish_date"]).millisecondsSinceEpoch -
-                  DateTime.parse(json["start_date"]).millisecondsSinceEpoch) *
-              5.0)
+      progress: ((((DateTime.now().millisecondsSinceEpoch -
+                          DateTime.parse(json["start_date"])
+                              .millisecondsSinceEpoch) /
+                      (DateTime.parse(json["finish_date"])
+                              .millisecondsSinceEpoch -
+                          DateTime.parse(json["start_date"])
+                              .millisecondsSinceEpoch)) *
+                  5.0) +
+              0.5)
           .floor(),
-      owner: json["owner"] as String,
       tasks: tasks,
     );
   }
@@ -57,7 +58,6 @@ class Goal implements Comparable<Goal> {
       "start_date": startDate,
       "description": description,
       "progress": progress,
-      "owner": owner,
       "tasks": tasks,
     };
   }

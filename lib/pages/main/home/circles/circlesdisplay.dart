@@ -1,5 +1,6 @@
 import 'package:circlesapp/components/type_based/Circles/circle_widget.dart';
 import 'package:circlesapp/components/UI/create_button.dart';
+import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -11,74 +12,81 @@ class CirclesDisp extends StatefulWidget {
 }
 
 class _CirclesDispState extends State<CirclesDisp> {
-  final List<Circle> _circles = [
-    Circle(
-        name: "circle 1",
-        updates: 3,
-        userCount: 5,
-        image: "https://picsum.photos/600/600?random=1"),
-    Circle(
-        name: "circle 2",
-        updates: 8,
-        userCount: 8,
-        image: "https://picsum.photos/600/600?random=2"),
-    Circle(
-        name: "circle 3",
-        updates: 10,
-        userCount: 3,
-        image: "https://picsum.photos/600/600?random=3"),
-    Circle(
-        name: "circle 4",
-        updates: 7,
-        userCount: 2,
-        image: "https://picsum.photos/600/600?random=4"),
-    Circle(
-        name: "circle 5",
-        updates: 2,
-        userCount: 6,
-        image: "https://picsum.photos/600/600?random=5"),
-    Circle(
-        name: "circle 6",
-        updates: 6,
-        userCount: 10,
-        image: "https://picsum.photos/600/600?random=6"),
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
-      child: Column(
-        children: [
-          Container(
-            margin:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CreateButton(
-                  onPressed: () {},
-                  text: "Join",
-                ),
-                CreateButton(
-                  onPressed: () {},
-                  text: "Create",
-                ),
-              ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        await CircleService().fetchCircles();
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CreateButton(
+                    onPressed: () {},
+                    text: "Join",
+                  ),
+                  CreateButton(
+                    onPressed: () {},
+                    text: "Create",
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _circles.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CircleWidget(
-                  circle: _circles[index],
-                );
-              },
+            Expanded(
+              child: FutureBuilder<List<Circle>>(
+                future: CircleService.circles,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CircleWidget(
+                            circle: snapshot.data![index],
+                          );
+                        },
+                      );
+                    } else {
+                      return const SizedBox(
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(
+                            "You are not a part of any circles yet...",
+                            style: TextStyle(
+                              fontSize: 26,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    }
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+
+                  // By default, show a loading spinner.
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

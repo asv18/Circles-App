@@ -43,12 +43,23 @@ class User {
       lastName: json["last_name"] as String,
       username: json["username"] as String,
       photoUrl: (json["photo_url"] == "null") ? null : json["photo_url"],
-      email: json["email"] as String,
       fKey: (json["user_foreign_key"] ??
           (((json["user1"] as String) == UserService.dataUser.fKey)
               ? json["user2"]
               : json["user1"])) as String,
     );
+  }
+
+  User.empty() {
+    id = null;
+    firstName = null;
+    lastName = null;
+    username = null;
+    email = null;
+    photoUrl = null;
+    fKey = null;
+    phoneNumber = null;
+    exists = true;
   }
 
   @override

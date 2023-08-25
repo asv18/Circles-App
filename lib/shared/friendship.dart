@@ -1,4 +1,5 @@
 import 'package:circlesapp/services/user_service.dart';
+import 'package:intl/intl.dart';
 
 class Friendship {
   BigInt? id;
@@ -34,8 +35,12 @@ class Friendship {
       user: user,
       other: other,
       relationship: json["relationship"] as String,
-      dateCreated: DateTime.parse(json["date_created"]),
-      lastInteractedDate: DateTime.parse(json["last_interacted_date"]),
+      dateCreated: DateFormat("yyyy-MM-dd HH:mm:ss")
+          .parse(json["date_created"], true)
+          .toLocal(),
+      lastInteractedDate: DateFormat("yyyy-MM-dd HH:mm:ss")
+          .parse(json["last_interacted_date"], true)
+          .toLocal(),
     );
   }
 }
