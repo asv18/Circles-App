@@ -43,9 +43,17 @@ class CircleService {
   }
 
   Future<List<CirclePost>> fetchCirclePosts(String circleID) async {
-    final response = await http.get(
+    final response = await http.post(
       Uri.parse(
-        '${link}circles/$circleID/posts/',
+        '${link}circles/posts/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'circle_id': circleID,
+        },
       ),
     );
 

@@ -104,8 +104,7 @@ class _CircleScreenState extends State<CircleScreen> {
         future: posts,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text("err!");
+            return const Text("err!");
           } else if (snapshot.hasData) {
             return Text("${snapshot.data!.length}");
           }
