@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/variable_screens/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CircleListWidget extends StatelessWidget {
   const CircleListWidget({
@@ -13,131 +13,150 @@ class CircleListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 400),
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return CircleScreen(
-                  circle: circle,
-                  tag: circle.image!,
-                );
-              },
-              transitionsBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child,
-              ) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-            ),
-          );
-        },
-        child: Hero(
-          tag: circle.image!,
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              image: DecorationImage(
-                image: NetworkImage(circle.image!),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 10.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  DefaultTextStyle(
-                    style: GoogleFonts.montserrat(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(2.5, 2.5),
-                          blurRadius: 10.0,
-                          color: Colors.black.withOpacity(0.8),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 400),
+            pageBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) {
+              return CircleScreen(
+                circle: circle,
+                tag: circle.name!,
+              );
+            },
+            transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+            ) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        height: 90.0,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          color: Theme.of(context).primaryColorLight,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 12.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DefaultTextStyle(
+                      style: Theme.of(context).textTheme.headlineMedium!,
+                      child: Text(
+                        circle.name!,
+                      ),
+                    ),
+                    // Container(
+                    // margin: const EdgeInsets.symmetric(vertical: 20.0),
+                    // child: DefaultTextStyle(
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 24,
+                    //     fontWeight: FontWeight.w400,
+                    //     shadows: [
+                    //       Shadow(
+                    //         offset: const Offset(2.5, 2.5),
+                    //         blurRadius: 10.0,
+                    //         color: Colors.black.withOpacity(0.8),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   child: Text(
+                    //     "${circle.updates} new updates",
+                    //   ),
+                    // ),
+                    // ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 30.0,
+                          width: 120.0,
+                          child: Stack(
+                            children: List.generate(
+                              circle.users!.length <= 3
+                                  ? circle.users!.length
+                                  : 4,
+                              (index) {
+                                return Positioned(
+                                  left: index * 15,
+                                  child: (index == 4)
+                                      ? Container(
+                                          width: 30.0,
+                                          height: 30.0,
+                                          color: const Color.fromARGB(
+                                            255,
+                                            214,
+                                            226,
+                                            255,
+                                          ),
+                                          child: Text(
+                                            "+${circle.users!.length - 3}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall,
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 30.0,
+                                          height: 30.0,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: CachedNetworkImageProvider(
+                                                circle.users![index].photoUrl!,
+                                              ),
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    child: Text(
-                      circle.name!,
+                  ],
+                ),
+              ),
+              Hero(
+                tag: circle.name!,
+                child: Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                        circle.image!,
+                      ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 30.0,
-                        width: 75.0,
-                        child: Stack(
-                          children: List.generate(
-                            (circle.users!.length <= 3)
-                                ? circle.users!.length
-                                : 3,
-                            (index) {
-                              return Positioned(
-                                left: index * 15,
-                                child: Container(
-                                  width: 30.0,
-                                  height: 30.0,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        'https://picsum.photos/200/200',
-                                      ),
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                        child: Visibility(
-                          visible: circle.users!.length > 3,
-                          child: DefaultTextStyle(
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              shadows: [
-                                Shadow(
-                                  offset: const Offset(2.5, 2.5),
-                                  blurRadius: 10.0,
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                              ],
-                            ),
-                            child: Text(
-                              "+${circle.users!.length - 3}",
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

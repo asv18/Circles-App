@@ -43,7 +43,7 @@ class Goal implements Comparable<Goal> {
                               .millisecondsSinceEpoch -
                           DateTime.parse(json["start_date"])
                               .millisecondsSinceEpoch)) *
-                  5.0) +
+                  100.0) +
               0.5)
           .floor(),
       tasks: tasks,

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:circlesapp/services/auth_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -75,9 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
         fKey: null,
       );
 
-      await CircleService().fetchCircles();
-      await GoalService().fetchGoals();
-
       UserService.dataUser.exists = exists;
     }
 
@@ -86,6 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       await UserService().createNewUser(UserService.dataUser);
     }
+
+    await CircleService().fetchCircles();
+    await GoalService().fetchGoals();
 
     return const MainPage();
   }
@@ -160,7 +161,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width / 8.0;
+    double width = MediaQuery.of(context).size.width / 9.0;
     double height = MediaQuery.of(context).size.height / 14.0;
 
     return Scaffold(
@@ -172,8 +173,8 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomAppBar(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 45.0,
-            vertical: 15.0,
+            horizontal: 30.0,
+            vertical: 5.0,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,8 +188,9 @@ class _MainPageState extends State<MainPage> {
                     _index = 0;
                   });
                 },
-                icon: _index == 0 ? Icons.home : Icons.home_outlined,
-                color: _index == 0 ? Colors.amber : Colors.grey,
+                icon: OctIcons.home_fill_24,
+                color:
+                    _index == 0 ? Theme.of(context).primaryColor : Colors.grey,
               ),
               BottomAppBarButton(
                 width: width,
@@ -199,8 +201,9 @@ class _MainPageState extends State<MainPage> {
                     _index = 1;
                   });
                 },
-                icon: _index == 1 ? Icons.group : Icons.group_outlined,
-                color: _index == 1 ? Colors.amber : Colors.grey,
+                icon: IonIcons.people,
+                color:
+                    _index == 1 ? Theme.of(context).primaryColor : Colors.grey,
               ),
               BottomAppBarButton(
                 width: width,
@@ -211,10 +214,9 @@ class _MainPageState extends State<MainPage> {
                     _index = 2;
                   });
                 },
-                icon: _index == 2
-                    ? Icons.account_circle
-                    : Icons.account_circle_outlined,
-                color: _index == 2 ? Colors.amber : Colors.grey,
+                icon: IonIcons.person_circle,
+                color:
+                    _index == 2 ? Theme.of(context).primaryColor : Colors.grey,
               ),
             ],
           ),

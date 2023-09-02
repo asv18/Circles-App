@@ -1,10 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/components/UI/create_button.dart';
+import 'package:circlesapp/components/UI/custom_text_field.dart';
+import 'package:circlesapp/components/type_based/Circles/circle_list_toggle.dart';
+import 'package:circlesapp/components/type_based/Goals/Tasks/new_task_widget.dart';
+import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
-import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class CreateGoalScreen extends StatefulWidget {
   const CreateGoalScreen({super.key});
@@ -22,11 +26,9 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
     duration: Duration(seconds: 5),
   );
 
-  final List<Circle> _circles = [];
-
-  String? _goalName;
-  String? _description;
-  String _dateText = "mm / dd / yyyy";
+  final _goalNameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _dateTextController = TextEditingController(text: "mm / dd / yyyy");
   DateTime _selectedDate = DateTime.now();
   List<Task> tasks = [
     Task(
@@ -35,385 +37,233 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
     ),
   ];
 
-  List<bool> toggled = List<bool>.filled(6, false);
+  List<bool> toggled = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
-        leading: BackButton(
-          color: Colors.black,
-          onPressed: () {
-            Navigator.pop(context, "Goal Not Created");
-          },
-        ),
+        toolbarHeight: 50,
+        automaticallyImplyLeading: false,
         elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "New Goal",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 48.0,
-            fontWeight: FontWeight.w300,
-          ),
+        centerTitle: false,
+        title: Text(
+          "CREATE A NEW GOAL",
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
-        backgroundColor: Colors.grey[50],
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pop("Goal Not Created");
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                width: 40,
+                height: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Theme.of(context).primaryColorLight,
+                ),
+                child: const Icon(
+                  FontAwesome.x,
+                  size: 12.5,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+        ],
+        backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 40.0),
+          margin: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 40.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 100.0,
-                    height: 100.0,
-                    margin: const EdgeInsets.only(right: 20.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                          UserService.dataUser.photoUrl ??
-                              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "What do you want to achieve?",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 10.0),
-                        width: 275.0,
-                        height: 50.0,
-                        child: TextField(
-                          maxLength: 100,
-                          decoration: const InputDecoration(
-                            counterText: "",
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 1.0,
-                              ),
-                            ),
-                            hintText: "Think about the outcome you want...",
-                            hintStyle: TextStyle(fontSize: 15.0),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              _goalName = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+              CustomTextField(
+                labelText: "Goal Title",
+                hintText: "What do you want to achieve?",
+                controller: _goalNameController,
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 30.0),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 20.0),
-                      child: const Icon(
-                        Icons.calendar_month_outlined,
-                        size: 75.0,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "By when?",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10.0),
-                          width: 275,
-                          height: 50,
-                          child: TextField(
-                            readOnly: true,
-                            onTap: () async {
-                              final DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: _selectedDate,
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime(2101),
-                              );
+              const SizedBox(
+                height: 10.0,
+              ),
+              CustomTextField(
+                labelText: "Goal Description",
+                hintText: "What best describes your goal?",
+                controller: _descriptionController,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              CustomTextField(
+                labelText: "Goal End Date",
+                hintText: "By when do you want to achieve this?",
+                controller: _dateTextController,
+                readOnly: true,
+                suffixIcon: const Icon(
+                  Bootstrap.calendar3,
+                  color: Colors.black,
+                  size: 24,
+                ),
+                onTap: () async {
+                  final DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101),
+                  );
 
-                              if (pickedDate != null) {
-                                setState(() {
-                                  _selectedDate = pickedDate;
-                                  _dateText =
-                                      "${_selectedDate.month} / ${_selectedDate.day} / ${_selectedDate.year}";
-                                });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
-                              ),
-                              hintText: _dateText,
-                              hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: (_dateText == "mm / dd / yyyy")
-                                    ? Colors.grey
-                                    : Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                  if (pickedDate != null) {
+                    setState(() {
+                      _selectedDate = pickedDate;
+                      _dateTextController.text =
+                          "${_selectedDate.month} / ${_selectedDate.day} / ${_selectedDate.year}";
+                    });
+                  }
+                },
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 30.0),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 20.0),
-                      child: const Icon(
-                        Icons.description_outlined,
-                        size: 75.0,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "What describes your goal?",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10.0),
-                          width: 275,
-                          height: 50,
-                          child: TextField(
-                            maxLength: 500,
-                            decoration: const InputDecoration(
-                              counterText: "",
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
-                              ),
-                              hintText: "Write a short description...",
-                              hintStyle: TextStyle(fontSize: 15.0),
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                _description = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              const SizedBox(
+                height: 20.0,
               ),
-              Container(
-                margin: const EdgeInsets.only(
-                  top: 30.0,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 20.0),
-                      child: const Icon(
-                        Icons.list,
-                        size: 75.0,
-                      ),
-                    ),
-                    const Expanded(
-                      child: Text(
-                        "What are some tasks that will help you get there?",
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              Text(
+                "What are some tasks that will help you get there?",
+                maxLines: 2,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 10.0),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: tasks.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Dismissible(
-                      key: ValueKey<Task>(tasks[index]),
-                      onDismissed: (direction) {
-                        setState(() {
-                          tasks.removeAt(index);
-                        });
-                      },
-                      background: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 50.0,
-                          ),
-                          child: const Icon(
-                            Icons.delete,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      secondaryBackground: Container(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 50.0,
-                          ),
-                          child: const Icon(
-                            Icons.delete,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      child: TaskWidget(
-                        tasks: tasks,
-                        index: index,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Center(
-                  child: IconButton(
-                    onPressed: () {
-                      if (tasks.length == 10) {
-                        ScaffoldMessenger.of(context).showSnackBar(taskLimit);
-                      } else {
-                        setState(() {
-                          tasks.add(
-                            Task(
-                              name: "",
-                              repeat: "Never",
-                            ),
+                child: (tasks.isNotEmpty)
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: tasks.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return NewTaskWidget(
+                            task: tasks[index],
+                            onDismissed: (direction) {
+                              setState(() {
+                                tasks.removeAt(index);
+                              });
+                            },
                           );
-                        });
-                      }
-                    },
-                    icon: const Center(
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: const Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FlutterLogo(
-                      size: 50.0,
-                    ),
-                    Text(
-                      "Select a Circle (or Circles) to share this goal with",
-                      style: TextStyle(
-                        fontSize: 13.0,
-                      ),
-                      maxLines: 3,
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(20.0),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 4 / 1,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                  ),
-                  itemCount: _circles.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return Material(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: (toggled[index])
-                          ? Colors.deepPurple[200]
-                          : Theme.of(context).primaryColor,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            toggled[index] = !toggled[index];
-                          });
                         },
+                      )
+                    : Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20.0),
+                        color: Theme.of(context).primaryColorLight,
                         child: Center(
                           child: Text(
-                            _circles[index].name!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
+                            "Set tasks to help your goals",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
               ),
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Center(
-                  child: IconButton(
-                    onPressed: () async {
-                      if (_goalName == null ||
-                          _dateText == "mm / dd / yyyy" ||
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CreateButton(
+                    text: "Add Task",
+                    onPressed: () {
+                      setState(() {
+                        tasks.add(
+                          Task(
+                            name: "",
+                            repeat: "Never",
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                "POST TO CIRCLES",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              FutureBuilder<List<Circle>>(
+                future: CircleService.circles,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    toggled = List.generate(
+                      snapshot.data!.length,
+                      (int index) => false,
+                      growable: false,
+                    );
+
+                    if (snapshot.data!.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return CircleListToggle(
+                            circle: snapshot.data![index],
+                            toggled: toggled,
+                            index: index,
+                          );
+                        },
+                      );
+                    } else {
+                      return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20.0),
+                        color: Theme.of(context).primaryColorLight,
+                        child: Center(
+                          child: Text(
+                            "You are not a part of any circles yet",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    }
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(60),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      if (_goalNameController.text.isEmpty ||
+                          _dateTextController.text == "mm / dd / yyyy" ||
                           anyNull(tasks)) {
                         List<String> neglected = [];
-                        if (_goalName == null) {
+
+                        if (_goalNameController.text.isEmpty) {
                           neglected.add("Goal Name");
                         }
-                        if (_dateText == "mm / dd / yyyy") {
+
+                        if (_dateTextController.text == "mm / dd / yyyy") {
                           neglected.add("Date");
                         }
 
@@ -430,9 +280,9 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         ));
                       } else {
                         Goal newGoal = Goal(
-                          name: _goalName!,
+                          name: _goalNameController.text,
                           endDate: _selectedDate,
-                          description: _description,
+                          description: _descriptionController.text,
                           tasks: tasks,
                         );
 
@@ -449,10 +299,14 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         }
                       }
                     },
-                    icon: const Center(
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 10,
+                      ),
+                      child: Text(
+                        "Create New Goal",
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
                   ),
@@ -472,119 +326,5 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
       }
     }
     return false;
-  }
-}
-
-class TaskWidget extends StatefulWidget {
-  final List<Task> tasks;
-  final int index;
-
-  const TaskWidget({
-    super.key,
-    required this.tasks,
-    required this.index,
-  });
-
-  @override
-  State<TaskWidget> createState() => _TaskWidgetState();
-}
-
-class _TaskWidgetState extends State<TaskWidget> {
-  List<String> spinnerItems = [
-    "Never",
-    "Daily",
-    "Weekly",
-    "Monthly",
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        vertical: 10.0,
-      ),
-      height: 130.0,
-      child: Material(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          side: const BorderSide(color: Colors.teal),
-        ),
-        color: Colors.white,
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 10.0,
-          ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  "${widget.index + 1}.",
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-              ),
-              const SizedBox(
-                width: 50.0,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText:
-                            "Think about a milestone you can check off...",
-                        hintStyle: TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          widget.tasks[widget.index].name = value;
-                        });
-                      },
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          "Repeats: ",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        DropdownButton<String>(
-                          value: widget.tasks[widget.index].repeat,
-                          onChanged: (String? value) {
-                            setState(() {
-                              widget.tasks[widget.index].repeat = value!;
-                            });
-                          },
-                          items: spinnerItems.map<DropdownMenuItem<String>>(
-                            (String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            },
-                          ).toList(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

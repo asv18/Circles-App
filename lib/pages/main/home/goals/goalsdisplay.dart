@@ -21,11 +21,11 @@ class _GoalsDispState extends State<GoalsDisp> {
     final response = (await Navigator.pushNamed(
       context,
       '/creategoal',
-    )) as List;
+    )) as String;
 
     if (!mounted) return;
 
-    if (response[0] == "Goal Created") {
+    if (response == "Goal Created") {
       await GoalService().fetchGoals();
 
       setState(() {});
@@ -111,15 +111,20 @@ class _GoalsDispState extends State<GoalsDisp> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 10,
-            ),
-            child: CreateButton(
-              text: "Create",
-              onPressed: () => _navigateAndRefresh(context),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "MY GOALS",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              CreateButton(
+                onPressed: () {
+                  _navigateAndRefresh(context);
+                },
+                text: "Create Goal",
+              ),
+            ],
           ),
           Expanded(
             child: FutureBuilder<List<Goal>>(
@@ -133,22 +138,22 @@ class _GoalsDispState extends State<GoalsDisp> {
                           snapshot.data != null ? snapshot.data!.length : 0,
                       itemBuilder: (BuildContext context, int index) {
                         return GoalWidget(
-                          goals: snapshot.data!,
-                          index: index,
+                          goal: snapshot.data![index],
                           showActionsGoalMenu: _showActionsGoalMenu,
                           getTapPosition: _getTapPosition,
                         );
                       },
                     );
                   } else {
-                    return const SizedBox(
+                    return Container(
                       width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      color: Theme.of(context).primaryColorLight,
                       child: Center(
                         child: Text(
-                          "You have no goals yet...",
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
+                          "Set your goals and make them happen",
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     );

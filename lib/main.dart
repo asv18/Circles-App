@@ -56,6 +56,8 @@ class _AppState extends State<MyApp> {
   final primaryColorLight = const Color.fromARGB(255, 245, 248, 255);
   final primaryColorDark = const Color.fromARGB(255, 90, 86, 180);
   final borderColor = const Color.fromARGB(255, 218, 229, 255);
+  final canvasColor = Colors.white;
+  final indicatorColor = const Color.fromARGB(255, 78, 177, 88);
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,7 @@ class _AppState extends State<MyApp> {
                   color: Colors.black,
                 ),
                 headlineSmall: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
@@ -100,11 +102,42 @@ class _AppState extends State<MyApp> {
                   fontWeight: FontWeight.w400,
                   color: Colors.black,
                 ),
+                labelLarge: GoogleFonts.nunito(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: const Color.fromARGB(255, 108, 117, 125),
+                ),
+                labelMedium: GoogleFonts.nunito(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: const Color.fromARGB(255, 108, 117, 125),
+                ),
+                titleLarge: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                titleSmall: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                bodyMedium: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+                bodySmall: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: const Color.fromARGB(255, 108, 117, 125),
+                ),
               ),
               primaryColor: primaryColor,
               primaryColorLight: primaryColorLight,
               primaryColorDark: primaryColorDark,
-              canvasColor: Colors.white,
+              canvasColor: canvasColor,
+              indicatorColor: indicatorColor,
               elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

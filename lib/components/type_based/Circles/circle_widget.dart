@@ -13,49 +13,52 @@ class CircleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 400),
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return CircleScreen(
-                  circle: circle,
-                  tag: circle.name!,
-                );
-              },
-              transitionsBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child,
-              ) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-            ),
-          );
-        },
-        child: Container(
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 400),
+            pageBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) {
+              return CircleScreen(
+                circle: circle,
+                tag: circle.name!,
+              );
+            },
+            transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+            ) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        height: 130.0,
+        child: Card(
           clipBehavior: Clip.antiAlias,
-          margin: const EdgeInsets.symmetric(vertical: 10.0),
-          height: 120.0,
-          decoration: BoxDecoration(
+          color: Theme.of(context).primaryColorLight,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
-            color: Theme.of(context).primaryColorLight,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 15.0),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 12.0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,8 +144,8 @@ class CircleWidget extends StatelessWidget {
               Hero(
                 tag: circle.name!,
                 child: Container(
-                  width: 121,
-                  height: 121,
+                  width: 130,
+                  height: 130,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,

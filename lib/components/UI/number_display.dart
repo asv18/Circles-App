@@ -35,8 +35,8 @@ class NumberDisplay extends StatelessWidget {
                   }
 
                   return Text(
-                    tasksLength > 20
-                        ? "20+"
+                    tasksLength > 99
+                        ? "99+"
                         : tasksLength.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
                       fontSize: 24,

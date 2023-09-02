@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
@@ -13,7 +14,6 @@ import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../services/circles_service.dart';
 
@@ -273,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
-              toolbarHeight: MediaQuery.of(context).size.height / 6.0,
+              toolbarHeight: MediaQuery.of(context).size.height / 8.5,
               flexibleSpace: const Image(
                 image: CachedNetworkImageProvider(
                   'https://picsum.photos/600/600',
@@ -286,44 +286,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Transform.translate(
-                    offset: const Offset(0, 60.0),
+                    offset: const Offset(0, 15.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(right: 20.0),
-                          child: PhysicalModel(
-                            color: Colors.transparent,
-                            shape: BoxShape.circle,
-                            elevation: 5,
-                            child: UserImageWidget(
+                        Row(
+                          children: [
+                            UserImageWidget(
                               photoUrl: UserService.dataUser.photoUrl,
-                              dimensions: 150.0,
-                              margin: 10,
+                              dimensions: 100.0,
                             ),
-                          ),
-                        ),
-                        PhysicalModel(
-                          borderRadius: BorderRadius.circular(20.0),
-                          elevation: 5,
-                          color: Colors.transparent,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Theme.of(context).primaryColor,
+                            const SizedBox(
+                              width: 15,
                             ),
-                            height: 50.0,
-                            width: 50.0,
-                            alignment: Alignment.center,
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {},
-                                child: const Icon(
-                                  Icons.settings,
-                                  size: 25.0,
-                                  color: Colors.white,
+                            Column(
+                              children: [
+                                Text(
+                                  UserService.dataUser.name!.replaceAll(
+                                    " ",
+                                    "\n",
+                                  ),
+                                  style: Theme.of(context).textTheme.titleLarge,
                                 ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Theme.of(context).canvasColor,
+                          ),
+                          height: 40.0,
+                          width: 40.0,
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.settings,
+                                size: 20.0,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -337,13 +341,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
           body: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0),
+              margin: const EdgeInsets.fromLTRB(12.0, 40.0, 12.0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Tasks",
-                    style: GoogleFonts.karla(fontSize: 24),
+                    "UPCOMING TASKS",
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   FutureBuilder<List<Goal>>(
                     future: GoalService.goals,
@@ -365,30 +369,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         }
                         if (tasks.isEmpty) {
                           return Container(
-                            margin: const EdgeInsets.only(
-                              top: 20,
-                            ),
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(top: 5),
+                            color: Theme.of(context).primaryColorLight,
                             child: Center(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 40,
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    "You have no tasks for today...",
-                                    style: TextStyle(
-                                      fontSize: 17.5,
-                                    ),
-                                  ),
-                                ),
+                              child: Text(
+                                "No tasks for today!",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           );
                         } else {
                           return SizedBox(
-                            height: 170.0,
+                            height: 120.0,
                             child: ListView.builder(
                               itemCount: tasks.length,
+                              padding: const EdgeInsets.all(0),
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return InkWell(
@@ -422,199 +420,153 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                   ),
-                  const Divider(
-                    thickness: 1.0,
-                    color: Colors.black,
+                  const SizedBox(
+                    height: 5,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Goals",
-                                style: GoogleFonts.karla(fontSize: 24),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 20.0),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: IconButton(
-                                  onPressed: () {
-                                    _navigateAndRefresh(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "GOALS",
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
-                        ),
-                        FutureBuilder(
-                          future: GoalService.goals,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
-                            } else if (snapshot.hasData) {
-                              if (snapshot.data!.isEmpty) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 40,
+                          CreateButton(
+                            text: "Create Goal",
+                            onPressed: () {
+                              _navigateAndRefresh(context);
+                            },
+                          ),
+                        ],
+                      ),
+                      FutureBuilder<List<Goal>>(
+                        future: GoalService.goals,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          } else if (snapshot.hasData) {
+                            if (snapshot.data!.isEmpty) {
+                              return Container(
+                                width: double.infinity,
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                color: Theme.of(context).primaryColorLight,
+                                child: Center(
+                                  child: Text(
+                                    "Set your goals and make them happen",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                    textAlign: TextAlign.center,
                                   ),
-                                  child: const Text(
-                                    "You have no goals yet...",
-                                    style: TextStyle(
-                                      fontSize: 17.5,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
+                                ),
+                              );
+                            } else {
+                              return SizedBox(
+                                height: 110.0,
+                                child: ListView.builder(
                                   padding: const EdgeInsets.all(0),
+                                  scrollDirection: Axis.horizontal,
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => GoalScreen(
-                                              goal: snapshot.data![index],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      onLongPress: () => _showActionsGoalMenu(
-                                        context,
-                                        snapshot.data![index],
-                                      ),
-                                      onTapDown: (details) => _getTapPosition(
-                                        details,
-                                      ),
-                                      child: GoalsListWidget(
-                                        goal: snapshot.data![index],
-                                      ),
+                                    return GoalsListWidget(
+                                      goal: snapshot.data![index],
+                                      showActionsGoalMenu: _showActionsGoalMenu,
+                                      getTapPosition: _getTapPosition,
                                     );
                                   },
-                                );
-                              }
-                            }
-
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 1.0,
-                    color: Colors.black,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Circles",
-                                style: GoogleFonts.karla(fontSize: 24),
-                              ),
-                              Container(
-                                width: 50.0,
-                                height: 50.0,
-                                margin: const EdgeInsets.only(left: 20.0),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  shape: BoxShape.circle,
                                 ),
-                                child: InkWell(
-                                  onTapDown: (details) =>
-                                      _getTapPosition(details),
-                                  onTap: () => _showActionsCircleMenu(context),
-                                  child: const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        FutureBuilder<List<Circle>>(
-                          future: CircleService.circles,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.isNotEmpty) {
-                                return ListView.builder(
-                                  padding: const EdgeInsets.all(0),
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return CircleListWidget(
-                                      circle: snapshot.data![index],
-                                    );
-                                  },
-                                );
-                              } else {
-                                return const SizedBox(
-                                  width: double.infinity,
-                                  child: Center(
-                                    child: Text(
-                                      "You are not a part of any circles yet...",
-                                      style: TextStyle(
-                                        fontSize: 26,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              }
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
+                              );
                             }
-
-                            // By default, show a loading spinner.
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 30.0),
-                    child: Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: const Text('Signout'),
-                        onPressed: () async {
-                          await AuthService().signOut();
-                          if (context.mounted) {
-                            Navigator.of(context)
-                                .pushNamedAndRemoveUntil('/', (route) => false);
                           }
+
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         },
                       ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Circles",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          CreateButton(
+                            text: "Join or Create Circle",
+                            onPressed: () {
+                              _navigateAndRefresh(context);
+                            },
+                          ),
+                        ],
+                      ),
+                      FutureBuilder<List<Circle>>(
+                        future: CircleService.circles,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data!.isNotEmpty) {
+                              return ListView.builder(
+                                padding: const EdgeInsets.all(0),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return CircleListWidget(
+                                    circle: snapshot.data![index],
+                                  );
+                                },
+                              );
+                            } else {
+                              return const SizedBox(
+                                width: double.infinity,
+                                child: Center(
+                                  child: Text(
+                                    "You are not a part of any circles yet...",
+                                    style: TextStyle(
+                                      fontSize: 26,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+
+                          // By default, show a loading spinner.
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text('Signout'),
+                      onPressed: () async {
+                        await AuthService().signOut();
+                        if (context.mounted) {
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/', (route) => false);
+                        }
+                      },
                     ),
                   ),
                 ],

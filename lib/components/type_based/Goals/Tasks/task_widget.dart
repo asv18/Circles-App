@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,75 +14,86 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 170.0,
-      child: Container(
-        width: 225.0,
-        margin: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: (task.complete!)
-              ? Colors.green[400]
-              : (task.repeat != "Never")
-                  ? (task.nextDate!.compareTo(
-                            DateTime.now(),
-                          ) <
-                          0)
-                      ? Colors.red[400]
-                      : Theme.of(context).primaryColor
-                  : Theme.of(context).primaryColor,
+    return Container(
+      width: 330.0,
+      margin: const EdgeInsets.only(right: 2.5, top: 10.0, bottom: 10.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 30.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100,
-                    margin: const EdgeInsets.only(
-                      bottom: 10.0,
-                    ),
-                    child: AutoSizeText(
-                      maxLines: 1,
-                      maxFontSize: 32,
-                      minFontSize: 18,
-                      wrapWords: false,
-                      overflow: TextOverflow.visible,
-                      softWrap: false,
-                      textAlign: TextAlign.center,
+        color: Theme.of(context).primaryColorLight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 2,
+              child: Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      textAlign: TextAlign.start,
                       task.name,
-                      style: GoogleFonts.karla(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                  ),
-                  Text(
-                    (task.repeat == "Never") ? "Not Recurring" : task.repeat,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    Text(
+                      (task.repeat == "Never") ? "Not Recurring" : task.repeat,
+                      style: Theme.of(context).textTheme.displaySmall,
+                      textAlign: TextAlign.start,
                     ),
-                  ),
-                ],
-              ),
-              Transform.scale(
-                scale: 1.5,
-                child: Checkbox(
-                  checkColor: Colors.green[400],
-                  fillColor: MaterialStateProperty.resolveWith(
-                    (states) => Colors.white,
-                  ),
-                  value: task.complete,
-                  onChanged: (value) => onChanged(value),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Container(
+                height: double.infinity,
+                color: (task.complete!)
+                    ? Theme.of(context).indicatorColor
+                    : (task.repeat != "Never")
+                        ? (task.nextDate!.compareTo(
+                                  DateTime.now(),
+                                ) <
+                                0)
+                            ? Colors.red[400]
+                            : Theme.of(context).primaryColorDark
+                        : Theme.of(context).primaryColorDark,
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Complete",
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: Checkbox(
+                        checkColor: Theme.of(context).indicatorColor,
+                        fillColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.white,
+                        ),
+                        value: task.complete,
+                        onChanged: (value) => onChanged(value),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
