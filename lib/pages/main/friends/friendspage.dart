@@ -2,8 +2,8 @@ import 'package:circlesapp/components/type_based/Users/friend_widget.dart';
 import 'package:circlesapp/components/UI/search_appbar.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../../shared/user.dart';
 
@@ -57,7 +57,7 @@ class _FriendsPageState extends State<FriendsPage> {
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(
-                      FontAwesomeIcons.userPlus,
+                      FontAwesome.user_plus,
                     ),
                   ),
                 ],
@@ -91,10 +91,7 @@ class _FriendsPageState extends State<FriendsPage> {
                         .where(
                           (prospect) =>
                               searchTerm.isEmpty ||
-                              prospect.firstName!
-                                  .toLowerCase()
-                                  .contains(searchTerm) ||
-                              prospect.lastName!
+                              prospect.name!
                                   .toLowerCase()
                                   .contains(searchTerm) ||
                               prospect.username!

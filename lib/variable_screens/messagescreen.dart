@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/components/type_based/messages/message_widget.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:circlesapp/services/user_service.dart';
@@ -8,7 +8,7 @@ import 'package:circlesapp/shared/friendship.dart';
 import 'package:circlesapp/shared/message.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -124,21 +124,21 @@ class _MessageScreenState extends State<MessageScreen> {
                     Navigator.pop(context);
                   },
                   icon: const Icon(
-                    FontAwesomeIcons.arrowLeft,
+                    FontAwesome.arrow_left,
                     color: Colors.white,
                   ),
                 ),
                 const SizedBox(
                   width: 2,
                 ),
-                CircleImageWidget(
+                UserImageWidget(
                   photoUrl: widget.friend.photoUrl,
                   dimensions: 35,
                   margin: 12,
                 ),
                 Expanded(
                   child: Text(
-                    "${widget.friend.firstName} ${widget.friend.lastName}",
+                    "${widget.friend.name}",
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -147,7 +147,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 const Icon(
-                  FontAwesomeIcons.gear,
+                  FontAwesome.gear,
                   color: Colors.white,
                 ),
               ],
@@ -165,7 +165,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "This is the beginning of your conversation history with ${widget.friend.firstName}",
+                    "This is the beginning of your conversation history with ${widget.friend.name}",
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 14,

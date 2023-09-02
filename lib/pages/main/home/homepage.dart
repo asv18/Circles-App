@@ -1,5 +1,5 @@
-import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
-import 'package:circlesapp/components/UI/notifcation_button.dart';
+import 'package:circlesapp/components/UI/number_display.dart';
+import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/components/UI/tab_button.dart';
 import 'package:circlesapp/pages/main/home/circles/circlesdisplay.dart';
 import 'package:circlesapp/pages/main/home/goals/goalsdisplay.dart';
@@ -45,57 +45,127 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            CircleImageWidget(
-              photoUrl: UserService.dataUser.photoUrl,
-              dimensions: 120.0,
-              margin: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Hey ${UserService.dataUser.firstName}!",
-                    style: GoogleFonts.karla(
-                      fontWeight: FontWeight.bold,
+        centerTitle: true,
+        flexibleSpace: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Hello, ",
+                                  style: GoogleFonts.karla(
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "${UserService.dataUser.name}!",
+                                  style: GoogleFonts.karla(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Text(
+                            "Have a nice day!",
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        ],
+                      ),
                     ),
+                    UserImageWidget(
+                      photoUrl: UserService.dataUser.photoUrl,
+                      dimensions: 60.0,
+                      margin: 0,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      NumberDisplay(
+                        future: GoalService.goals!,
+                        text: "Tasks",
+                      ),
+                      NumberDisplay(
+                        future: GoalService.goals!,
+                        text: "Goals",
+                      ),
+                      NumberDisplay(
+                        future: CircleService.circles!,
+                        text: "Circles",
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  NotifButton(
-                    onPressed: () {},
-                    contents: "Stuff",
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  NotifButton(
-                    onPressed: () {},
-                    contents: "Stuff",
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-        elevation: 2,
-        backgroundColor: Theme.of(context).primaryColorLight,
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
         toolbarHeight: MediaQuery.of(context).size.height / 6.0,
-        bottom: TabBar(
-          indicatorColor: Colors.amber,
-          indicatorSize: TabBarIndicatorSize.label,
-          controller: _tabController,
-          tabs: const [
-            TabButton(name: "Circles"),
-            TabButton(name: "Goals"),
-          ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(40.0),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).primaryColor,
+              ),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: TabBar(
+              indicatorColor: Theme.of(context).primaryColor,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              controller: _tabController,
+              labelStyle: const TextStyle(
+                color: Colors.black,
+              ),
+              labelPadding: EdgeInsets.zero,
+              labelColor: Colors.white,
+              unselectedLabelColor: Theme.of(context).primaryColor,
+              tabs: const [
+                TabButton(
+                  name: "Circles",
+                ),
+                TabButton(
+                  name: "Goals",
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: 10.0),
+        margin: const EdgeInsets.only(
+          top: 10.0,
+          left: 16.0,
+          right: 16.0,
+        ),
         child: TabBarView(
           controller: _tabController,
           children: pages,

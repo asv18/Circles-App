@@ -5,7 +5,7 @@ import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class GoalScreen extends StatefulWidget {
   const GoalScreen({
@@ -178,7 +178,7 @@ class _GoalScreenState extends State<GoalScreen> {
             Navigator.pop(context);
           },
           icon: const Icon(
-            FontAwesomeIcons.arrowLeft,
+            FontAwesome.arrow_left,
             color: Colors.white,
           ),
         ),

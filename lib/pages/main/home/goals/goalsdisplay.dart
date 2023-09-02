@@ -108,68 +108,63 @@ class _GoalsDispState extends State<GoalsDisp> {
       onRefresh: () async {
         await GoalService().fetchGoals();
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 10,
-              ),
-              child: CreateButton(
-                text: "Create",
-                onPressed: () => _navigateAndRefresh(context),
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 40,
+              vertical: 10,
             ),
-            Expanded(
-              child: FutureBuilder<List<Goal>>(
-                future: GoalService.goals,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.isNotEmpty) {
-                      snapshot.data!.sort();
-                      return ListView.builder(
-                        itemCount:
-                            snapshot.data != null ? snapshot.data!.length : 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GoalWidget(
-                            goals: snapshot.data!,
-                            index: index,
-                            showActionsGoalMenu: _showActionsGoalMenu,
-                            getTapPosition: _getTapPosition,
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox(
-                        width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            "You have no goals yet...",
-                            style: TextStyle(
-                              fontSize: 30,
-                            ),
+            child: CreateButton(
+              text: "Create",
+              onPressed: () => _navigateAndRefresh(context),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Goal>>(
+              future: GoalService.goals,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.isNotEmpty) {
+                    snapshot.data!.sort();
+                    return ListView.builder(
+                      itemCount:
+                          snapshot.data != null ? snapshot.data!.length : 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GoalWidget(
+                          goals: snapshot.data!,
+                          index: index,
+                          showActionsGoalMenu: _showActionsGoalMenu,
+                          getTapPosition: _getTapPosition,
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox(
+                      width: double.infinity,
+                      child: Center(
+                        child: Text(
+                          "You have no goals yet...",
+                          style: TextStyle(
+                            fontSize: 30,
                           ),
                         ),
-                      );
-                    }
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                      ),
+                    );
                   }
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
 
-                  // By default, show a loading spinner.
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+                // By default, show a loading spinner.
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FormTextField extends StatelessWidget {
   const FormTextField({
@@ -7,6 +8,7 @@ class FormTextField extends StatelessWidget {
     required this.hintText,
     required this.validator,
     this.suffixIcon,
+    this.prefixIcon,
     required this.onChanged,
     this.visibility = true,
   });
@@ -15,37 +17,73 @@ class FormTextField extends StatelessWidget {
   final bool visibility;
   final String hintText;
   final Widget? suffixIcon;
+  final IconData? prefixIcon;
   final Function validator;
   final Function onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
-        borderRadius: BorderRadius.circular(
-          4.0,
-        ),
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: TextFormField(
-        keyboardType: (hintText == "Phone Number") ? TextInputType.phone : null,
-        onChanged: (value) => onChanged(),
-        controller: controller,
-        obscureText: visibility,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          label: Text(
-            hintText,
+    return TextFormField(
+      cursorColor: Theme.of(context).primaryColor,
+      keyboardType: (hintText == "Phone Number") ? TextInputType.phone : null,
+      onChanged: (value) => onChanged(),
+      controller: controller,
+      obscureText: visibility,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Theme.of(context).primaryColorLight,
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).primaryColor,
           ),
-          suffixIcon: suffixIcon,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 25,
-            horizontal: 20,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12),
           ),
         ),
-        validator: (value) => validator(value),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).primaryColor,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromARGB(255, 218, 229, 255),
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+        iconColor: Theme.of(context).primaryColor,
+        label: Text(
+          hintText,
+          style: GoogleFonts.poppins(),
+        ),
+        floatingLabelStyle: GoogleFonts.poppins(
+          color: Theme.of(context).primaryColor,
+        ),
+        prefixIcon: Icon(
+          prefixIcon,
+          color: Theme.of(context).primaryColor,
+          size: 22,
+        ),
+        suffixIcon: suffixIcon,
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 20,
+        ),
       ),
+      validator: (value) => validator(value),
     );
   }
 }

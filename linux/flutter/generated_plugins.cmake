@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  flutter_any_logo
   flutter_secure_storage_linux
 )
 

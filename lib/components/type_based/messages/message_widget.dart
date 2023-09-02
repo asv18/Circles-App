@@ -45,7 +45,7 @@ class MessageWidget extends StatelessWidget {
                 //   backgroundColor: Theme.of(context).canvasColor,
                 //   foregroundColor: Colors.black,
                 //   autoClose: true,
-                //   icon: FontAwesomeIcons.reply,
+                //   icon: FontAwesome.reply,
                 // )
               ],
             )
@@ -60,7 +60,7 @@ class MessageWidget extends StatelessWidget {
                 //   backgroundColor: Theme.of(context).canvasColor,
                 //   foregroundColor: Colors.black,
                 //   autoClose: true,
-                //   icon: FontAwesomeIcons.reply,
+                //   icon: FontAwesome.reply,
                 // ),
                 Flexible(
                   child: Padding(

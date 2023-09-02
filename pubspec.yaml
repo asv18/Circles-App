@@ -39,7 +39,6 @@ dependencies:
   firebase_core: ^2.3.0
   google_fonts: ^5.1.0
   cloud_firestore: ^4.1.0
-  font_awesome_flutter: ^10.2.1
   firebase_auth: ^4.1.5
   google_sign_in: ^6.1.4
   sign_in_with_apple: ^5.0.0
@@ -55,6 +54,8 @@ dependencies:
   cached_network_image: ^3.2.3
   flutter_slidable: ^3.0.0
   intl: ^0.18.1
+  icons_plus: ^4.0.0
+  flutter_any_logo: ^1.0.6
 
 dev_dependencies:
   flutter_test:

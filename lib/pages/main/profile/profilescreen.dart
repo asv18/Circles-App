@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
@@ -297,7 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.transparent,
                             shape: BoxShape.circle,
                             elevation: 5,
-                            child: CircleImageWidget(
+                            child: UserImageWidget(
                               photoUrl: UserService.dataUser.photoUrl,
                               dimensions: 150.0,
                               margin: 10,

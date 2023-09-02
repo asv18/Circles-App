@@ -1,6 +1,6 @@
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({
@@ -32,7 +32,7 @@ class _TaskScreenState extends State<TaskScreen> {
             Navigator.pop(context);
           },
           icon: const Icon(
-            FontAwesomeIcons.arrowLeft,
+            FontAwesome.arrow_left,
             color: Colors.black,
           ),
         ),

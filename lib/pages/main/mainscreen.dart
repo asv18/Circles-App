@@ -33,8 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (userID != null) {
       UserService.dataUser.id = userID;
-      UserService.dataUser.firstName = await openedBox.get("first_name");
-      UserService.dataUser.lastName = await openedBox.get("last_name");
+      UserService.dataUser.name = await openedBox.get("name");
       UserService.dataUser.username = await openedBox.get("username");
       UserService.dataUser.email = await openedBox.get("email");
       UserService.dataUser.fKey = await openedBox.get("f_key");
@@ -63,15 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<Widget> _returnHomePage() async {
     if (!UserService.dataUser.exists) {
-      List<String> firstLastName =
-          (AuthService().user!.displayName ?? "").split(" ");
+      String name = AuthService().user!.displayName ?? "";
 
       bool exists = UserService.dataUser.exists;
 
       UserService.dataUser = User(
         id: null,
-        firstName: UserService.dataUser.firstName ?? firstLastName[0],
-        lastName: UserService.dataUser.lastName ?? firstLastName[1],
+        name: UserService.dataUser.name ?? name,
         username: AuthService().user!.displayName,
         email: UserService.dataUser.email ?? AuthService().user!.email,
         photoUrl: UserService.dataUser.photoUrl ?? AuthService().user!.photoURL,

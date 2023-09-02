@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class CircleImageWidget extends StatelessWidget {
-  const CircleImageWidget({
+class UserImageWidget extends StatelessWidget {
+  const UserImageWidget({
     super.key,
     required this.photoUrl,
     required this.dimensions,
@@ -18,9 +18,13 @@ class CircleImageWidget extends StatelessWidget {
     return Container(
       width: dimensions,
       height: dimensions,
-      margin: EdgeInsets.only(right: margin),
+      margin: EdgeInsets.only(left: margin),
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.amber,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(10.0),
         color: Colors.white,
         image: DecorationImage(
           fit: BoxFit.contain,

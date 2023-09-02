@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/variable_screens/circlescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CircleWidget extends StatelessWidget {
   const CircleWidget({
@@ -44,119 +43,117 @@ class CircleWidget extends StatelessWidget {
             ),
           );
         },
-        child: Hero(
-          tag: circle.name!,
-          child: Container(
-            clipBehavior: Clip.antiAlias,
-            margin: const EdgeInsets.symmetric(vertical: 10.0),
-            height: 175.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(
-                  circle.image!,
-                ),
-              ),
-            ),
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 15.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DefaultTextStyle(
-                    style: GoogleFonts.montserrat(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(2.5, 2.5),
-                          blurRadius: 10.0,
-                          color: Colors.black.withOpacity(0.8),
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          margin: const EdgeInsets.symmetric(vertical: 10.0),
+          height: 120.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Theme.of(context).primaryColorLight,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(15.0, 10.0, 0, 15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DefaultTextStyle(
+                      style: Theme.of(context).textTheme.headlineMedium!,
+                      child: Text(
+                        circle.name!,
+                      ),
+                    ),
+                    // Container(
+                    // margin: const EdgeInsets.symmetric(vertical: 20.0),
+                    // child: DefaultTextStyle(
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 24,
+                    //     fontWeight: FontWeight.w400,
+                    //     shadows: [
+                    //       Shadow(
+                    //         offset: const Offset(2.5, 2.5),
+                    //         blurRadius: 10.0,
+                    //         color: Colors.black.withOpacity(0.8),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   child: Text(
+                    //     "${circle.updates} new updates",
+                    //   ),
+                    // ),
+                    // ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 30.0,
+                          width: 120.0,
+                          child: Stack(
+                            children: List.generate(
+                              circle.users!.length <= 3
+                                  ? circle.users!.length
+                                  : 4,
+                              (index) {
+                                return Positioned(
+                                  left: index * 15,
+                                  child: (index == 4)
+                                      ? Container(
+                                          width: 30.0,
+                                          height: 30.0,
+                                          color: const Color.fromARGB(
+                                            255,
+                                            214,
+                                            226,
+                                            255,
+                                          ),
+                                          child: Text(
+                                            "+${circle.users!.length - 3}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall,
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 30.0,
+                                          height: 30.0,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: CachedNetworkImageProvider(
+                                                circle.users![index].photoUrl!,
+                                              ),
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    child: Text(
-                      circle.name!,
+                  ],
+                ),
+              ),
+              Hero(
+                tag: circle.name!,
+                child: Container(
+                  width: 121,
+                  height: 121,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(
+                        circle.image!,
+                      ),
                     ),
                   ),
-                  // Container(
-                  // margin: const EdgeInsets.symmetric(vertical: 20.0),
-                  // child: DefaultTextStyle(
-                  //   style: TextStyle(
-                  //     color: Colors.white,
-                  //     fontSize: 24,
-                  //     fontWeight: FontWeight.w400,
-                  //     shadows: [
-                  //       Shadow(
-                  //         offset: const Offset(2.5, 2.5),
-                  //         blurRadius: 10.0,
-                  //         color: Colors.black.withOpacity(0.8),
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   child: Text(
-                  //     "${circle.updates} new updates",
-                  //   ),
-                  // ),
-                  // ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 40.0,
-                        width: 120.0,
-                        child: Stack(
-                          children: List.generate(
-                            circle.users!.length <= 3
-                                ? circle.users!.length
-                                : 3,
-                            (index) {
-                              return Positioned(
-                                left: index * 30,
-                                child: Container(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                        circle.users![index].photoUrl!,
-                                      ),
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: circle.users!.length > 3,
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                            shadows: [
-                              Shadow(
-                                offset: const Offset(2.5, 2.5),
-                                blurRadius: 10.0,
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            "+${circle.users!.length - 3}",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

@@ -1,8 +1,12 @@
+import 'package:circlesapp/components/UI/auth_button.dart';
 import 'package:circlesapp/components/UI/form_field.dart';
 import 'package:circlesapp/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:icons_plus/icons_plus.dart';
+
+import '../../../components/UI/provider_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -63,133 +67,153 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.all(30),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                (_invalidUser)
-                    ? Container(
-                        height: 30,
-                        margin: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          "Invalid email or password",
-                          textAlign: TextAlign.start,
-                          style: GoogleFonts.montserrat(
-                            color: Colors.red,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                "Sign Up",
+                style: Theme.of(context).textTheme.headlineLarge,
+                textAlign: TextAlign.start,
+              ),
+              (_invalidUser)
+                  ? Container(
+                      height: 30,
+                      margin: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Invalid email or password",
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.montserrat(
+                          color: Colors.red,
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
                         ),
-                      )
-                    : const SizedBox(
-                        height: 30,
                       ),
-                FormTextField(
-                  visibility: false,
-                  controller: _nameController,
-                  hintText: "Name",
-                  validator: (value) {
-                    value = value as String;
-                    if (value == "" || !value.contains(" ")) {
-                      return "Please put your first and last name!";
-                    }
-                  },
-                  onChanged: () {
-                    setState(() {
-                      _invalidUser = false;
-                    });
-                  },
-                ),
-                FormTextField(
-                  visibility: false,
-                  controller: _emailController,
-                  hintText: "Email",
-                  validator: (value) {
-                    if (!RegExp(_emailRegex).hasMatch(value) || value == "") {
-                      return "Invalid email!";
-                    }
-                  },
-                  onChanged: () {
-                    setState(() {
-                      _invalidUser = false;
-                    });
-                  },
-                ),
-                FormTextField(
-                  visibility: _passNotVisibile,
-                  controller: _passwordController,
-                  hintText: "Password",
-                  suffixIcon: IconButton(
-                    onPressed: () => _toggleVisibility(),
-                    icon: Icon(
-                      (_passNotVisibile)
-                          ? Icons.visibility_off
-                          : Icons.visibility,
+                    )
+                  : const SizedBox(
+                      height: 10,
                     ),
+              FormTextField(
+                visibility: false,
+                controller: _nameController,
+                hintText: "Name",
+                validator: (value) {
+                  value = value as String;
+                  if (value == "" || !value.contains(" ")) {
+                    return "Please put your first and last name!";
+                  }
+                },
+                prefixIcon: Bootstrap.person,
+                onChanged: () {
+                  setState(() {
+                    _invalidUser = false;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              FormTextField(
+                visibility: false,
+                controller: _emailController,
+                hintText: "Email",
+                validator: (value) {
+                  if (!RegExp(_emailRegex).hasMatch(value) || value == "") {
+                    return "Invalid email!";
+                  }
+                },
+                prefixIcon: Bootstrap.envelope,
+                onChanged: () {
+                  setState(() {
+                    _invalidUser = false;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              FormTextField(
+                visibility: _passNotVisibile,
+                controller: _passwordController,
+                hintText: "Password",
+                prefixIcon: Bootstrap.lock,
+                suffixIcon: IconButton(
+                  onPressed: () => _toggleVisibility(),
+                  icon: Icon(
+                    (_passNotVisibile) ? IonIcons.eye_off : IonIcons.eye,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  validator: (value) {
-                    if (value == "") {
-                      return "Invalid password!";
-                    }
-                  },
-                  onChanged: () {
-                    setState(() {
-                      _invalidUser = false;
-                    });
-                  },
+                  iconSize: 22,
                 ),
-                FormTextField(
-                  visibility: true,
-                  controller: _confirmPasswordController,
-                  hintText: "Confirm Password",
-                  validator: (value) {
-                    if (value != _passwordController.text) {
-                      return "Passwords do not match!";
-                    }
-                  },
-                  onChanged: () {
-                    setState(() {
-                      _invalidUser = false;
-                    });
-                  },
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 40),
-                  child: ElevatedButton(
-                    onPressed: createEmailPassUser,
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 14,
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).primaryColor,
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                    ),
-                    child: Text(
-                      "REGISTER",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                validator: (value) {
+                  if (value == "") {
+                    return "Invalid password!";
+                  }
+                },
+                onChanged: () {
+                  setState(() {
+                    _invalidUser = false;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              FormTextField(
+                visibility: true,
+                controller: _confirmPasswordController,
+                hintText: "Confirm Password",
+                prefixIcon: Bootstrap.lock,
+                validator: (value) {
+                  if (value != _passwordController.text) {
+                    return "Passwords do not match!";
+                  }
+                },
+                onChanged: () {
+                  setState(() {
+                    _invalidUser = false;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              AuthButton(
+                loginFunction: createEmailPassUser,
+                text: "Sign Up",
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "OR",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              const SizedBox(height: 20),
+              ProviderButton(
+                icon: SizedBox(
+                  width: 26,
+                  height: 26,
+                  child: Logo(
+                    Logos.google,
                   ),
                 ),
-                const SizedBox(height: 10),
-              ],
-            ),
+                loginMethod: AuthService().googleLogin,
+                text: "Sign up with Google",
+              ),
+              const SizedBox(height: 20),
+              ProviderButton(
+                icon: SizedBox(
+                  width: 26,
+                  height: 26,
+                  child: Logo(
+                    Logos.apple,
+                  ),
+                ),
+                loginMethod: AuthService().googleLogin,
+                text: "Sign up with Apple",
+              ),
+            ],
           ),
         ),
       ),

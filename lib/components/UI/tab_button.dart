@@ -12,14 +12,15 @@ class TabButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Tab(
-        child: Text(
-          name,
-          style: GoogleFonts.karla(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+        vertical: 5.0,
+      ),
+      child: Text(
+        name,
+        style: GoogleFonts.poppins(
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

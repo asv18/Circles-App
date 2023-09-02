@@ -1,4 +1,4 @@
-import 'package:circlesapp/components/type_based/Users/circle_image_widget.dart';
+import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:circlesapp/shared/friendship.dart';
 import 'package:circlesapp/shared/message.dart';
@@ -52,7 +52,7 @@ class FriendWidget extends StatelessWidget {
               children: [
                 Flexible(
                   flex: 1,
-                  child: CircleImageWidget(
+                  child: UserImageWidget(
                     photoUrl: friend.photoUrl,
                     dimensions: 55,
                     margin: 20,
@@ -65,7 +65,7 @@ class FriendWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${friend.firstName} ${friend.lastName}",
+                        "${friend.name}",
                         style: const TextStyle(
                           fontSize: 16,
                         ),

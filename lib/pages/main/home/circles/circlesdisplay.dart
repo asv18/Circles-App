@@ -23,70 +23,61 @@ class _CirclesDispState extends State<CirclesDisp> {
       onRefresh: () async {
         await CircleService().fetchCircles();
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-        ),
-        child: Column(
-          children: [
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CreateButton(
-                    onPressed: () {},
-                    text: "Join",
-                  ),
-                  CreateButton(
-                    onPressed: () {},
-                    text: "Create",
-                  ),
-                ],
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "CIRCLES",
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-            ),
-            Expanded(
-              child: FutureBuilder<List<Circle>>(
-                future: CircleService.circles,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.isNotEmpty) {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return CircleWidget(
-                            circle: snapshot.data![index],
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox(
-                        width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            "You are not a part of any circles yet...",
-                            style: TextStyle(
-                              fontSize: 26,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+              CreateButton(
+                onPressed: () {},
+                text: "Join or Create Circle",
+              ),
+            ],
+          ),
+          Expanded(
+            child: FutureBuilder<List<Circle>>(
+              future: CircleService.circles,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.isNotEmpty) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CircleWidget(
+                          circle: snapshot.data![index],
+                        );
+                      },
+                    );
+                  } else {
+                    return Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      color: Theme.of(context).primaryColorLight,
+                      child: Center(
+                        child: Text(
+                          "You are not a part of any circles yet",
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
                         ),
-                      );
-                    }
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                      ),
+                    );
                   }
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
 
-                  // By default, show a loading spinner.
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+                // By default, show a loading spinner.
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

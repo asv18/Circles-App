@@ -59,8 +59,7 @@ class UserService {
       await openedBox.putAll(
         {
           userIDKey: dataUser.id,
-          "first_name": dataUser.firstName,
-          "last_name": dataUser.lastName,
+          "name": dataUser.name,
           "username": dataUser.username,
           "photo_url": dataUser.photoUrl ?? "null",
           "email": dataUser.email,
@@ -94,6 +93,7 @@ class UserService {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
+
       dataUser.id = jsonDecode(response.body)["data"]["id"];
 
       if (dataUser.id != null) {
@@ -130,8 +130,7 @@ class UserService {
       },
       body: jsonEncode(
         <String, dynamic>{
-          "first_name": newUser.firstName,
-          "last_name": newUser.lastName,
+          "name": newUser.name,
           "username": newUser.username,
           "email": newUser.email,
           "photo_url": newUser.photoUrl,

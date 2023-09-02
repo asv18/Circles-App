@@ -1,45 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProviderButton extends StatelessWidget {
-  final Color backgroundColor;
-  final ImageProvider icon;
+  // final ImageProvider icon;
   final Function loginMethod;
+  final String text;
+  final Widget? icon;
 
   const ProviderButton({
     super.key,
     required this.icon,
-    required this.backgroundColor,
     required this.loginMethod,
+    required this.text,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: backgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 7,
-            offset: const Offset(0, 5), // changes position of shadow
+      margin: const EdgeInsets.symmetric(horizontal: 40),
+      child: ElevatedButton.icon(
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+            const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ),
           ),
-        ],
-      ),
-      width: 50,
-      height: 50,
-      alignment: Alignment.center,
-      child: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: icon,
-            fit: BoxFit.fitHeight,
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Colors.white,
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
           ),
         ),
-        child: InkWell(
-          onTap: () => loginMethod(),
+        onPressed: () => loginMethod(),
+        icon: Container(
+          child: icon,
+        ),
+        /**
+         * Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: icon,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ),
+         */
+        label: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.poppins(
+            color: Colors.black,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../services/circles_service.dart';
 import '../shared/circleposts.dart';
@@ -65,7 +65,7 @@ class _CircleScreenState extends State<CircleScreen> {
                           Navigator.pop(context);
                         },
                         icon: const Icon(
-                          FontAwesomeIcons.arrowLeft,
+                          FontAwesome.arrow_left,
                           color: Colors.white,
                         ),
                       ),
