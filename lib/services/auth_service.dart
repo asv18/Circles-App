@@ -53,8 +53,14 @@ class AuthService {
 
   Future<void> signOut() async {
     UserService.dataUser = local.User.empty();
-    GoalService.goals = null;
-    CircleService.circles = null;
+
+    GoalService.goals = Future.value(
+      List.empty(growable: true),
+    );
+
+    CircleService.circles = Future.value(
+      List.empty(growable: true),
+    );
 
     final openedBox = Hive.box("userBox");
 

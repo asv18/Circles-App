@@ -8,7 +8,9 @@ import 'package:http/http.dart' as http;
 class CircleService {
   String link = "http://localhost:3000/api/v1/";
 
-  static Future<List<Circle>>? circles;
+  static Future<List<Circle>> circles = Future.value(
+    List.empty(growable: true),
+  );
 
   Future<void> fetchCircles() async {
     final response = await http.post(

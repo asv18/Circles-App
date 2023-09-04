@@ -104,15 +104,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       NumberDisplay(
-                        future: GoalService.goals!,
+                        future: GoalService.goals,
                         text: "Tasks",
                       ),
                       NumberDisplay(
-                        future: GoalService.goals!,
+                        future: GoalService.goals,
                         text: "Goals",
                       ),
                       NumberDisplay(
-                        future: CircleService.circles!,
+                        future: CircleService.circles,
                         text: "Circles",
                       ),
                     ],

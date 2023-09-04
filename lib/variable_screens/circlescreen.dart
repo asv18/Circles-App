@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../services/circles_service.dart';
@@ -35,67 +34,168 @@ class _CircleScreenState extends State<CircleScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: (MediaQuery.of(context).size.height / 4.6),
-        elevation: 2,
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Hero(
-          tag: widget.tag,
+        elevation: 0,
+        toolbarHeight: MediaQuery.of(context).size.height / 4.0,
+        backgroundColor: Theme.of(context).canvasColor,
+        flexibleSpace: SafeArea(
           child: Container(
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.topCenter,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(
-                  widget.circle.image!,
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop("Goal Not Created");
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Theme.of(context).primaryColorLight,
+                        ),
+                        child: const Icon(
+                          IonIcons.caret_back,
+                          size: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    Text(
+                      "Circle Details",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            child: SafeArea(
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: MediaQuery.of(context).size.width / 50,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          FontAwesome.arrow_left,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    top: MediaQuery.of(context).size.width / 86,
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      child: DefaultTextStyle(
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              offset: const Offset(2.5, 2.5),
-                              blurRadius: 10.0,
-                              color: Colors.black.withOpacity(0.8),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Row(
+                  children: [
+                    Hero(
+                      tag: widget.tag,
+                      child: Container(
+                        width: 100.0,
+                        height: 100.0,
+                        alignment: Alignment.centerLeft,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              widget.circle.image!,
                             ),
-                          ],
-                        ),
-                        child: Text(
-                          widget.circle.name!,
+                          ),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    SizedBox(
+                      height: 100.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${widget.circle.name}",
+                                style:
+                                    Theme.of(context).textTheme.headlineLarge,
+                              ),
+                              Text(
+                                "Admin: ${widget.circle.admin!.name}",
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 180,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(60),
+                                ),
+                                child: InkWell(
+                                  onTap: () async {},
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 40,
+                                      vertical: 10,
+                                    ),
+                                    child: Text(
+                                      "Create New Goal",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                height: 40,
+                                width: 40,
+                                decoration: ShapeDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: InkWell(
+                                  onTap: () async {},
+                                  child: const Icon(
+                                    Icons.person_add_alt_outlined,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  height: 15.0,
+                  thickness: 1,
+                  color: Color.fromARGB(255, 212, 212, 212),
+                ),
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: 55,
+                      child: Text(
+                        maxLines: 2,
+                        "ADDED\nFRIENDS",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(
+                  height: 15.0,
+                  thickness: 1,
+                  color: Color.fromARGB(255, 212, 212, 212),
+                ),
+              ],
             ),
           ),
         ),

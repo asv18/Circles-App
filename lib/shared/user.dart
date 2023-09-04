@@ -46,6 +46,15 @@ class User {
     );
   }
 
+  factory User.fromSkeletonJsonAdmin(Map<String, dynamic> json) {
+    return User(
+      name: json["name"] as String,
+      username: json["username"] as String,
+      photoUrl: (json["photo_url"] == "null") ? null : json["photo_url"],
+      fKey: json["user_foreign_key"],
+    );
+  }
+
   User.empty() {
     id = null;
     name = null;

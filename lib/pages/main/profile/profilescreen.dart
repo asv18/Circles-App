@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       setState(() {
         List<Goal> goals = List.empty(growable: true);
-        GoalService.goals!.then(
+        GoalService.goals.then(
           (value) {
             for (Goal obj in value) {
               if (obj.id != goal.id) {

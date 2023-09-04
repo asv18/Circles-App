@@ -6,7 +6,7 @@ class Circle {
   DateTime? lastInteractedDate;
   String? name;
   String? image;
-  String? admin;
+  User? admin;
   List<User>? users;
 
   Circle({
@@ -36,7 +36,7 @@ class Circle {
           .toLocal(),
       name: json["circle_name"] as String,
       image: json["image"] as String,
-      admin: json["admin"] as String,
+      admin: User.fromSkeletonJsonAdmin(json["admin"]),
       users: users,
     );
   }

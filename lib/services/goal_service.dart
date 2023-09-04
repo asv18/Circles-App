@@ -8,7 +8,9 @@ import 'package:circlesapp/services/user_service.dart';
 class GoalService {
   String link = "http://localhost:3000/api/v1/";
 
-  static Future<List<Goal>>? goals;
+  static Future<List<Goal>> goals = Future.value(
+    List.empty(growable: true),
+  );
 
   Future<void> fetchGoals() async {
     final response = await http.post(

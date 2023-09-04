@@ -687,6 +687,8 @@ PODS:
     - leveldb-library (~> 1.22)
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - Flutter (1.0.0)
+  - flutter_any_logo (0.0.1):
+    - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
   - FMDB (2.7.5):
@@ -800,6 +802,7 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - flutter_any_logo (from `.symlinks/plugins/flutter_any_logo/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -837,6 +840,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  flutter_any_logo:
+    :path: ".symlinks/plugins/flutter_any_logo/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   google_sign_in_ios:
@@ -862,6 +867,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: 950500ad8a08963657f6d8c67b579740c06d6aa1
   FirebaseFirestore: b3bb12a497c9d13e80ec3158dbb75ded03592e8d
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_any_logo: 42f078f85b11aca59a029b03007f92301c4d7b86
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in_ios: 1256ff9d941db546373826966720b0c24804bcdd

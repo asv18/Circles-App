@@ -53,7 +53,7 @@ class NumberDisplay extends StatelessWidget {
                   );
                 }
               } else {
-                return Container();
+                return const CircularProgressIndicator();
               }
             },
           ),
