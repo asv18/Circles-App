@@ -108,6 +108,8 @@ class _GoalsDispState extends State<GoalsDisp> {
       onRefresh: () async {
         await GoalService().fetchGoals();
       },
+      backgroundColor: Theme.of(context).primaryColorLight,
+      color: Theme.of(context).primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

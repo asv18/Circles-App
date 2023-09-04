@@ -17,7 +17,6 @@ class FriendWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashFactory: InkRipple.splashFactory,
       onTap: () async {
         Friendship friendship = await FriendService().fetchFriendship(
           friend.fKey!,

@@ -163,6 +163,7 @@ class _AppState extends State<MyApp> {
                   ),
                 ),
               ),
+              dividerColor: const Color.fromARGB(255, 215, 227, 255),
             ),
           );
         }

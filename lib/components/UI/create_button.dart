@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class CreateButton extends StatelessWidget {
@@ -14,16 +13,29 @@ class CreateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(20.0),
-      ),
+    return SizedBox(
       height: 40.0,
       child: TextButton(
         onPressed: () => onPressed(),
+        style: ButtonStyle(
+          // padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          //   const EdgeInsets.symmetric(
+          //     horizontal: 40,
+          //     vertical: 10,
+          //   ),
+          // ),
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Theme.of(context).primaryColor,
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Icon(
               Bootstrap.plus,
@@ -31,11 +43,8 @@ class CreateButton extends StatelessWidget {
             ),
             Text(
               text,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.titleSmall,
+              textAlign: TextAlign.center,
             ),
           ],
         ),

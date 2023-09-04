@@ -266,80 +266,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await GoalService().fetchGoals();
-        },
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              toolbarHeight: MediaQuery.of(context).size.height / 8.5,
-              flexibleSpace: const Image(
-                image: CachedNetworkImageProvider(
-                  'https://picsum.photos/600/600',
-                ),
-                fit: BoxFit.cover,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            toolbarHeight: MediaQuery.of(context).size.height / 8.5,
+            flexibleSpace: const Image(
+              image: CachedNetworkImageProvider(
+                'https://picsum.photos/600/600',
               ),
-              backgroundColor: Colors.transparent,
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(48.0),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Transform.translate(
-                    offset: const Offset(0, 15.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            UserImageWidget(
-                              photoUrl: UserService.dataUser.photoUrl,
-                              dimensions: 100.0,
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  UserService.dataUser.name!.replaceAll(
-                                    " ",
-                                    "\n",
-                                  ),
-                                  style: Theme.of(context).textTheme.titleLarge,
+              fit: BoxFit.cover,
+            ),
+            backgroundColor: Colors.transparent,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(48.0),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Transform.translate(
+                  offset: const Offset(0, 15.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          UserImageWidget(
+                            photoUrl: UserService.dataUser.photoUrl,
+                            dimensions: 100.0,
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                UserService.dataUser.name!.replaceAll(
+                                  " ",
+                                  "\n",
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Theme.of(context).canvasColor,
-                          ),
-                          height: 40.0,
-                          width: 40.0,
-                          alignment: Alignment.center,
-                          child: Center(
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.settings,
-                                size: 20.0,
-                                color: Colors.black,
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Theme.of(context).canvasColor,
+                        ),
+                        height: 40.0,
+                        width: 40.0,
+                        alignment: Alignment.center,
+                        child: Center(
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.settings,
+                              size: 20.0,
+                              color: Colors.black,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-          body: SingleChildScrollView(
+          ),
+        ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await GoalService().fetchGoals();
+            await CircleService().fetchCircles();
+          },
+          backgroundColor: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).primaryColor,
+          child: SingleChildScrollView(
             child: Container(
               margin: const EdgeInsets.fromLTRB(12.0, 40.0, 12.0, 0),
               child: Column(

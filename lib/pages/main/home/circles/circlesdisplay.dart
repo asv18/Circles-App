@@ -23,6 +23,8 @@ class _CirclesDispState extends State<CirclesDisp> {
       onRefresh: () async {
         await CircleService().fetchCircles();
       },
+      backgroundColor: Theme.of(context).primaryColorLight,
+      color: Theme.of(context).primaryColor,
       child: Column(
         children: [
           Row(

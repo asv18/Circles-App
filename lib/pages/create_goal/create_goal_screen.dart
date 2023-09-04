@@ -1,5 +1,7 @@
 import 'package:circlesapp/components/UI/create_button.dart';
+import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
+import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/components/type_based/Circles/circle_list_toggle.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/new_task_widget.dart';
 import 'package:circlesapp/services/circles_service.dart';
@@ -52,26 +54,13 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         actions: [
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pop("Goal Not Created");
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                width: 40,
-                height: 40,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Theme.of(context).primaryColorLight,
-                ),
-                child: const Icon(
-                  FontAwesome.x,
-                  size: 12.5,
-                  color: Colors.black,
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: ExitButton(
+              onPressed: () {
+                Navigator.of(context).pop("Goal Not Created");
+              },
+              icon: FontAwesome.x,
             ),
           ),
           const SizedBox(
@@ -247,69 +236,54 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               ),
               Align(
                 alignment: Alignment.center,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(60),
-                  ),
-                  child: InkWell(
-                    onTap: () async {
-                      if (_goalNameController.text.isEmpty ||
-                          _dateTextController.text == "mm / dd / yyyy" ||
-                          anyNull(tasks)) {
-                        List<String> neglected = [];
+                child: CustomTextButton(
+                  onPressed: () async {
+                    if (_goalNameController.text.isEmpty ||
+                        _dateTextController.text == "mm / dd / yyyy" ||
+                        anyNull(tasks)) {
+                      List<String> neglected = [];
 
-                        if (_goalNameController.text.isEmpty) {
-                          neglected.add("Goal Name");
-                        }
-
-                        if (_dateTextController.text == "mm / dd / yyyy") {
-                          neglected.add("Date");
-                        }
-
-                        if (anyNull(tasks)) {
-                          neglected.add("Task Names/Repeats");
-                        }
-
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            "You have left the following fields blank: ${neglected.toString().substring(1, neglected.toString().length - 1)}",
-                            textAlign: TextAlign.center,
-                          ),
-                          duration: const Duration(seconds: 5),
-                        ));
-                      } else {
-                        Goal newGoal = Goal(
-                          name: _goalNameController.text,
-                          endDate: _selectedDate,
-                          description: _descriptionController.text,
-                          tasks: tasks,
-                        );
-
-                        await GoalService().createGoal(newGoal);
-
-                        if (context.mounted) {
-                          Navigator.pop(
-                            context,
-                            [
-                              "Goal Created",
-                              newGoal,
-                            ],
-                          );
-                        }
+                      if (_goalNameController.text.isEmpty) {
+                        neglected.add("Goal Name");
                       }
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 10,
-                      ),
-                      child: Text(
-                        "Create New Goal",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                  ),
+
+                      if (_dateTextController.text == "mm / dd / yyyy") {
+                        neglected.add("Date");
+                      }
+
+                      if (anyNull(tasks)) {
+                        neglected.add("Task Names/Repeats");
+                      }
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          "You have left the following fields blank: ${neglected.toString().substring(1, neglected.toString().length - 1)}",
+                          textAlign: TextAlign.center,
+                        ),
+                        duration: const Duration(seconds: 5),
+                      ));
+                    } else {
+                      Goal newGoal = Goal(
+                        name: _goalNameController.text,
+                        endDate: _selectedDate,
+                        description: _descriptionController.text,
+                        tasks: tasks,
+                      );
+
+                      await GoalService().createGoal(newGoal);
+
+                      if (context.mounted) {
+                        Navigator.pop(
+                          context,
+                          [
+                            "Goal Created",
+                            newGoal,
+                          ],
+                        );
+                      }
+                    }
+                  },
+                  text: "Create New Goal",
                 ),
               ),
             ],

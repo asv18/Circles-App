@@ -1,4 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/components/UI/custom_text_button.dart';
+import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/type_based/Circles/Posts/post_widget.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -45,24 +48,11 @@ class _CircleScreenState extends State<CircleScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
+                    ExitButton(
+                      icon: IonIcons.caret_back,
+                      onPressed: () {
                         Navigator.of(context).pop("Goal Not Created");
                       },
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Theme.of(context).primaryColorLight,
-                        ),
-                        child: const Icon(
-                          IonIcons.caret_back,
-                          size: 18,
-                          color: Colors.black,
-                        ),
-                      ),
                     ),
                     const SizedBox(
                       width: 20.0,
@@ -123,27 +113,12 @@ class _CircleScreenState extends State<CircleScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 40,
                                 width: 180,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(60),
-                                ),
-                                child: InkWell(
-                                  onTap: () async {},
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                      vertical: 10,
-                                    ),
-                                    child: Text(
-                                      "Create New Goal",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
-                                    ),
-                                  ),
+                                child: CustomTextButton(
+                                  text: "Update Task",
+                                  onPressed: () async {},
                                 ),
                               ),
                               const SizedBox(
@@ -152,17 +127,29 @@ class _CircleScreenState extends State<CircleScreen> {
                               Container(
                                 height: 40,
                                 width: 40,
-                                decoration: ShapeDecoration(
+                                decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: InkWell(
-                                  onTap: () async {},
-                                  child: const Icon(
-                                    Icons.person_add_alt_outlined,
-                                    color: Colors.white,
+                                child: IconButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      Theme.of(context).primaryColor,
+                                    ),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () async {},
+                                  icon: const FittedBox(
+                                    child: Icon(
+                                      Icons.person_add_alt_outlined,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -178,14 +165,38 @@ class _CircleScreenState extends State<CircleScreen> {
                   thickness: 1,
                   color: Color.fromARGB(255, 212, 212, 212),
                 ),
-                Stack(
+                Row(
                   children: [
-                    SizedBox(
-                      width: 55,
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
                       child: Text(
                         maxLines: 2,
-                        "ADDED\nFRIENDS",
+                        "CIRCLE\nMEMBERS",
                         style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 50,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0),
+                          itemCount: widget.circle.users!.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 16),
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: CachedNetworkImageProvider(
+                                  widget.circle.users![index].photoUrl!,
+                                ),
+                                child: InkWell(
+                                  onTap: () {},
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -200,19 +211,37 @@ class _CircleScreenState extends State<CircleScreen> {
           ),
         ),
       ),
-      body: FutureBuilder<List<CirclePost>>(
-        future: posts,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text("err!");
-          } else if (snapshot.hasData) {
-            return Text("${snapshot.data!.length}");
-          }
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: FutureBuilder<List<CirclePost>>(
+          future: posts,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text("err!");
+            } else if (snapshot.hasData) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  CircleService().fetchCirclePosts(widget.circle.id!);
+                },
+                backgroundColor: Theme.of(context).primaryColorLight,
+                color: Theme.of(context).primaryColor,
+                child: ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  padding: const EdgeInsets.all(0),
+                  itemBuilder: (context, index) {
+                    return PostWidget(
+                      post: snapshot.data![index],
+                    );
+                  },
+                ),
+              );
+            }
 
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
       ),
     );
   }

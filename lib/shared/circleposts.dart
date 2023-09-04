@@ -1,8 +1,9 @@
+import 'package:circlesapp/shared/user.dart';
 import 'package:intl/intl.dart';
 
 class CirclePost {
   String? id;
-  String? posterFKey;
+  User? poster;
   String? title;
   String? image;
   String? description;
@@ -13,7 +14,7 @@ class CirclePost {
 
   CirclePost({
     this.id,
-    this.posterFKey,
+    this.poster,
     this.title,
     this.image,
     this.description,
@@ -26,7 +27,7 @@ class CirclePost {
   factory CirclePost.fromJson(Map<String, dynamic> json) {
     return CirclePost(
       id: json["id"],
-      posterFKey: json["poster_fkey"],
+      poster: User.fromSkeletonJson(json["poster"]),
       title: json["title"],
       image: json["image"],
       description: json["description"],
