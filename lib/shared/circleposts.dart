@@ -11,6 +11,7 @@ class CirclePost {
   String? taskID;
   int? likes;
   DateTime? postedAt;
+  List<int> comments = [];
 
   CirclePost({
     this.id,

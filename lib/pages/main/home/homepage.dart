@@ -28,11 +28,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: pages.length, vsync: this);
-
-    if (UserService.dataUser.exists) {
-      GoalService().fetchGoals();
-      CircleService().fetchCircles();
-    }
   }
 
   @override
@@ -71,7 +66,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "${UserService.dataUser.name}!",
+                                  text:
+                                      "${UserService.dataUser.name!.split(" ")[0]}!",
                                   style: GoogleFonts.karla(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,

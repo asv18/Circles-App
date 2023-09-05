@@ -42,6 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
       String photoUrl = await openedBox.get("photo_url");
       UserService.dataUser.photoUrl = (photoUrl != "null") ? photoUrl : null;
 
+      await CircleService().fetchCircles();
+      await GoalService().fetchGoals();
+
       return const MainPage();
     }
 
@@ -84,9 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       await UserService().createNewUser(UserService.dataUser);
     }
-
-    await CircleService().fetchCircles();
-    await GoalService().fetchGoals();
 
     return const MainPage();
   }

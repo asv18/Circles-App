@@ -68,8 +68,8 @@ class UserService {
         },
       );
 
-      await GoalService().fetchGoals();
       await CircleService().fetchCircles();
+      await GoalService().fetchGoals();
 
       UserService.dataUser.exists = true;
     } else {

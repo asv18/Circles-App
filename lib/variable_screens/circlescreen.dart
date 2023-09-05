@@ -117,7 +117,7 @@ class _CircleScreenState extends State<CircleScreen> {
                                 height: 40,
                                 width: 180,
                                 child: CustomTextButton(
-                                  text: "Update Task",
+                                  text: "Create Post",
                                   onPressed: () async {},
                                 ),
                               ),
