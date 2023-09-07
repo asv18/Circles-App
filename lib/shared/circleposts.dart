@@ -12,6 +12,7 @@ class CirclePost {
   int? likes;
   DateTime? postedAt;
   List<int> comments = [];
+  BigInt? connectionID;
 
   CirclePost({
     this.id,
@@ -23,6 +24,7 @@ class CirclePost {
     this.taskID,
     this.likes,
     this.postedAt,
+    this.connectionID,
   });
 
   factory CirclePost.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class CirclePost {
       postedAt: DateFormat("yyyy-MM-dd HH:mm:ss")
           .parse(json["posted_at"], true)
           .toLocal(),
+      connectionID: BigInt.parse(json["connection_id"]),
     );
   }
 }

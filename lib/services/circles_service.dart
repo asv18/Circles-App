@@ -55,6 +55,7 @@ class CircleService {
       body: jsonEncode(
         <String, dynamic>{
           'circle_id': circleID,
+          'user_fkey': UserService.dataUser.fKey,
         },
       ),
     );
