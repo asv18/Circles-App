@@ -46,13 +46,15 @@ class _CirclesDispState extends State<CirclesDisp> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isNotEmpty) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CircleWidget(
-                          circle: snapshot.data![index],
-                        );
-                      },
+                    return SafeArea(
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CircleWidget(
+                            circle: snapshot.data![index],
+                          );
+                        },
+                      ),
                     );
                   } else {
                     return Container(

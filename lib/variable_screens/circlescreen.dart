@@ -225,14 +225,16 @@ class _CircleScreenState extends State<CircleScreen> {
                 },
                 backgroundColor: Theme.of(context).primaryColorLight,
                 color: Theme.of(context).primaryColor,
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  padding: const EdgeInsets.all(0),
-                  itemBuilder: (context, index) {
-                    return PostWidget(
-                      post: snapshot.data![index],
-                    );
-                  },
+                child: SafeArea(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    padding: const EdgeInsets.all(0),
+                    itemBuilder: (context, index) {
+                      return PostWidget(
+                        post: snapshot.data![index],
+                      );
+                    },
+                  ),
                 ),
               );
             }

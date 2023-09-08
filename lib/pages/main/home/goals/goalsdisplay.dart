@@ -135,16 +135,18 @@ class _GoalsDispState extends State<GoalsDisp> {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isNotEmpty) {
                     snapshot.data!.sort();
-                    return ListView.builder(
-                      itemCount:
-                          snapshot.data != null ? snapshot.data!.length : 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GoalWidget(
-                          goal: snapshot.data![index],
-                          showActionsGoalMenu: _showActionsGoalMenu,
-                          getTapPosition: _getTapPosition,
-                        );
-                      },
+                    return SafeArea(
+                      child: ListView.builder(
+                        itemCount:
+                            snapshot.data != null ? snapshot.data!.length : 0,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GoalWidget(
+                            goal: snapshot.data![index],
+                            showActionsGoalMenu: _showActionsGoalMenu,
+                            getTapPosition: _getTapPosition,
+                          );
+                        },
+                      ),
                     );
                   } else {
                     return Container(
