@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
+import 'package:circlesapp/shared/enums.dart';
+import 'package:circlesapp/shared/liked.dart';
 import 'package:http/http.dart' as http;
 
 class CircleService {
@@ -72,6 +74,46 @@ class CircleService {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load posts');
+    }
+  }
+
+  Future<http.Response> handlePostLikeButton(
+    String connectionID,
+    Liked liked,
+  ) async {
+    if (liked.id == null) {
+      return await http.post(
+        Uri.parse(
+          '${link}circles/posts/likepost/',
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'connection_id': connectionID,
+            'user_fkey': UserService.dataUser.fKey,
+          },
+        ),
+      );
+    } else {
+      return await http.post(
+        Uri.parse(
+          '${link}circles/posts/likepost/',
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'connection_id': connectionID,
+            'like_id': liked.id,
+            'user_fkey': UserService.dataUser.fKey,
+            'like_status':
+                liked.likeStatus == LikedStatus.liked ? "liked" : "not liked",
+          },
+        ),
+      );
     }
   }
 }

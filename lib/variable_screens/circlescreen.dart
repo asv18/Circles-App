@@ -221,7 +221,7 @@ class _CircleScreenState extends State<CircleScreen> {
             } else if (snapshot.hasData) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  CircleService().fetchCirclePosts(widget.circle.id!);
+                  await CircleService().fetchCirclePosts(widget.circle.id!);
                 },
                 backgroundColor: Theme.of(context).primaryColorLight,
                 color: Theme.of(context).primaryColor,
@@ -232,6 +232,7 @@ class _CircleScreenState extends State<CircleScreen> {
                     itemBuilder: (context, index) {
                       return PostWidget(
                         post: snapshot.data![index],
+                        circle: widget.circle,
                       );
                     },
                   ),

@@ -1,3 +1,4 @@
+import 'package:circlesapp/shared/liked.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:intl/intl.dart';
 
@@ -11,8 +12,8 @@ class CirclePost {
   String? taskID;
   int? likes;
   DateTime? postedAt;
-  List<int> comments = [];
   BigInt? connectionID;
+  Liked? liked;
 
   CirclePost({
     this.id,
@@ -25,6 +26,7 @@ class CirclePost {
     this.likes,
     this.postedAt,
     this.connectionID,
+    this.liked,
   });
 
   factory CirclePost.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class CirclePost {
           .parse(json["posted_at"], true)
           .toLocal(),
       connectionID: BigInt.parse(json["connection_id"]),
+      liked: Liked.fromJson(json["liked"]),
     );
   }
 }

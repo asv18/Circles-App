@@ -1,11 +1,12 @@
 import 'package:circlesapp/services/user_service.dart';
+import 'package:circlesapp/shared/enums.dart';
 import 'package:intl/intl.dart';
 
 class Friendship {
   BigInt? id;
   String? user;
   String? other;
-  String? relationship;
+  RelationshipStatus? relationship;
   DateTime? dateCreated;
   DateTime? lastInteractedDate;
 
@@ -34,7 +35,11 @@ class Friendship {
       id: BigInt.parse(json["id"]),
       user: user,
       other: other,
-      relationship: json["relationship"] as String,
+      relationship: json["relationship"] == null
+          ? null
+          : json["relationship"] == "friends"
+              ? RelationshipStatus.friends
+              : RelationshipStatus.request,
       dateCreated: DateFormat("yyyy-MM-dd HH:mm:ss")
           .parse(json["date_created"], true)
           .toLocal(),

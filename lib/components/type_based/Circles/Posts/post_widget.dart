@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
+import 'package:circlesapp/shared/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
@@ -8,9 +11,11 @@ class PostWidget extends StatefulWidget {
   const PostWidget({
     super.key,
     required this.post,
+    required this.circle,
   });
 
   final CirclePost post;
+  final Circle circle;
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -118,10 +123,11 @@ class _PostWidgetState extends State<PostWidget> {
                   height: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                          widget.post.image!,
-                        ),
-                        fit: BoxFit.fitWidth),
+                      image: CachedNetworkImageProvider(
+                        widget.post.image!,
+                      ),
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
           Container(
@@ -132,10 +138,43 @@ class _PostWidgetState extends State<PostWidget> {
               children: [
                 Row(
                   children: [
-                    const Icon(
-                      OctIcons.heart_24,
-                      color: Colors.red,
-                      size: 22,
+                    InkWell(
+                      customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onTap: () async {
+                        setState(() {
+                          widget.post.liked!.likeStatus =
+                              widget.post.liked!.likeStatus == null
+                                  ? LikedStatus.liked
+                                  : widget.post.liked!.likeStatus ==
+                                          LikedStatus.liked
+                                      ? LikedStatus.notLiked
+                                      : LikedStatus.liked;
+
+                          widget.post.likes = widget.post.likes! +
+                              ((widget.post.liked!.likeStatus ==
+                                      LikedStatus.liked)
+                                  ? 1
+                                  : -1);
+                        });
+
+                        await CircleService().handlePostLikeButton(
+                          widget.post.connectionID.toString(),
+                          widget.post.liked!,
+                        );
+
+                        await CircleService().fetchCirclePosts(
+                          widget.circle.id!,
+                        );
+                      },
+                      child: Icon(
+                        (widget.post.liked!.likeStatus == LikedStatus.liked)
+                            ? OctIcons.heart_fill_24
+                            : OctIcons.heart_24,
+                        color: Colors.red,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(
                       width: 5.0,
@@ -157,7 +196,7 @@ class _PostWidgetState extends State<PostWidget> {
                       width: 5.0,
                     ),
                     Text(
-                      "${widget.post.comments.length} comments",
+                      "Comments",
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                   ],
