@@ -11,6 +11,7 @@ class CirclePost {
   String? goalID;
   String? taskID;
   int? likes;
+  int? comments;
   DateTime? postedAt;
   BigInt? connectionID;
   Liked? liked;
@@ -24,6 +25,7 @@ class CirclePost {
     this.goalID,
     this.taskID,
     this.likes,
+    this.comments,
     this.postedAt,
     this.connectionID,
     this.liked,
@@ -39,6 +41,7 @@ class CirclePost {
       goalID: json["goal_id"],
       taskID: json["task_id"],
       likes: int.parse(json["likes"]),
+      comments: int.parse(json["comments"]),
       postedAt: DateFormat("yyyy-MM-dd HH:mm:ss")
           .parse(json["posted_at"], true)
           .toLocal(),
