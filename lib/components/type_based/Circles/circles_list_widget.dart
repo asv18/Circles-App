@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:circlesapp/variable_screens/circlescreen.dart';
+import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class CircleListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
+        mainKeyNav.currentState!.push(
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 400),
             pageBuilder: (

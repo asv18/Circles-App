@@ -1,3 +1,4 @@
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
@@ -27,7 +28,7 @@ class GoalWidget extends StatelessWidget {
         goal,
       ),
       onTap: () {
-        Navigator.of(context).push(
+        mainKeyNav.currentState!.push(
           MaterialPageRoute(
             builder: (context) => GoalScreen(
               goal: goal,

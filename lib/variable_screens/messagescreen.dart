@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/components/type_based/messages/message_widget.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/friendship.dart';
@@ -121,7 +122,7 @@ class _MessageScreenState extends State<MessageScreen> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    mainKeyNav.currentState!.pop();
                   },
                   icon: const Icon(
                     FontAwesome.arrow_left,

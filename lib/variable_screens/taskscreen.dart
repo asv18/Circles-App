@@ -1,3 +1,4 @@
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -29,7 +30,7 @@ class _TaskScreenState extends State<TaskScreen> {
         toolbarHeight: 100,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            mainKeyNav.currentState!.pop();
           },
           icon: const Icon(
             FontAwesome.arrow_left,

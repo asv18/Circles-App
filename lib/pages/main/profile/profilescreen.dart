@@ -5,6 +5,7 @@ import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dar
 import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
@@ -30,12 +31,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _navigateAndRefresh(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    final response = (await Navigator.pushNamed(
-      context,
+    final response = (await mainKeyNav.currentState!.pushNamed(
       '/creategoal',
     )) as List;
 
-    if (!mounted) return;
+    if (!mainKeyNav.currentState!.mounted) return;
 
     if (response[0] == "Goal Created") {
       await GoalService().fetchGoals();
@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _markTaskCompleteOrIncomplete(Task task) async {
-    if (task.complete! && context.mounted) {
+    if (task.complete! && mainKeyNav.currentState!.mounted) {
       DateTime nextDate = DateTime.now();
 
       switch (task.repeat) {
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return TaskCompleteDialog(
             onPressedShare: () {},
             onPressedDismiss: () {
-              Navigator.of(context).pop();
+              mainKeyNav.currentState!.pop();
             },
           );
         },
@@ -156,8 +156,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (result == "Edit Task") {
-      if (context.mounted) {
-        Navigator.of(context).push(
+      if (mainKeyNav.currentState!.mounted) {
+        mainKeyNav.currentState!.push(
           MaterialPageRoute(
             builder: (BuildContext context) => TaskScreen(
               task: task,
@@ -232,8 +232,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (result == "Edit Goal") {
-      if (context.mounted) {
-        await Navigator.of(context).push(
+      if (mainKeyNav.currentState!.mounted) {
+        await mainKeyNav.currentState!.push(
           MaterialPageRoute(
             builder: (context) => GoalScreen(
               goal: goal,
@@ -565,8 +565,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text('Signout'),
                       onPressed: () async {
                         await AuthService().signOut();
-                        if (context.mounted) {
-                          Navigator.of(context)
+                        if (mainKeyNav.currentState!.mounted) {
+                          mainKeyNav.currentState!
                               .pushNamedAndRemoveUntil('/', (route) => false);
                         }
                       },

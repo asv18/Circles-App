@@ -4,6 +4,7 @@ import 'package:circlesapp/components/UI/custom_text_field.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/components/type_based/Circles/circle_list_toggle.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/new_task_widget.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/circle.dart';
@@ -58,7 +59,11 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: ExitButton(
               onPressed: () {
-                Navigator.of(context).pop("Goal Not Created");
+                mainKeyNav.currentState!.pop(
+                  [
+                    "Goal Not Created",
+                  ],
+                );
               },
               icon: FontAwesome.x,
             ),
@@ -272,9 +277,8 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
 
                       await GoalService().createGoal(newGoal);
 
-                      if (context.mounted) {
-                        Navigator.pop(
-                          context,
+                      if (mainKeyNav.currentState!.mounted) {
+                        mainKeyNav.currentState!.pop(
                           [
                             "Goal Created",
                             newGoal,

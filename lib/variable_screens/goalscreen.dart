@@ -1,4 +1,5 @@
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
@@ -30,7 +31,7 @@ class _GoalScreenState extends State<GoalScreen> {
   }
 
   Future<void> _markTaskCompleteOrIncomplete(Task task) async {
-    if (task.complete! && context.mounted) {
+    if (task.complete! && mainKeyNav.currentState!.mounted) {
       DateTime nextDate = DateTime.now();
 
       switch (task.repeat) {
@@ -67,7 +68,7 @@ class _GoalScreenState extends State<GoalScreen> {
           return TaskCompleteDialog(
             onPressedShare: () {},
             onPressedDismiss: () {
-              Navigator.of(context).pop();
+              mainKeyNav.currentState!.pop();
             },
           );
         },
@@ -140,7 +141,7 @@ class _GoalScreenState extends State<GoalScreen> {
     );
 
     if (result == "Edit Task") {
-      Navigator.of(context).push(
+      mainKeyNav.currentState!.push(
         MaterialPageRoute(
           builder: (BuildContext context) => TaskScreen(
             task: task,
@@ -175,7 +176,7 @@ class _GoalScreenState extends State<GoalScreen> {
         elevation: 2,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            mainKeyNav.currentState!.pop();
           },
           icon: const Icon(
             FontAwesome.arrow_left,

@@ -1,4 +1,5 @@
 import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:circlesapp/shared/friendship.dart';
 import 'package:circlesapp/shared/message.dart';
@@ -27,8 +28,8 @@ class FriendWidget extends StatelessWidget {
           BigInt.zero,
         );
 
-        if (context.mounted) {
-          Navigator.of(context).push(
+        if (mainKeyNav.currentState!.mounted) {
+          mainKeyNav.currentState!.push(
             MaterialPageRoute(
               builder: (context) => MessageScreen(
                 friend: friend,

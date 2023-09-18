@@ -1,5 +1,6 @@
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/type_based/Goals/goal_widget.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
@@ -16,14 +17,11 @@ class _GoalsDispState extends State<GoalsDisp> {
   Offset _tapPosition = Offset.zero;
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
-    // Navigator.push returns a Future that completes after calling
-    // Navigator.pop on the Selection Screen.
-    final response = (await Navigator.pushNamed(
-      context,
+    final response = (await mainKeyNav.currentState!.pushNamed(
       '/creategoal',
     )) as String;
 
-    if (!mounted) return;
+    if (!mainKeyNav.currentState!.mounted) return;
 
     if (response == "Goal Created") {
       await GoalService().fetchGoals();
@@ -66,8 +64,8 @@ class _GoalsDispState extends State<GoalsDisp> {
     );
 
     if (result == "Edit Goal") {
-      if (context.mounted) {
-        await Navigator.of(context).push(
+      if (mainKeyNav.currentState!.mounted) {
+        await mainKeyNav.currentState!.push(
           MaterialPageRoute(
             builder: (context) => GoalScreen(
               goal: goal,

@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
-import 'package:circlesapp/components/type_based/Circles/Posts/post_widget.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/shared/circle.dart';
+import 'package:circlesapp/variable_screens/circles/posts/circle_comments_display.dart';
+import 'package:circlesapp/variable_screens/circles/posts/circle_post_display.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-
-import '../services/circles_service.dart';
-import '../shared/circleposts.dart';
 
 class CircleScreen extends StatefulWidget {
   const CircleScreen({
@@ -24,12 +23,9 @@ class CircleScreen extends StatefulWidget {
 }
 
 class _CircleScreenState extends State<CircleScreen> {
-  Future<List<CirclePost>>? posts;
   @override
   void initState() {
     super.initState();
-
-    posts = CircleService().fetchCirclePosts(widget.circle.id!);
   }
 
   @override
@@ -51,7 +47,7 @@ class _CircleScreenState extends State<CircleScreen> {
                     ExitButton(
                       icon: IonIcons.caret_back,
                       onPressed: () {
-                        Navigator.of(context).pop("Goal Not Created");
+                        mainKeyNav.currentState!.pop();
                       },
                     ),
                     const SizedBox(
@@ -213,35 +209,37 @@ class _CircleScreenState extends State<CircleScreen> {
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: FutureBuilder<List<CirclePost>>(
-          future: posts,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text("err!");
-            } else if (snapshot.hasData) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  await CircleService().fetchCirclePosts(widget.circle.id!);
-                },
-                backgroundColor: Theme.of(context).primaryColorLight,
-                color: Theme.of(context).primaryColor,
-                child: SafeArea(
-                  child: ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    padding: const EdgeInsets.all(0),
-                    itemBuilder: (context, index) {
-                      return PostWidget(
-                        post: snapshot.data![index],
-                        circle: widget.circle,
-                      );
-                    },
-                  ),
-                ),
-              );
+        child: Navigator(
+          key: listKeyNav,
+          initialRoute: "/",
+          onGenerateRoute: (settings) {
+            Widget page;
+
+            switch (settings.name) {
+              case "/":
+                page = CirclePostDisplay(
+                  circle: widget.circle,
+                );
+                break;
+              case "/comments":
+                page = const CircleCommentsDisplay();
+                break;
+              default:
+                page = CirclePostDisplay(
+                  circle: widget.circle,
+                );
+                break;
             }
 
-            return const Center(
-              child: CircularProgressIndicator(),
+            return PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 400),
+              pageBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return page;
+              },
             );
           },
         ),
@@ -249,3 +247,10 @@ class _CircleScreenState extends State<CircleScreen> {
     );
   }
 }
+
+/**
+ * 
+ * CirclePostDisplay(
+    circle: widget.circle,
+  ),
+ */

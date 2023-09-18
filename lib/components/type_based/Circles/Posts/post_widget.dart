@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
@@ -187,16 +188,24 @@ class _PostWidgetState extends State<PostWidget> {
                 ),
                 Row(
                   children: [
-                    Icon(
-                      OctIcons.comment_24,
-                      color: Theme.of(context).primaryColor,
-                      size: 22,
+                    InkWell(
+                      customBorder: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      onTap: () async {
+                        listKeyNav.currentState!.pushNamed("/comments");
+                      },
+                      child: Icon(
+                        OctIcons.comment_24,
+                        color: Theme.of(context).primaryColor,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(
                       width: 5.0,
                     ),
                     Text(
-                      "Comments",
+                      "${widget.post.comments} comments",
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                   ],
