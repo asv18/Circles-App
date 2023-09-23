@@ -3,7 +3,6 @@ import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/shared/circle.dart';
-import 'package:circlesapp/variable_screens/circles/posts/circle_comments_display.dart';
 import 'package:circlesapp/variable_screens/circles/posts/circle_post_display.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -209,39 +208,15 @@ class _CircleScreenState extends State<CircleScreen> {
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Navigator(
-          key: listKeyNav,
-          initialRoute: "/",
-          onGenerateRoute: (settings) {
-            Widget page;
-
-            switch (settings.name) {
-              case "/":
-                page = CirclePostDisplay(
+        child: MaterialApp(
+          navigatorKey: listKeyNav,
+          routes: {
+            "/": (context) => CirclePostDisplay(
                   circle: widget.circle,
-                );
-                break;
-              case "/comments":
-                page = const CircleCommentsDisplay();
-                break;
-              default:
-                page = CirclePostDisplay(
-                  circle: widget.circle,
-                );
-                break;
-            }
-
-            return PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 400),
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return page;
-              },
-            );
+                ),
           },
+          theme: Theme.of(context),
+          debugShowCheckedModeBanner: false,
         ),
       ),
     );

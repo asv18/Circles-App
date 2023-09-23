@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/shared/enums.dart';
+import 'package:circlesapp/shared/liked.dart';
+import 'package:circlesapp/variable_screens/circles/posts/circle_comments_display.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
@@ -160,14 +164,19 @@ class _PostWidgetState extends State<PostWidget> {
                                   : -1);
                         });
 
-                        await CircleService().handlePostLikeButton(
+                        final response =
+                            await CircleService().handlePostLikeButton(
                           widget.post.connectionID.toString(),
                           widget.post.liked!,
                         );
 
-                        await CircleService().fetchCirclePosts(
-                          widget.circle.id!,
-                        );
+                        setState(() {
+                          if (widget.post.liked!.id == null) {
+                            final liked = jsonDecode(response.body)["data"];
+
+                            widget.post.liked = Liked.fromJson(liked);
+                          }
+                        });
                       },
                       child: Icon(
                         (widget.post.liked!.likeStatus == LikedStatus.liked)
@@ -192,8 +201,30 @@ class _PostWidgetState extends State<PostWidget> {
                       customBorder: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      onTap: () async {
-                        listKeyNav.currentState!.pushNamed("/comments");
+                      onTap: () {
+                        listKeyNav.currentState!.push(
+                          PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 200),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return CircleCommentsDisplay(
+                                post: widget.post,
+                              );
+                            },
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
                       },
                       child: Icon(
                         OctIcons.comment_24,
