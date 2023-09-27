@@ -113,7 +113,9 @@ class _CircleScreenState extends State<CircleScreen> {
                                 width: 180,
                                 child: CustomTextButton(
                                   text: "Create Post",
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    // TODO: implement create post
+                                  },
                                 ),
                               ),
                               const SizedBox(
@@ -126,12 +128,8 @@ class _CircleScreenState extends State<CircleScreen> {
                                   color: Theme.of(context).primaryColor,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: IconButton(
+                                child: TextButton(
                                   style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      Theme.of(context).primaryColor,
-                                    ),
                                     shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
@@ -139,8 +137,10 @@ class _CircleScreenState extends State<CircleScreen> {
                                       ),
                                     ),
                                   ),
-                                  onPressed: () async {},
-                                  icon: const FittedBox(
+                                  onPressed: () async {
+                                    // TODO: implement add people
+                                  },
+                                  child: const FittedBox(
                                     child: Icon(
                                       Icons.person_add_alt_outlined,
                                       color: Colors.white,
@@ -180,13 +180,16 @@ class _CircleScreenState extends State<CircleScreen> {
                           itemBuilder: (context, index) {
                             return Container(
                               margin: const EdgeInsets.only(right: 16),
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundImage: CachedNetworkImageProvider(
-                                  widget.circle.users![index].photoUrl!,
-                                ),
-                                child: InkWell(
-                                  onTap: () {},
+                              child: IconButton(
+                                onPressed: () {
+                                  // TODO: view profile of user
+                                },
+                                padding: const EdgeInsets.all(0),
+                                icon: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    widget.circle.users![index].photoUrl!,
+                                  ),
                                 ),
                               ),
                             );
@@ -206,18 +209,15 @@ class _CircleScreenState extends State<CircleScreen> {
           ),
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: MaterialApp(
-          navigatorKey: listKeyNav,
-          routes: {
-            "/": (context) => CirclePostDisplay(
-                  circle: widget.circle,
-                ),
-          },
-          theme: Theme.of(context),
-          debugShowCheckedModeBanner: false,
-        ),
+      body: MaterialApp(
+        navigatorKey: listKeyNav,
+        routes: {
+          "/": (context) => CirclePostDisplay(
+                circle: widget.circle,
+              ),
+        },
+        theme: Theme.of(context),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

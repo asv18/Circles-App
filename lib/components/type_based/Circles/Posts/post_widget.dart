@@ -144,6 +144,7 @@ class _PostWidgetState extends State<PostWidget> {
                 Row(
                   children: [
                     InkWell(
+                      splashFactory: NoSplash.splashFactory,
                       customBorder: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -198,6 +199,7 @@ class _PostWidgetState extends State<PostWidget> {
                 Row(
                   children: [
                     InkWell(
+                      splashFactory: NoSplash.splashFactory,
                       customBorder: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),

@@ -123,15 +123,20 @@ class _AppState extends State<MyApp> {
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
-                bodyMedium: GoogleFonts.poppins(
+                bodyLarge: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.black,
                 ),
-                bodySmall: GoogleFonts.poppins(
+                bodyMedium: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: const Color.fromARGB(255, 108, 117, 125),
+                ),
+                bodySmall: GoogleFonts.hind(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: const Color.fromARGB(255, 15, 24, 40),
                 ),
               ),
               primaryColor: primaryColor,

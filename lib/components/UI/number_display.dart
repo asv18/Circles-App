@@ -40,6 +40,7 @@ class NumberDisplay extends StatelessWidget {
                         : tasksLength.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
                       fontSize: 24,
+                      color: Colors.black,
                     ),
                   );
                 } else {
@@ -49,6 +50,7 @@ class NumberDisplay extends StatelessWidget {
                         : snapshot.data!.length.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
                       fontSize: 24,
+                      color: Colors.black,
                     ),
                   );
                 }

@@ -28,37 +28,40 @@ class _CirclePostDisplayState extends State<CirclePostDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CirclePost>>(
-      future: posts,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text("err!");
-        } else if (snapshot.hasData) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              await CircleService().fetchCirclePosts(widget.circle.id!);
-            },
-            backgroundColor: Theme.of(context).primaryColorLight,
-            color: Theme.of(context).primaryColor,
-            child: SafeArea(
-              child: ListView.builder(
-                itemCount: snapshot.data!.length,
-                padding: const EdgeInsets.all(0),
-                itemBuilder: (context, index) {
-                  return PostWidget(
-                    post: snapshot.data![index],
-                    circle: widget.circle,
-                  );
-                },
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: FutureBuilder<List<CirclePost>>(
+        future: posts,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text("err!");
+          } else if (snapshot.hasData) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                await CircleService().fetchCirclePosts(widget.circle.id!);
+              },
+              backgroundColor: Theme.of(context).primaryColorLight,
+              color: Theme.of(context).primaryColor,
+              child: SafeArea(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  padding: const EdgeInsets.all(0),
+                  itemBuilder: (context, index) {
+                    return PostWidget(
+                      post: snapshot.data![index],
+                      circle: widget.circle,
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        }
+            );
+          }
 
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }

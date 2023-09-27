@@ -24,7 +24,10 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 10,
+      ),
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 247, 247, 252),
         borderRadius: BorderRadius.circular(12),
@@ -57,7 +60,7 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
             margin: const EdgeInsets.symmetric(vertical: 5),
             child: Text(
               widget.comment.contents!,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
           Row(
@@ -69,16 +72,20 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                     "${widget.comment.likes} likes",
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
-                  IconButton(
-                    onPressed: () async {
+                  InkWell(
+                    splashFactory: NoSplash.splashFactory,
+                    onTap: () async {
                       //TODO: implement replies
                     },
-                    icon: Transform.flip(
-                      flipX: true,
-                      child: const Icon(
-                        OctIcons.reply_24,
-                        size: 20,
-                        color: Color.fromARGB(255, 108, 117, 125),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Transform.flip(
+                        flipX: true,
+                        child: const Icon(
+                          OctIcons.reply_24,
+                          size: 20,
+                          color: Color.fromARGB(255, 108, 117, 125),
+                        ),
                       ),
                     ),
                   ),
@@ -88,8 +95,9 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                   ),
                 ],
               ),
-              IconButton(
-                onPressed: () async {
+              InkWell(
+                splashFactory: NoSplash.splashFactory,
+                onTap: () async {
                   setState(() {
                     if (widget.comment.liked!.likeStatus != null) {
                       widget.comment.liked!.likeStatus =
@@ -120,7 +128,7 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                     }
                   });
                 },
-                icon: Icon(
+                child: Icon(
                   widget.comment.liked!.likeStatus == LikedStatus.liked
                       ? OctIcons.heart_fill_24
                       : OctIcons.heart_24,

@@ -134,7 +134,7 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
                                         value,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyMedium,
+                                            .bodyLarge,
                                       ),
                                     );
                                   },
@@ -192,7 +192,7 @@ class CustomTextField2 extends StatelessWidget {
         filled: false,
         iconColor: Theme.of(context).primaryColorLight,
         hintText: hintText,
-        hintStyle: Theme.of(context).textTheme.bodySmall,
+        hintStyle: Theme.of(context).textTheme.bodyMedium,
         suffixIcon: suffixIcon,
         contentPadding: const EdgeInsets.all(0),
       ),

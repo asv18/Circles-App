@@ -21,7 +21,8 @@ class CommentWidget extends StatefulWidget {
   State<CommentWidget> createState() => _CommentWidgetState();
 }
 
-class _CommentWidgetState extends State<CommentWidget> {
+class _CommentWidgetState extends State<CommentWidget>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +53,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           margin: const EdgeInsets.symmetric(vertical: 5),
           child: Text(
             widget.comment.contents!,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
         Row(
@@ -64,16 +65,20 @@ class _CommentWidgetState extends State<CommentWidget> {
                   "${widget.comment.likes} likes",
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
-                IconButton(
-                  onPressed: () async {
+                InkWell(
+                  splashFactory: NoSplash.splashFactory,
+                  onTap: () async {
                     //TODO: implement replies
                   },
-                  icon: Transform.flip(
-                    flipX: true,
-                    child: const Icon(
-                      OctIcons.reply_24,
-                      size: 20,
-                      color: Color.fromARGB(255, 108, 117, 125),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Transform.flip(
+                      flipX: true,
+                      child: const Icon(
+                        OctIcons.reply_24,
+                        size: 20,
+                        color: Color.fromARGB(255, 108, 117, 125),
+                      ),
                     ),
                   ),
                 ),
@@ -83,8 +88,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                 ),
               ],
             ),
-            IconButton(
-              onPressed: () async {
+            InkWell(
+              splashFactory: NoSplash.splashFactory,
+              onTap: () async {
                 setState(() {
                   if (widget.comment.liked!.likeStatus != null) {
                     widget.comment.liked!.likeStatus =
@@ -114,48 +120,52 @@ class _CommentWidgetState extends State<CommentWidget> {
                   }
                 });
               },
-              icon: Icon(
-                widget.comment.liked!.likeStatus == LikedStatus.liked
-                    ? OctIcons.heart_fill_24
-                    : OctIcons.heart_24,
-                size: 20,
-                color: Colors.red,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                child: Icon(
+                  widget.comment.liked!.likeStatus == LikedStatus.liked
+                      ? OctIcons.heart_fill_24
+                      : OctIcons.heart_24,
+                  size: 20,
+                  color: Colors.red,
+                ),
               ),
             ),
           ],
         ),
-        Row(
-          children: [
-            Flexible(
-              flex: 9,
-              child: ListView.builder(
-                itemCount: widget.comment.children!.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        const VerticalDivider(
-                          width: 1,
-                          thickness: 1,
-                          color: Color.fromARGB(255, 108, 117, 125),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: ChildCommentWidget(
-                            comment: widget.comment.children![index],
-                          ),
-                        ),
-                      ],
+        SizedBox(
+          height: (widget.comment.children!.isNotEmpty) ? 30 : 0,
+          child: const VerticalDivider(
+            width: 0,
+            thickness: 1,
+            color: Color.fromARGB(255, 108, 117, 125),
+          ),
+        ),
+        ListView.builder(
+          itemCount: widget.comment.children!.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return IntrinsicHeight(
+              child: Row(
+                children: [
+                  const VerticalDivider(
+                    width: 0,
+                    thickness: 1,
+                    color: Color.fromARGB(255, 108, 117, 125),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: ChildCommentWidget(
+                      comment: widget.comment.children![index],
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ],
     );

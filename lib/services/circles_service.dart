@@ -188,4 +188,34 @@ class CircleService {
       );
     }
   }
+
+  Future<http.Response> postComment(
+    String posterFKey,
+    String contents,
+    String postID,
+    BigInt? replyID,
+  ) async {
+    /**
+       * comment.poster_fkey = body["poster_fkey"];
+        comment.contents = body["contents"];
+        comment.post_connection_id = body["post_id"];
+        comment.parent_id = body["parent_id"];
+       */
+    return await http.post(
+      Uri.parse(
+        '${link}circles/posts/comments/new/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'poster_fkey': posterFKey,
+          'contents': contents,
+          'post_id': postID,
+          'parent_id': replyID,
+        },
+      ),
+    );
+  }
 }
