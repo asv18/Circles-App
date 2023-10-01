@@ -43,7 +43,9 @@ class GoalsListWidget extends StatelessWidget {
         width: 330,
         child: Card(
           clipBehavior: Clip.antiAlias,
-          color: Theme.of(context).primaryColorLight,
+          color: goal.progress! > 100
+              ? const Color.fromARGB(255, 240, 255, 242)
+              : Theme.of(context).primaryColorLight,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -91,9 +93,10 @@ class GoalsListWidget extends StatelessWidget {
                 ),
                 CircularPercentIndicator(
                   radius: 25,
-                  percent: goal.progress! / 100.0,
+                  percent:
+                      (goal.progress! / 100.0 > 1) ? 1 : goal.progress! / 100.0,
                   center: Text(
-                    "${goal.progress}%",
+                    "${(goal.progress! / 100.0 > 1) ? 100 : goal.progress!}%",
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   progressColor: Theme.of(context).indicatorColor,

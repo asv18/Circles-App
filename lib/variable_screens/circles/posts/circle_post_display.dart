@@ -18,12 +18,39 @@ class CirclePostDisplay extends StatefulWidget {
 
 class _CirclePostDisplayState extends State<CirclePostDisplay> {
   Future<List<CirclePost>>? posts;
+  int offset = 0;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
-    posts = CircleService().fetchCirclePosts(widget.circle.id!);
+    posts = CircleService().fetchCirclePosts(widget.circle.id!, offset);
+
+    _scrollController.addListener(() async {
+      if (_scrollController.position.atEdge) {
+        bool isTop = _scrollController.position.pixels == 0;
+
+        await posts!.then((value) => offset = value.length);
+
+        if (!isTop) {
+          if (widget.circle.postCount != offset) {
+            List<CirclePost> newPosts = await CircleService().fetchCirclePosts(
+              widget.circle.id.toString(),
+              offset,
+            );
+
+            setState(() {
+              posts!.then(
+                (value) => value.addAll(newPosts),
+              );
+            });
+          }
+
+          print('At the bottom: $offset');
+        }
+      }
+    });
   }
 
   @override
@@ -38,12 +65,20 @@ class _CirclePostDisplayState extends State<CirclePostDisplay> {
           } else if (snapshot.hasData) {
             return RefreshIndicator(
               onRefresh: () async {
-                await CircleService().fetchCirclePosts(widget.circle.id!);
+                setState(() {
+                  offset = 0;
+                });
+
+                posts = CircleService().fetchCirclePosts(
+                  widget.circle.id!,
+                  offset,
+                );
               },
               backgroundColor: Theme.of(context).primaryColorLight,
               color: Theme.of(context).primaryColor,
               child: SafeArea(
                 child: ListView.builder(
+                  controller: _scrollController,
                   itemCount: snapshot.data!.length,
                   padding: const EdgeInsets.all(0),
                   itemBuilder: (context, index) {

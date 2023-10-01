@@ -7,14 +7,17 @@ import 'package:circlesapp/shared/enums.dart';
 import 'package:circlesapp/shared/liked.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
 
 class ChildCommentWidget extends StatefulWidget {
   const ChildCommentWidget({
     super.key,
     required this.comment,
+    required this.replyFunction,
   });
 
   final PostComment comment;
+  final Function replyFunction;
 
   @override
   State<ChildCommentWidget> createState() => _ChildCommentWidgetState();
@@ -52,7 +55,11 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               const SizedBox(
-                width: 20,
+                width: 10,
+              ),
+              Text(
+                formatDate(widget.comment.datePosted!),
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             ],
           ),
@@ -72,13 +79,11 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                     "${widget.comment.likes} likes",
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
-                  InkWell(
-                    splashFactory: NoSplash.splashFactory,
-                    onTap: () async {
-                      //TODO: implement replies
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                  Container(
+                    clipBehavior: Clip.none,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: GestureDetector(
+                      onTap: () => widget.replyFunction(),
                       child: Transform.flip(
                         flipX: true,
                         child: const Icon(
@@ -88,10 +93,6 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                         ),
                       ),
                     ),
-                  ),
-                  Text(
-                    "Reply",
-                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ],
               ),
@@ -141,5 +142,24 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
         ],
       ),
     );
+  }
+
+  String formatDate(DateTime date) {
+    if (DateTime.now().difference(date).inDays < 30) {
+      if (DateTime.now().difference(date).inMinutes < 1) {
+        return "${DateTime.now().difference(date).inSeconds} secs ago";
+      } else if (DateTime.now().difference(date).inHours < 1) {
+        return "${DateTime.now().difference(date).inMinutes} mins ago";
+      } else if (DateTime.now().difference(date).inDays < 1) {
+        return "${DateTime.now().difference(date).inHours} hrs ago";
+      } else {
+        return "${DateTime.now().difference(date).inDays} hrs ago";
+      }
+    } else {
+      var formatterDate = DateFormat("MM/dd/yy");
+      var formatterTime = DateFormat("h:mm a");
+
+      return "${formatterDate.format(date)}, ${formatterTime.format(date)}";
+    }
   }
 }

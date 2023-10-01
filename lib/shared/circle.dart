@@ -8,6 +8,7 @@ class Circle {
   String? image;
   User? admin;
   List<User>? users;
+  int? postCount;
 
   Circle({
     this.id,
@@ -16,6 +17,7 @@ class Circle {
     this.image,
     this.admin,
     this.users,
+    this.postCount,
   });
 
   factory Circle.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,8 @@ class Circle {
       image: json["image"] as String,
       admin: User.fromSkeletonJsonAdmin(json["admin"]),
       users: users,
+      postCount:
+          json["post_count"] == null ? null : int.parse(json["post_count"]),
     );
   }
 }

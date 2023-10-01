@@ -10,6 +10,7 @@ class PostComment {
   BigInt? postId;
   BigInt? parentId;
   int? likes;
+  int? childrenCount;
   Liked? liked;
   List<PostComment>? children;
 
@@ -23,6 +24,7 @@ class PostComment {
     this.likes,
     this.liked,
     this.children,
+    this.childrenCount,
   });
 
   factory PostComment.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,9 @@ class PostComment {
       likes: int.parse(json["likes"]),
       liked: Liked.fromJson(json["liked"]),
       children: comments,
+      childrenCount: json["overall_count_children"] == null
+          ? null
+          : int.parse(json["overall_count_children"]),
     );
   }
 }

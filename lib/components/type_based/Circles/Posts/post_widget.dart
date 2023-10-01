@@ -212,6 +212,12 @@ class _PostWidgetState extends State<PostWidget> {
                                 (context, animation, secondaryAnimation) {
                               return CircleCommentsDisplay(
                                 post: widget.post,
+                                postWidgetCallback: () {
+                                  setState(() {
+                                    widget.post.comments =
+                                        widget.post.comments! + 1;
+                                  });
+                                },
                               );
                             },
                             transitionsBuilder: (

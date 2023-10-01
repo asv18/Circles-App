@@ -21,125 +21,132 @@ class GoalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTapDown: (details) => getTapPosition(details),
-      onLongPress: () => showActionsGoalMenu(
-        context,
-        goal,
-      ),
-      onTap: () {
-        mainKeyNav.currentState!.push(
-          MaterialPageRoute(
-            builder: (context) => GoalScreen(
-              goal: goal,
-            ),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      height: 130.0,
+      child: Material(
+        child: InkWell(
+          onTapDown: (details) => getTapPosition(details),
+          onLongPress: () => showActionsGoalMenu(
+            context,
+            goal,
           ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 130.0,
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          color: Theme.of(context).primaryColorLight,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-              vertical: 12.0,
+          onTap: () {
+            mainKeyNav.currentState!.push(
+              MaterialPageRoute(
+                builder: (context) => GoalScreen(
+                  goal: goal,
+                ),
+              ),
+            );
+          },
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            color: goal.progress! > 100
+                ? const Color.fromARGB(255, 240, 255, 242)
+                : Theme.of(context).primaryColorLight,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          UserService.truncateWithEllipsis(
-                            30,
-                            goal.name,
-                          ),
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                        const SizedBox(
-                          height: 4.0,
-                        ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Bootstrap.clock,
-                              color: Colors.red,
-                              size: 15,
+            child: Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 12.0,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            UserService.truncateWithEllipsis(
+                              30,
+                              goal.name,
                             ),
-                            const SizedBox(
-                              width: 4.0,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const SizedBox(
+                            height: 4.0,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Bootstrap.clock,
+                                color: Colors.red,
+                                size: 15,
+                              ),
+                              const SizedBox(
+                                width: 4.0,
+                              ),
+                              Text(
+                                "${formatDate(goal.startDate!)} - ${formatDate(goal.endDate)}",
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      CircularPercentIndicator(
+                        radius: 25,
+                        percent: (goal.progress! / 100.0 > 1)
+                            ? 1
+                            : goal.progress! / 100.0,
+                        center: Text(
+                          "${(goal.progress! > 100) ? 100 : goal.progress!}%",
+                          style: Theme.of(context).textTheme.displaySmall,
+                        ),
+                        progressColor: Theme.of(context).indicatorColor,
+                        backgroundColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(right: 125),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Time Left",
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
                             Text(
-                              // "Time Left: ${timeLeft(goals[index].endDate)}",
-                              "${formatDate(goal.startDate!)} - ${formatDate(goal.endDate)}",
-                              style: Theme.of(context).textTheme.displaySmall,
+                              goal.progress! > 100
+                                  ? "Complete"
+                                  : timeLeft(
+                                      goal.endDate,
+                                    ),
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Tasks",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                            Text(
+                              "${goal.tasks!.length.toString().padLeft(2, '0')} Tasks",
+                              style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ],
                         ),
                       ],
                     ),
-                    CircularPercentIndicator(
-                      radius: 25,
-                      percent: goal.progress! / 100.0,
-                      center: Text(
-                        "${goal.progress}%",
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      progressColor: Theme.of(context).indicatorColor,
-                      backgroundColor: Colors.white,
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(right: 125),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Time Left",
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          Text(
-                            timeLeft(
-                              goal.endDate,
-                            ),
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total Tasks",
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                          Text(
-                            "${goal.tasks!.length.toString().padLeft(2, '0')} Tasks",
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

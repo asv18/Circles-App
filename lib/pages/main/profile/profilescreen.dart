@@ -360,18 +360,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       } else if (snapshot.hasData) {
                         tasks = List.empty(growable: true);
                         for (var goal in snapshot.data!) {
-                          for (var task in goal.tasks!) {
-                            if (!task.complete! ||
-                                task.nextDate!.compareTo(
-                                      DateTime.now(),
-                                    ) >=
-                                    0) {
-                              tasks.add(task);
+                          if (goal.progress! < 100) {
+                            for (var task in goal.tasks!) {
+                              if (!task.complete! ||
+                                  task.nextDate!.compareTo(
+                                        DateTime.now(),
+                                      ) >=
+                                      0) {
+                                tasks.add(task);
+                              }
                             }
                           }
                         }
                         if (tasks.isEmpty) {
                           return Container(
+                            height: 120,
                             width: double.infinity,
                             margin: const EdgeInsets.only(top: 5),
                             color: Theme.of(context).primaryColorLight,
@@ -451,6 +454,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else if (snapshot.hasData) {
                             if (snapshot.data!.isEmpty) {
                               return Container(
+                                height: 120.0,
                                 width: double.infinity,
                                 margin: const EdgeInsets.symmetric(
                                   vertical: 10,

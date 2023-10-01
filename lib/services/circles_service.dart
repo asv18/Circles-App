@@ -47,7 +47,7 @@ class CircleService {
     }
   }
 
-  Future<List<CirclePost>> fetchCirclePosts(String circleID) async {
+  Future<List<CirclePost>> fetchCirclePosts(String circleID, int offset) async {
     final response = await http.post(
       Uri.parse(
         '${link}circles/posts/',
@@ -59,6 +59,7 @@ class CircleService {
         <String, dynamic>{
           'circle_id': circleID,
           'user_fkey': UserService.dataUser.fKey,
+          'offset': offset,
         },
       ),
     );
@@ -118,7 +119,10 @@ class CircleService {
     }
   }
 
-  Future<List<PostComment>> fetchComments(String postConnectionID) async {
+  Future<List<PostComment>> fetchComments(
+    String postConnectionID,
+    int offset,
+  ) async {
     final response = await http.post(
       Uri.parse(
         '${link}circles/posts/comments/',
@@ -130,6 +134,7 @@ class CircleService {
         <String, dynamic>{
           'post_connection_id': postConnectionID,
           'user_fkey': UserService.dataUser.fKey,
+          'offset': offset,
         },
       ),
     );
@@ -137,11 +142,52 @@ class CircleService {
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body)["data"];
 
-      return body
+      List<PostComment> comments = body
           .map(
             (dynamic item) => PostComment.fromJson(item),
           )
           .toList();
+
+      return comments;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load posts');
+    }
+  }
+
+  Future<List<PostComment>> fetchChildComments(
+    String postConnectionID,
+    String parentID,
+    int offset,
+  ) async {
+    final response = await http.post(
+      Uri.parse(
+        '${link}circles/posts/comments/children/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'post_connection_id': postConnectionID,
+          'comment_id': parentID,
+          'user_fkey': UserService.dataUser.fKey,
+          'offset': offset,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body)["data"];
+
+      List<PostComment> comments = body
+          .map(
+            (dynamic item) => PostComment.fromJson(item),
+          )
+          .toList();
+
+      return comments;
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -189,19 +235,13 @@ class CircleService {
     }
   }
 
-  Future<http.Response> postComment(
+  Future<PostComment> postComment(
     String posterFKey,
     String contents,
     String postID,
-    BigInt? replyID,
+    String? replyID,
   ) async {
-    /**
-       * comment.poster_fkey = body["poster_fkey"];
-        comment.contents = body["contents"];
-        comment.post_connection_id = body["post_id"];
-        comment.parent_id = body["parent_id"];
-       */
-    return await http.post(
+    final response = await http.post(
       Uri.parse(
         '${link}circles/posts/comments/new/',
       ),
@@ -217,5 +257,15 @@ class CircleService {
         },
       ),
     );
+
+    if (response.statusCode == 201) {
+      final body = jsonDecode(response.body)["data"];
+
+      return PostComment.fromJson(body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load posts');
+    }
   }
 }

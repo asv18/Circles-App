@@ -38,6 +38,7 @@ class _MessageScreenState extends State<MessageScreen> {
   late List<Message> messages;
 
   BigInt offset = BigInt.zero;
+  BigInt newMessages = BigInt.zero;
 
   final _scrollController = ScrollController();
 
@@ -81,7 +82,7 @@ class _MessageScreenState extends State<MessageScreen> {
         bool isTop = _scrollController.position.pixels == 0;
 
         if (!isTop) {
-          offset = BigInt.from(messages.length);
+          offset = BigInt.from(messages.length) - newMessages;
 
           if (offset.modPow(BigInt.one, BigInt.from(20)) == BigInt.zero) {
             List<Message> newMessages = await FriendService().fetchMessages(
@@ -179,6 +180,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
             if (snapshot.hasData || messages.isNotEmpty) {
               if (snapshot.data != null) {
+                newMessages = newMessages + BigInt.one;
                 messages.add(
                   Message.fromJson(
                     jsonDecode(
