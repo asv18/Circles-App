@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:circlesapp/services/link.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:http/http.dart' as http;
@@ -6,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:circlesapp/services/user_service.dart';
 
 class GoalService {
-  String link = "http://localhost:3000/api/v1/";
-
   static Future<List<Goal>> goals = Future.value(
     List.empty(growable: true),
   );

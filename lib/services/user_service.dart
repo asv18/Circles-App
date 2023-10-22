@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/link.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -12,8 +13,6 @@ import 'auth_service.dart';
 
 class UserService {
   static User dataUser = User();
-
-  String link = "http://localhost:3000/api/v1/";
 
   //fetching
 
@@ -169,11 +168,4 @@ class UserService {
 
   //   return response;
   // }
-
-  //other
-  static String truncateWithEllipsis(int cutoff, String myString) {
-    return (myString.length <= cutoff)
-        ? myString
-        : '${myString.substring(0, cutoff)}...';
-  }
 }

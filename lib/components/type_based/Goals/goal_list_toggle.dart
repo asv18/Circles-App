@@ -1,23 +1,23 @@
-import 'package:circlesapp/shared/circle.dart';
+import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 
-class CircleListToggle extends StatefulWidget {
-  const CircleListToggle({
+class GoalListToggle extends StatefulWidget {
+  const GoalListToggle({
     super.key,
-    required this.circle,
+    required this.goal,
     required this.toggled,
     required this.index,
   });
 
-  final Circle circle;
+  final Goal goal;
   final List<bool> toggled;
   final int index;
 
   @override
-  State<CircleListToggle> createState() => _CircleListToggleState();
+  State<GoalListToggle> createState() => _GoalListToggleState();
 }
 
-class _CircleListToggleState extends State<CircleListToggle> {
+class _GoalListToggleState extends State<GoalListToggle> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -46,7 +46,7 @@ class _CircleListToggleState extends State<CircleListToggle> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                widget.circle.name!,
+                widget.goal.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               Icon(

@@ -11,47 +11,48 @@ class CircleWidget extends StatelessWidget {
   }) : super(key: key);
 
   final Circle circle;
+  final type = "circle/widget/hero";
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        mainKeyNav.currentState!.push(
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-            ) {
-              return CircleScreen(
-                circle: circle,
-                tag: circle.name!,
-              );
-            },
-            transitionsBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,
-            ) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 130.0,
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          color: Theme.of(context).primaryColorLight,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 5.0),
+      height: 130.0,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        color: Theme.of(context).primaryColorLight,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: InkWell(
+          onTap: () {
+            mainKeyNav.currentState!.push(
+              PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 400),
+                pageBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                ) {
+                  return CircleScreen(
+                    circle: circle,
+                    tag: "${circle.id!}$type",
+                  );
+                },
+                transitionsBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child,
+                ) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -126,7 +127,8 @@ class CircleWidget extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
                                               image: CachedNetworkImageProvider(
-                                                circle.users![index].photoUrl!,
+                                                circle.users![index].photoUrl ??
+                                                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                                               ),
                                             ),
                                             shape: BoxShape.circle,
@@ -143,7 +145,7 @@ class CircleWidget extends StatelessWidget {
                 ),
               ),
               Hero(
-                tag: circle.name!,
+                tag: "${circle.id!}$type",
                 child: Container(
                   width: 130,
                   height: 130,

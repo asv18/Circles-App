@@ -6,6 +6,7 @@ import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
 import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
@@ -27,6 +28,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Offset _tapPosition = Offset.zero;
+  String type = "/profile/circles/tag";
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
@@ -290,7 +292,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Row(
                         children: [
                           UserImageWidget(
-                            photoUrl: UserService.dataUser.photoUrl,
+                            photoUrl: UserService.dataUser.photoUrl ??
+                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                             dimensions: 100.0,
                           ),
                           const SizedBox(
@@ -395,25 +398,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: const EdgeInsets.all(0),
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTapDown: (details) => _getTapPosition(
-                                    details,
-                                  ),
-                                  onLongPress: () => _showActionsTaskMenu(
-                                    context,
-                                    tasks[index],
-                                  ),
-                                  child: TaskWidget(
-                                    task: tasks[index],
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        tasks[index].complete = value!;
-                                        _markTaskCompleteOrIncomplete(
-                                          tasks[index],
-                                        );
-                                      });
-                                    },
-                                  ),
+                                return TaskWidget(
+                                  task: tasks[index],
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      tasks[index].complete = value!;
+                                      _markTaskCompleteOrIncomplete(
+                                        tasks[index],
+                                      );
+                                    });
+                                  },
+                                  showActionsTaskMenu: _showActionsTaskMenu,
+                                  getTapPosition: _getTapPosition,
                                 );
                               },
                             ),
@@ -516,6 +512,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       FutureBuilder<List<Circle>>(
                         future: CircleService.circles,
                         builder: (context, snapshot) {
@@ -528,19 +527,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return CircleListWidget(
+                                    tag: "${snapshot.data![index].id}$type",
                                     circle: snapshot.data![index],
+                                    navigate: () {
+                                      mainKeyNav.currentState!.push(
+                                        PageRouteBuilder(
+                                          transitionDuration:
+                                              const Duration(milliseconds: 400),
+                                          pageBuilder: (
+                                            BuildContext context,
+                                            Animation<double> animation,
+                                            Animation<double>
+                                                secondaryAnimation,
+                                          ) {
+                                            return CircleScreen(
+                                              circle: snapshot.data![index],
+                                              tag:
+                                                  "${snapshot.data![index].id}$type",
+                                            );
+                                          },
+                                          transitionsBuilder: (
+                                            BuildContext context,
+                                            Animation<double> animation,
+                                            Animation<double>
+                                                secondaryAnimation,
+                                            Widget child,
+                                          ) {
+                                            return FadeTransition(
+                                              opacity: animation,
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
                               );
                             } else {
-                              return const SizedBox(
+                              return Container(
+                                height: 120.0,
                                 width: double.infinity,
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                color: Theme.of(context).primaryColorLight,
                                 child: Center(
                                   child: Text(
-                                    "You are not a part of any circles yet...",
-                                    style: TextStyle(
-                                      fontSize: 26,
-                                    ),
+                                    "Join a circle and share your goals",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

@@ -64,7 +64,8 @@ class _PostWidgetState extends State<PostWidget> {
                     CircleAvatar(
                       radius: 25,
                       backgroundImage: CachedNetworkImageProvider(
-                        widget.post.poster!.photoUrl!,
+                        widget.post.poster!.photoUrl ??
+                            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                       ),
                     ),
                     const SizedBox(

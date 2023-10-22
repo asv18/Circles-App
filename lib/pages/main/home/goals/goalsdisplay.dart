@@ -7,7 +7,12 @@ import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 
 class GoalsDisp extends StatefulWidget {
-  const GoalsDisp({super.key});
+  const GoalsDisp({
+    super.key,
+    required this.callback,
+  });
+
+  final Function callback;
 
   @override
   State<GoalsDisp> createState() => _GoalsDispState();
@@ -19,13 +24,14 @@ class _GoalsDispState extends State<GoalsDisp> {
   Future<void> _navigateAndRefresh(BuildContext context) async {
     final response = (await mainKeyNav.currentState!.pushNamed(
       '/creategoal',
-    )) as String;
+    )) as List;
 
     if (!mainKeyNav.currentState!.mounted) return;
 
-    if (response == "Goal Created") {
+    if (response[0] == "Goal Created") {
       await GoalService().fetchGoals();
 
+      widget.callback();
       setState(() {});
     }
   }
@@ -125,6 +131,9 @@ class _GoalsDispState extends State<GoalsDisp> {
                 text: "Create Goal",
               ),
             ],
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Expanded(
             child: FutureBuilder<List<Goal>>(

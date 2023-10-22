@@ -4,34 +4,36 @@ import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CirclePostDisplay extends StatefulWidget {
-  const CirclePostDisplay({
+  CirclePostDisplay({
     super.key,
     required this.circle,
+    required this.posts,
   });
 
   final Circle circle;
+  Future<List<CirclePost>> posts;
 
   @override
   State<CirclePostDisplay> createState() => _CirclePostDisplayState();
 }
 
 class _CirclePostDisplayState extends State<CirclePostDisplay> {
-  Future<List<CirclePost>>? posts;
-  int offset = 0;
   final _scrollController = ScrollController();
+  int offset = 0;
 
   @override
   void initState() {
     super.initState();
 
-    posts = CircleService().fetchCirclePosts(widget.circle.id!, offset);
+    widget.posts = CircleService().fetchCirclePosts(widget.circle.id!, offset);
 
     _scrollController.addListener(() async {
       if (_scrollController.position.atEdge) {
         bool isTop = _scrollController.position.pixels == 0;
 
-        await posts!.then((value) => offset = value.length);
+        await widget.posts.then((value) => offset = value.length);
 
         if (!isTop) {
           if (widget.circle.postCount != offset) {
@@ -41,7 +43,7 @@ class _CirclePostDisplayState extends State<CirclePostDisplay> {
             );
 
             setState(() {
-              posts!.then(
+              widget.posts.then(
                 (value) => value.addAll(newPosts),
               );
             });
@@ -58,7 +60,7 @@ class _CirclePostDisplayState extends State<CirclePostDisplay> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: FutureBuilder<List<CirclePost>>(
-        future: posts,
+        future: widget.posts,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Text("err!");
@@ -69,7 +71,7 @@ class _CirclePostDisplayState extends State<CirclePostDisplay> {
                   offset = 0;
                 });
 
-                posts = CircleService().fetchCirclePosts(
+                widget.posts = CircleService().fetchCirclePosts(
                   widget.circle.id!,
                   offset,
                 );

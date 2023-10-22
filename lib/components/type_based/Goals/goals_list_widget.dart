@@ -1,5 +1,4 @@
 import 'package:circlesapp/routes.dart';
-import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -22,33 +21,33 @@ class GoalsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTapDown: (details) => getTapPosition(details),
-      onLongPress: () => showActionsGoalMenu(
-        context,
-        goal,
-      ),
-      onTap: () {
-        mainKeyNav.currentState!.push(
-          MaterialPageRoute(
-            builder: (context) => GoalScreen(
-              goal: goal,
-            ),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      height: 90.0,
+      width: 330,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        color: goal.progress! > 100
+            ? const Color.fromARGB(255, 240, 255, 242)
+            : Theme.of(context).primaryColorLight,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: InkWell(
+          onTapDown: (details) => getTapPosition(details),
+          onLongPress: () => showActionsGoalMenu(
+            context,
+            goal,
           ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 90.0,
-        width: 330,
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          color: goal.progress! > 100
-              ? const Color.fromARGB(255, 240, 255, 242)
-              : Theme.of(context).primaryColorLight,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+          onTap: () {
+            mainKeyNav.currentState!.push(
+              MaterialPageRoute(
+                builder: (context) => GoalScreen(
+                  goal: goal,
+                ),
+              ),
+            );
+          },
           child: Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 10.0,
@@ -62,12 +61,15 @@ class GoalsListWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      UserService.truncateWithEllipsis(
-                        30,
+                    SizedBox(
+                      width: 200,
+                      child: Text(
                         goal.name,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
                       ),
-                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(
                       height: 4.0,

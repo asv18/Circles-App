@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:circlesapp/services/link.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
@@ -9,8 +10,6 @@ import 'package:circlesapp/shared/liked.dart';
 import 'package:http/http.dart' as http;
 
 class CircleService {
-  String link = "http://localhost:3000/api/v1/";
-
   static Future<List<Circle>> circles = Future.value(
     List.empty(growable: true),
   );
@@ -267,5 +266,96 @@ class CircleService {
       // then throw an exception.
       throw Exception('Failed to load posts');
     }
+  }
+
+  Future<List<Circle>> queryCircles(String query, int offset) async {
+    final response = await http.post(
+      Uri.parse(
+        '${link}circles/query/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'query': query,
+          'offset': offset,
+          'user_fkey': UserService.dataUser.fKey,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body)["data"];
+
+      return body
+          .map(
+            (dynamic item) => Circle.fromJson(item),
+          )
+          .toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load circles');
+    }
+  }
+
+  Future<http.Response> connectUserToCircle(String circleID) async {
+    return await http.post(
+      Uri.parse(
+        '${link}users/circles/connect/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'circle_id': circleID,
+          'user_fkey': UserService.dataUser.fKey,
+        },
+      ),
+    );
+  }
+
+  Future<http.Response> createCircle(Circle circle) async {
+    return await http.post(
+      Uri.parse(
+        '${link}circles/new/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'circle_name': circle.name,
+          'image': 'https://picsum.photos/570/300',
+          'user_creator': UserService.dataUser.fKey,
+          'publicity': circle.status,
+        },
+      ),
+    );
+  }
+
+  Future<http.Response> createPost(CirclePost post, String circleID) async {
+    return await http.post(
+      Uri.parse(
+        '${link}user/posts/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'title': post.title,
+          'description': post.description,
+          'image': 'https://picsum.photos/600/350',
+          'user_fkey': UserService.dataUser.fKey,
+          'goal_id': post.goalID,
+          'circle_ids': [
+            circleID,
+          ],
+        },
+      ),
+    );
   }
 }

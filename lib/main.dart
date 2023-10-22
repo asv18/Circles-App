@@ -129,7 +129,7 @@ class _AppState extends State<MyApp> {
                   color: Colors.black,
                 ),
                 bodyMedium: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: const Color.fromARGB(255, 108, 117, 125),
                 ),

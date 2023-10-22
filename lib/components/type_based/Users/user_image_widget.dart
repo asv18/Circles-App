@@ -9,7 +9,7 @@ class UserImageWidget extends StatelessWidget {
     this.margin = 0,
   });
 
-  final String? photoUrl;
+  final String photoUrl;
   final double dimensions;
   final double margin;
 
@@ -29,8 +29,7 @@ class UserImageWidget extends StatelessWidget {
         image: DecorationImage(
           fit: BoxFit.contain,
           image: CachedNetworkImageProvider(
-            photoUrl ??
-                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+            photoUrl,
           ),
         ),
       ),

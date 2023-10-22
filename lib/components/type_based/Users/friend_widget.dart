@@ -53,7 +53,8 @@ class FriendWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: UserImageWidget(
-                    photoUrl: friend.photoUrl,
+                    photoUrl: friend.photoUrl ??
+                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                     dimensions: 55,
                     margin: 20,
                   ),

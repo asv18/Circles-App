@@ -25,17 +25,19 @@ class SearchAppBar extends StatelessWidget {
         ],
       ),
       child: TextField(
+        cursorColor: Colors.black,
         controller: controller,
         textAlign: TextAlign.start,
         style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
-          prefixIcon: const Icon(
+          isDense: true,
+          prefixIcon: Icon(
             Icons.search,
             size: 20,
-            color: Color(0xffFF5A60),
+            color: Theme.of(context).primaryColorDark,
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Colors.grey[100],
           hintText: 'Search...',
           hintStyle: TextStyle(
             color: Colors.black.withOpacity(.75),

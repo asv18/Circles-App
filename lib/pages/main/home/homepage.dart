@@ -19,21 +19,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
 
-  final pages = const [
-    CirclesDisp(),
-    GoalsDisp(),
-  ];
+  List<Widget> pages = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: pages.length, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
+
+    pages = [
+      CirclesDisp(
+        callback: callback,
+      ),
+      GoalsDisp(
+        callback: callback,
+      ),
+    ];
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void callback() {
+    setState(() {});
   }
 
   @override
@@ -78,14 +88,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ),
                           ),
                           Text(
-                            "Have a nice day!",
+                            "Let's get something done today!",
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ],
                       ),
                     ),
                     UserImageWidget(
-                      photoUrl: UserService.dataUser.photoUrl,
+                      photoUrl: UserService.dataUser.photoUrl ??
+                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                       dimensions: 60.0,
                       margin: 0,
                     ),

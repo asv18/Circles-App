@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:circlesapp/services/link.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/friendship.dart';
 import 'package:circlesapp/shared/message.dart';
@@ -6,8 +7,6 @@ import 'package:circlesapp/shared/user.dart';
 import 'package:http/http.dart' as http;
 
 class FriendService {
-  String link = "http://localhost:3000/api/v1/";
-
   Future<Friendship> fetchFriendship(String friendFKey) async {
     ///api/v1/user/:userKey1/friendships/:userKey2/
     final response = await http.post(

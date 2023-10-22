@@ -4,13 +4,11 @@ import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/shared/circle.dart';
-import 'package:circlesapp/shared/circleposts.dart';
-import 'package:circlesapp/variable_screens/circles/posts/circle_post_display.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-class CircleScreen extends StatefulWidget {
-  const CircleScreen({
+class CirclePreviewScreen extends StatefulWidget {
+  const CirclePreviewScreen({
     super.key,
     required this.circle,
     required this.tag,
@@ -20,34 +18,13 @@ class CircleScreen extends StatefulWidget {
   final String tag;
 
   @override
-  State<CircleScreen> createState() => _CircleScreenState();
+  State<CirclePreviewScreen> createState() => _CirclePreviewScreenState();
 }
 
-class _CircleScreenState extends State<CircleScreen> {
-  late Future<List<CirclePost>> posts;
-
+class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
   @override
   void initState() {
     super.initState();
-
-    posts = CircleService().fetchCirclePosts(widget.circle.id!, 0);
-  }
-
-  Future<void> _navigateAndRefreshPost(BuildContext context) async {
-    final response = (await mainKeyNav.currentState!.pushNamed(
-      '/createpost',
-      arguments: {
-        "circle_id": widget.circle.id,
-      },
-    )) as List;
-
-    if (!mainKeyNav.currentState!.mounted) return;
-
-    if (response[0] == "Post Created") {
-      posts = CircleService().fetchCirclePosts(widget.circle.id!, 0);
-
-      setState(() {});
-    }
   }
 
   @override
@@ -69,7 +46,9 @@ class _CircleScreenState extends State<CircleScreen> {
                     ExitButton(
                       icon: IonIcons.caret_back,
                       onPressed: () {
-                        mainKeyNav.currentState!.pop();
+                        mainKeyNav.currentState!.pop(
+                          ["Did not join"],
+                        );
                       },
                     ),
                     const SizedBox(
@@ -128,50 +107,21 @@ class _CircleScreenState extends State<CircleScreen> {
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 40,
-                                width: 180,
-                                child: CustomTextButton(
-                                  text: "Create Post",
-                                  onPressed: () async {
-                                    _navigateAndRefreshPost(context);
-                                  },
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    // TODO: implement add people
-                                  },
-                                  child: const FittedBox(
-                                    child: Icon(
-                                      Icons.person_add_alt_outlined,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            height: 40,
+                            width: 180,
+                            child: CustomTextButton(
+                              text: "Join Circle",
+                              onPressed: () async {
+                                await CircleService().connectUserToCircle(
+                                  widget.circle.id!,
+                                );
+
+                                mainKeyNav.currentState!.pop(
+                                  ["Joined"],
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -233,16 +183,18 @@ class _CircleScreenState extends State<CircleScreen> {
           ),
         ),
       ),
-      body: MaterialApp(
-        navigatorKey: listKeyNav,
-        routes: {
-          "/": (context) => CirclePostDisplay(
-                circle: widget.circle,
-                posts: posts,
-              ),
-        },
-        theme: Theme.of(context),
-        debugShowCheckedModeBanner: false,
+      body: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          color: Theme.of(context).primaryColorLight,
+          child: Center(
+            child: Text(
+              "JOIN THIS CIRCLE TO SEE THE FEED!",
+              style: Theme.of(context).textTheme.headlineLarge,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
       ),
     );
   }

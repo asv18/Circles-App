@@ -1,6 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:circlesapp/routes.dart';
-import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -8,50 +6,29 @@ class CircleListWidget extends StatelessWidget {
   const CircleListWidget({
     super.key,
     required this.circle,
+    required this.navigate,
+    required this.tag,
   });
 
   final Circle circle;
+  final Function navigate;
+  final String tag;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        mainKeyNav.currentState!.push(
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-            ) {
-              return CircleScreen(
-                circle: circle,
-                tag: circle.name!,
-              );
-            },
-            transitionsBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
-              Widget child,
-            ) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 90.0,
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          color: Theme.of(context).primaryColorLight,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 5.0),
+      height: 90.0,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        color: Theme.of(context).primaryColorLight,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: InkWell(
+          onTap: () {
+            navigate();
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -126,7 +103,8 @@ class CircleListWidget extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
                                               image: CachedNetworkImageProvider(
-                                                circle.users![index].photoUrl!,
+                                                circle.users![index].photoUrl ??
+                                                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                                               ),
                                             ),
                                             shape: BoxShape.circle,
@@ -143,7 +121,7 @@ class CircleListWidget extends StatelessWidget {
                 ),
               ),
               Hero(
-                tag: circle.name!,
+                tag: tag,
                 child: Container(
                   width: 90,
                   height: 90,

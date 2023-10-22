@@ -208,10 +208,16 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return CircleListToggle(
-                            circle: snapshot.data![index],
-                            toggled: toggled,
-                            index: index,
+                          return Container(
+                            margin: EdgeInsets.only(
+                              bottom:
+                                  (index != snapshot.data!.length - 1) ? 10 : 0,
+                            ),
+                            child: CircleListToggle(
+                              circle: snapshot.data![index],
+                              toggled: toggled,
+                              index: index,
+                            ),
                           );
                         },
                       );

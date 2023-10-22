@@ -9,6 +9,7 @@ class Circle {
   User? admin;
   List<User>? users;
   int? postCount;
+  String? status;
 
   Circle({
     this.id,
@@ -18,6 +19,7 @@ class Circle {
     this.admin,
     this.users,
     this.postCount,
+    this.status,
   });
 
   factory Circle.fromJson(Map<String, dynamic> json) {
@@ -33,15 +35,18 @@ class Circle {
 
     return Circle(
       id: json["id"] as String,
-      lastInteractedDate: DateFormat("yyyy-MM-dd HH:mm:ss")
-          .parse(json["last_interacted_date"], true)
-          .toLocal(),
+      lastInteractedDate: (json["last_interacted_date"] == null)
+          ? null
+          : DateFormat("yyyy-MM-dd HH:mm:ss")
+              .parse(json["last_interacted_date"], true)
+              .toLocal(),
       name: json["circle_name"] as String,
       image: json["image"] as String,
       admin: User.fromSkeletonJsonAdmin(json["admin"]),
       users: users,
       postCount:
           json["post_count"] == null ? null : int.parse(json["post_count"]),
+      status: json["publicity"],
     );
   }
 }

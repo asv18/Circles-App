@@ -36,7 +36,8 @@ class _CommentWidgetState extends State<CommentWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             UserImageCircleWidget(
-              photoUrl: widget.comment.poster!.photoUrl,
+              photoUrl: widget.comment.poster!.photoUrl ??
+                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
               dimensions: 25,
             ),
             const SizedBox(

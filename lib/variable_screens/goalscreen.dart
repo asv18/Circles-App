@@ -1,7 +1,6 @@
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/goal_service.dart';
-import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:circlesapp/variable_screens/taskscreen.dart';
@@ -185,10 +184,10 @@ class _GoalScreenState extends State<GoalScreen> {
         ),
         backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
-          UserService.truncateWithEllipsis(
-            32,
-            widget.goal.name,
-          ),
+          widget.goal.name,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          softWrap: false,
           style: TextStyle(
             color: Colors.white,
             fontSize: 30,
@@ -252,11 +251,11 @@ class _GoalScreenState extends State<GoalScreen> {
                                     width: 200.0,
                                     margin: const EdgeInsets.only(bottom: 10.0),
                                     child: Text(
+                                      widget.goal.tasks![index].name,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      softWrap: false,
                                       textAlign: TextAlign.center,
-                                      UserService.truncateWithEllipsis(
-                                        15,
-                                        widget.goal.tasks![index].name,
-                                      ),
                                       style: const TextStyle(
                                         fontSize: 24.0,
                                         color: Colors.white,

@@ -9,7 +9,7 @@ class UserImageCircleWidget extends StatelessWidget {
     this.margin = 0,
   });
 
-  final String? photoUrl;
+  final String photoUrl;
   final double dimensions;
   final double margin;
 
@@ -18,8 +18,7 @@ class UserImageCircleWidget extends StatelessWidget {
     return CircleAvatar(
       radius: dimensions,
       backgroundImage: CachedNetworkImageProvider(
-        photoUrl ??
-            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+        photoUrl,
       ),
     );
   }

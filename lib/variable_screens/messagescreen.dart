@@ -134,7 +134,8 @@ class _MessageScreenState extends State<MessageScreen> {
                   width: 2,
                 ),
                 UserImageWidget(
-                  photoUrl: widget.friend.photoUrl,
+                  photoUrl: widget.friend.photoUrl ??
+                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                   dimensions: 35,
                   margin: 12,
                 ),
