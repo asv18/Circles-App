@@ -46,6 +46,32 @@ class CircleService {
     }
   }
 
+  Future<Circle> fetchCircle(String circleID) async {
+    final response = await http.post(
+      Uri.parse(
+        '${link}circles/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'circle_id': circleID,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return Circle.fromJson(
+        jsonDecode(response.body)["data"],
+      );
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load circles');
+    }
+  }
+
   Future<List<CirclePost>> fetchCirclePosts(String circleID, int offset) async {
     final response = await http.post(
       Uri.parse(
@@ -312,6 +338,26 @@ class CircleService {
         <String, dynamic>{
           'circle_id': circleID,
           'user_fkey': UserService.dataUser.fKey,
+        },
+      ),
+    );
+  }
+
+  Future<http.Response> connectForeignUserToCircle(
+    String userID,
+    String circleID,
+  ) async {
+    return await http.post(
+      Uri.parse(
+        '${link}users/circles/connect/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'circle_id': circleID,
+          'user_fkey': userID,
         },
       ),
     );

@@ -20,7 +20,7 @@ class CreateOrJoinCircleScreen extends StatefulWidget {
 
 class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
   final _circleNameController = TextEditingController();
-  List<String> spinnerItems = ["Public", "Friends Only", "Private"];
+  List<String> spinnerItems = ["Public", /*"Friends Only",*/ "Private"];
   String value = "Public";
 
   final _queryController = TextEditingController();

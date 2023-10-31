@@ -51,13 +51,6 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                         );
                       },
                     ),
-                    const SizedBox(
-                      width: 20.0,
-                    ),
-                    Text(
-                      "Circle Details",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
                   ],
                 ),
                 const SizedBox(

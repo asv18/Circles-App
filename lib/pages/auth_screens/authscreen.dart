@@ -1,7 +1,7 @@
 import 'package:animated_background/animated_background.dart';
 // import 'package:circlesapp/components/UI/provider_button.dart';
-import 'package:circlesapp/pages/authscreens/login/loginscreen.dart';
-import 'package:circlesapp/pages/authscreens/signup/signupscreen.dart';
+import 'package:circlesapp/pages/auth_screens/login/loginscreen.dart';
+import 'package:circlesapp/pages/auth_screens/signup/signupscreen.dart';
 // import 'package:circlesapp/services/auth_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';

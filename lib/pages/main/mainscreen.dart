@@ -1,5 +1,5 @@
 import 'package:circlesapp/components/UI/bottom_appbar_button.dart';
-import 'package:circlesapp/pages/authscreens/authscreen.dart';
+import 'package:circlesapp/pages/auth_screens/authscreen.dart';
 import 'package:circlesapp/pages/main/friends/friendspage.dart';
 import 'package:circlesapp/pages/main/home/homepage.dart';
 import 'package:circlesapp/pages/main/profile/profilescreen.dart';
@@ -196,10 +196,18 @@ class _MainPageState extends State<MainPage> {
                 width: width,
                 height: height,
                 onPressed: () {
-                  _pageController.jumpToPage(1);
-                  setState(() {
-                    _index = 1;
-                  });
+                  // _pageController.jumpToPage(1);
+                  // setState(() {
+                  //   _index = 1;
+                  // });
+
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      "Coming soon!",
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: Duration(seconds: 3),
+                  ));
                 },
                 icon: IonIcons.people,
                 color:

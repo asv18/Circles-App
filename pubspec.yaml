@@ -57,6 +57,7 @@ dependencies:
   icons_plus: ^4.0.0
   flutter_any_logo: ^1.0.6
   percent_indicator: ^4.2.3
+  cloudinary: ^1.2.0
 
 dev_dependencies:
   flutter_test:

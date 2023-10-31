@@ -255,7 +255,10 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                               child: IconButton(
                                 onPressed: () async {
                                   if (_commentTextController.value !=
-                                      TextEditingValue.empty) {
+                                          TextEditingValue.empty &&
+                                      _commentTextController.text
+                                              .replaceAll(" ", "") !=
+                                          "") {
                                     PostComment comment =
                                         await CircleService().postComment(
                                       UserService.dataUser.fKey!,

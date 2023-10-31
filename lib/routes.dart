@@ -1,4 +1,4 @@
-import 'package:circlesapp/pages/authscreens/authscreen.dart';
+import 'package:circlesapp/pages/auth_screens/authscreen.dart';
 import 'package:circlesapp/pages/create_circle/create_or_join_circle_screen.dart';
 import 'package:circlesapp/pages/create_goal/create_goal_screen.dart';
 import 'package:circlesapp/pages/create_post/create_post_screen.dart';

@@ -150,6 +150,36 @@ class UserService {
     return randomString;
   }
 
+  Future<List<User>> queryUsers(String query, String circleID) async {
+    final response = await http.post(
+      Uri.parse(
+        '${link}user?query=$query',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "circle_id": circleID,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body)["data"];
+
+      return body
+          .map(
+            (dynamic item) => User.fromSkeletonJson(item),
+          )
+          .toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load posts');
+    }
+  }
+
   //update tasks
   // static Future<http.Response> updateTasks(List<Task> tasks, Goal owner) async {
   //   var body = json.encode({

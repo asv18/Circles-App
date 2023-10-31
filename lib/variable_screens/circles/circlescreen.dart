@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/pages/add_user_screen/add_user_screen.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/shared/circle.dart';
@@ -25,26 +26,53 @@ class CircleScreen extends StatefulWidget {
 
 class _CircleScreenState extends State<CircleScreen> {
   late Future<List<CirclePost>> posts;
+  late Circle circle;
 
   @override
   void initState() {
     super.initState();
 
-    posts = CircleService().fetchCirclePosts(widget.circle.id!, 0);
+    circle = widget.circle;
+
+    posts = CircleService().fetchCirclePosts(circle.id!, 0);
   }
 
   Future<void> _navigateAndRefreshPost(BuildContext context) async {
     final response = (await mainKeyNav.currentState!.pushNamed(
       '/createpost',
       arguments: {
-        "circle_id": widget.circle.id,
+        "circle_id": circle.id,
       },
     )) as List;
 
     if (!mainKeyNav.currentState!.mounted) return;
 
     if (response[0] == "Post Created") {
-      posts = CircleService().fetchCirclePosts(widget.circle.id!, 0);
+      posts = CircleService().fetchCirclePosts(circle.id!, 0);
+
+      setState(() {});
+    }
+  }
+
+  Future<void> _navigateAndRefreshUsers(
+    BuildContext context,
+  ) async {
+    final response = (await mainKeyNav.currentState!.push(
+      MaterialPageRoute(
+        builder: (context) {
+          return AddUserScreen(
+            circle: circle,
+          );
+        },
+      ),
+    )) as List;
+
+    if (!mainKeyNav.currentState!.mounted) return;
+
+    if (response[0] == "User Added") {
+      circle = await CircleService().fetchCircle(circle.id!);
+
+      CircleService().fetchCircles();
 
       setState(() {});
     }
@@ -72,13 +100,6 @@ class _CircleScreenState extends State<CircleScreen> {
                         mainKeyNav.currentState!.pop();
                       },
                     ),
-                    const SizedBox(
-                      width: 20.0,
-                    ),
-                    Text(
-                      "Circle Details",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
                   ],
                 ),
                 const SizedBox(
@@ -97,7 +118,7 @@ class _CircleScreenState extends State<CircleScreen> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(
-                              widget.circle.image!,
+                              circle.image!,
                             ),
                           ),
                           borderRadius: BorderRadius.circular(12.0),
@@ -118,12 +139,12 @@ class _CircleScreenState extends State<CircleScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${widget.circle.name}",
+                                circle.name!,
                                 style:
                                     Theme.of(context).textTheme.headlineLarge,
                               ),
                               Text(
-                                "Admin: ${widget.circle.admin!.name}",
+                                "Admin: ${circle.admin!.name}",
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ],
@@ -161,7 +182,7 @@ class _CircleScreenState extends State<CircleScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    // TODO: implement add people
+                                    _navigateAndRefreshUsers(context);
                                   },
                                   child: const FittedBox(
                                     child: Icon(
@@ -198,7 +219,7 @@ class _CircleScreenState extends State<CircleScreen> {
                         height: 50,
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),
-                          itemCount: widget.circle.users!.length,
+                          itemCount: circle.users!.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
@@ -211,7 +232,7 @@ class _CircleScreenState extends State<CircleScreen> {
                                 icon: CircleAvatar(
                                   radius: 25,
                                   backgroundImage: CachedNetworkImageProvider(
-                                    widget.circle.users![index].photoUrl ??
+                                    circle.users![index].photoUrl ??
                                         'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                                   ),
                                 ),
@@ -237,7 +258,7 @@ class _CircleScreenState extends State<CircleScreen> {
         navigatorKey: listKeyNav,
         routes: {
           "/": (context) => CirclePostDisplay(
-                circle: widget.circle,
+                circle: circle,
                 posts: posts,
               ),
         },
@@ -251,6 +272,6 @@ class _CircleScreenState extends State<CircleScreen> {
 /**
  * 
  * CirclePostDisplay(
-    circle: widget.circle,
+    circle: circle,
   ),
  */

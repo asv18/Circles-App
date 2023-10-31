@@ -54,7 +54,7 @@ class _PostWidgetState extends State<PostWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            margin: const EdgeInsets.only(left: 10, right: 10, top: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,23 +119,32 @@ class _PostWidgetState extends State<PostWidget> {
               ],
             ),
           ),
-          (widget.post.image == null)
-              ? const Divider(
-                  thickness: 1,
-                  height: 1,
-                )
-              : Container(
-                  width: double.infinity,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        widget.post.image!,
-                      ),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                ),
+          // (widget.post.image == null)
+          //     ? const Divider(
+          //         thickness: 1,
+          //         height: 1,
+          //       )
+          //     : Container(
+          //         width: double.infinity,
+          //         height: 150,
+          //         decoration: BoxDecoration(
+          //           image: DecorationImage(
+          //             image: CachedNetworkImageProvider(
+          //               widget.post.image!,
+          //             ),
+          //             fit: BoxFit.fitWidth,
+          //           ),
+          //         ),
+          //       ),
+          if (widget.post.description != null)
+            Container(
+              margin: const EdgeInsets.only(top: 0, left: 10),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.post.description!,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Row(
