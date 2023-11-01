@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:circlesapp/components/type_based/Goals/goal_list_toggle.dart';
+import 'package:circlesapp/services/api_services.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/circleposts.dart';
@@ -10,6 +13,7 @@ import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({
@@ -25,6 +29,20 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final _descriptionController = TextEditingController();
 
   List<bool> toggled = [];
+
+  File? _imageSrc;
+  String? _imageURL;
+
+  Future<void> pickImage(ImageSource imageSource) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedImage = await picker.pickImage(source: imageSource);
+
+    setState(() {
+      if (pickedImage != null) {
+        _imageSrc = File(pickedImage.path);
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -131,8 +149,47 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   );
                 },
               ),
-              const SizedBox(
-                height: 30,
+              Container(
+                height: 200,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                color: Theme.of(context).primaryColorLight,
+                child: InkWell(
+                  onTap: () async {
+                    await pickImage(ImageSource.gallery);
+                  },
+                  child: _imageSrc != null
+                      ? Center(
+                          child: Image.file(
+                            _imageSrc!,
+                            fit: BoxFit.fill,
+                          ),
+                        )
+                      : Center(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "This post has no image yet",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                                const WidgetSpan(
+                                  child: SizedBox(width: 10),
+                                ),
+                                const WidgetSpan(
+                                  child: Icon(
+                                    FontAwesome.pen,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                ),
               ),
               Align(
                 alignment: Alignment.center,
@@ -149,7 +206,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     } else {
                       String? goalID;
 
-                      GoalService.goals.then(
+                      await GoalService.goals.then(
                         (value) {
                           for (int i = 0; i < value.length; i++) {
                             if (toggled[i]) {
@@ -159,10 +216,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         },
                       );
 
+                      if (_imageSrc != null) {
+                        _imageURL = await APIServices().uploadImage(_imageSrc!);
+                      }
+
                       CirclePost newCirclePost = CirclePost(
                         title: _postNameController.text,
                         description: _descriptionController.text,
                         goalID: goalID,
+                        image: _imageURL,
                       );
 
                       await CircleService().createPost(

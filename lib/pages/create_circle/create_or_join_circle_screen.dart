@@ -1,14 +1,18 @@
+import 'dart:io';
+
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/components/UI/search_appbar.dart';
 import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/api_services.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/variable_screens/circles/circlepreviewscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateOrJoinCircleScreen extends StatefulWidget {
   const CreateOrJoinCircleScreen({super.key});
@@ -27,6 +31,20 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
   String searchTerm = "";
 
   String type = "/createorjoin/circle/tag";
+
+  File? _imageSrc;
+  String? _imageURL;
+
+  Future<void> pickImage(ImageSource imageSource) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedImage = await picker.pickImage(source: imageSource);
+
+    setState(() {
+      if (pickedImage != null) {
+        _imageSrc = File(pickedImage.path);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +105,50 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                   value: value,
                   onChanged: (String? val) {
                     setState(() {
-                      value = val ?? "Public";
+                      value = val ?? value;
                     });
                   }),
-              const SizedBox(
-                height: 30,
+              Container(
+                height: 200,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                color: Theme.of(context).primaryColorLight,
+                child: InkWell(
+                  onTap: () async {
+                    await pickImage(ImageSource.gallery);
+                  },
+                  child: _imageSrc != null
+                      ? Center(
+                          child: Image.file(
+                            _imageSrc!,
+                            fit: BoxFit.fill,
+                          ),
+                        )
+                      : Center(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "This circle has no image yet",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                                const WidgetSpan(
+                                  child: SizedBox(width: 10),
+                                ),
+                                const WidgetSpan(
+                                  child: Icon(
+                                    FontAwesome.pen,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                ),
               ),
               Align(
                 alignment: Alignment.center,
@@ -109,9 +166,16 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                           duration: Duration(seconds: 5),
                         ));
                       } else {
+                        if (_imageSrc != null) {
+                          _imageURL = await APIServices().uploadImage(
+                            _imageSrc!,
+                          );
+                        }
+
                         Circle newCircle = Circle(
                           name: _circleNameController.text,
                           status: value,
+                          image: _imageURL,
                         );
 
                         await CircleService().createCircle(newCircle);

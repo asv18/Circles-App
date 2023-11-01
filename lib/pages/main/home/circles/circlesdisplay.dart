@@ -89,15 +89,12 @@ class _CirclesDispState extends State<CirclesDisp> {
                       width: double.infinity,
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       color: Theme.of(context).primaryColorLight,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "You are not a part of any circles yet",
-                            style: Theme.of(context).textTheme.headlineMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                      child: Center(
+                        child: Text(
+                          "You are not a part of any circles yet",
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     );
                   }

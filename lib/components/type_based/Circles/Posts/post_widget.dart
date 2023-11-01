@@ -119,23 +119,19 @@ class _PostWidgetState extends State<PostWidget> {
               ],
             ),
           ),
-          // (widget.post.image == null)
-          //     ? const Divider(
-          //         thickness: 1,
-          //         height: 1,
-          //       )
-          //     : Container(
-          //         width: double.infinity,
-          //         height: 150,
-          //         decoration: BoxDecoration(
-          //           image: DecorationImage(
-          //             image: CachedNetworkImageProvider(
-          //               widget.post.image!,
-          //             ),
-          //             fit: BoxFit.fitWidth,
-          //           ),
-          //         ),
-          //       ),
+          if (widget.post.image != null)
+            Container(
+              width: double.infinity,
+              height: 150,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(
+                    widget.post.image!,
+                  ),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+            ),
           if (widget.post.description != null)
             Container(
               margin: const EdgeInsets.only(top: 0, left: 10),

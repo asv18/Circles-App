@@ -374,7 +374,7 @@ class CircleService {
       body: jsonEncode(
         <String, dynamic>{
           'circle_name': circle.name,
-          'image': 'https://picsum.photos/570/300',
+          'image': circle.image ?? 'https://picsum.photos/570/300',
           'user_creator': UserService.dataUser.fKey,
           'publicity': circle.status,
         },
@@ -394,7 +394,7 @@ class CircleService {
         <String, dynamic>{
           'title': post.title,
           'description': post.description,
-          'image': 'https://picsum.photos/600/350',
+          'image': post.image,
           'user_fkey': UserService.dataUser.fKey,
           'goal_id': post.goalID,
           'circle_ids': [
