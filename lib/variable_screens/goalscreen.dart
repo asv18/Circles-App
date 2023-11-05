@@ -65,7 +65,6 @@ class _GoalScreenState extends State<GoalScreen> {
         context: context,
         builder: (BuildContext context) {
           return TaskCompleteDialog(
-            onPressedShare: () {},
             onPressedDismiss: () {
               mainKeyNav.currentState!.pop();
             },

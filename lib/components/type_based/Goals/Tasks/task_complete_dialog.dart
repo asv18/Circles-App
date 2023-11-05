@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class TaskCompleteDialog extends StatelessWidget {
   const TaskCompleteDialog({
     super.key,
-    required this.onPressedShare,
+    // required this.onPressedShare,
     required this.onPressedDismiss,
   });
 
-  final Function onPressedShare;
+  // final Function onPressedShare;
   final Function onPressedDismiss;
 
   @override
@@ -23,10 +23,10 @@ class TaskCompleteDialog extends StatelessWidget {
           ),
         ),
         actions: [
-          TextButton(
-            child: const Text('Share to your circles!'),
-            onPressed: () => onPressedShare(),
-          ),
+          // TextButton(
+          //   child: const Text('Share to your circles!'),
+          //   onPressed: () => onPressedShare(),
+          // ),
           TextButton(
             child: const Text('Dismiss'),
             onPressed: () => onPressedDismiss(),

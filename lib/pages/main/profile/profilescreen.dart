@@ -48,11 +48,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   List<Task> tasks = List.empty(growable: true);
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future<void> _markTaskCompleteOrIncomplete(Task task) async {
     if (task.complete! && mainKeyNav.currentState!.mounted) {
       DateTime nextDate = DateTime.now();
@@ -89,7 +84,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return TaskCompleteDialog(
-            onPressedShare: () {},
+            // onPressedShare: () async {
+            //   CirclePost taskPost = CirclePost(
+            //     taskID: task.id.toString(),
+            //     title: "${UserService.dataUser.name} completed ${task.name}!",
+            //   );
+
+            //   await CircleService().createPost(taskPost, )
+            // },
             onPressedDismiss: () {
               mainKeyNav.currentState!.pop();
             },
@@ -366,9 +368,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           if (goal.progress! < 100) {
                             for (var task in goal.tasks!) {
                               if (!task.complete! ||
-                                  task.nextDate!.compareTo(
-                                        DateTime.now(),
-                                      ) >=
+                                  task.nextDate!.compareTo(DateTime.now()) >=
                                       0) {
                                 tasks.add(task);
                               }

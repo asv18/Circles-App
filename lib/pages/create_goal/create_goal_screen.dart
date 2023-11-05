@@ -7,7 +7,9 @@ import 'package:circlesapp/components/type_based/Goals/Tasks/new_task_widget.dar
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
+import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
@@ -282,6 +284,23 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                       );
 
                       await GoalService().createGoal(newGoal);
+
+                      await CircleService.circles.then(
+                        (value) async {
+                          for (int i = 0; i < value.length; i++) {
+                            if (toggled[i]) {
+                              final goalPost = CirclePost(
+                                title:
+                                    "Support ${UserService.dataUser.name} in their new goal!",
+                                description:
+                                    "${UserService.dataUser.name}''s new goal: ${newGoal.name}",
+                              );
+                              await CircleService()
+                                  .createPost(goalPost, value[i].id!);
+                            }
+                          }
+                        },
+                      );
 
                       if (mainKeyNav.currentState!.mounted) {
                         mainKeyNav.currentState!.pop(
