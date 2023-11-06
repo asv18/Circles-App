@@ -31,7 +31,9 @@ class NumberDisplay extends StatelessWidget {
                 if (text == "Tasks") {
                   int tasksLength = 0;
                   for (Goal v in snapshot.data!) {
-                    tasksLength += v.tasks!.length;
+                    if (DateTime.now().compareTo(v.endDate) != 1) {
+                      tasksLength += v.tasks!.length;
+                    }
                   }
 
                   return Text(

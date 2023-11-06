@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TaskWidget extends StatelessWidget {
-  const TaskWidget(
-      {super.key,
-      required this.task,
-      required this.onChanged,
-      required this.showActionsTaskMenu,
-      required this.getTapPosition});
+  const TaskWidget({
+    super.key,
+    required this.task,
+    required this.onChanged,
+    required this.showActionsTaskMenu,
+    required this.getTapPosition,
+  });
 
   final Task task;
   final Function onChanged;
@@ -103,6 +104,7 @@ class TaskWidget extends StatelessWidget {
                             (states) => Colors.white,
                           ),
                           value: task.complete,
+                          side: BorderSide.none,
                           onChanged: (value) => onChanged(value),
                         ),
                       ),

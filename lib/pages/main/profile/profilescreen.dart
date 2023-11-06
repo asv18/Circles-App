@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             nextDate = DateTime(
               nextDate.year,
               nextDate.month,
-              nextDate.day - nextDate.weekday % 7,
+              nextDate.day - nextDate.weekday % 7 + 7,
             );
             break;
           }
@@ -154,7 +154,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         PopupMenuItem(
           value: "Complete Task",
           child: Text(
-              "Mark ${task.name} as ${(task.complete!) ? "incomplete" : "complete"}"),
+            "Mark ${task.name} as ${(task.complete!) ? "incomplete" : "complete"}",
+          ),
         ),
       ],
     );
@@ -375,6 +376,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             }
                           }
                         }
+
+                        tasks.sort(
+                          ((x, y) {
+                            return (x.complete == y.complete)
+                                ? 0
+                                : (x.complete! ? 1 : -1);
+                          }),
+                        );
+
                         if (tasks.isEmpty) {
                           return Container(
                             height: 120,

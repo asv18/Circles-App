@@ -2,8 +2,8 @@ import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-class NewTaskWidget extends StatefulWidget {
-  const NewTaskWidget({
+class EditTaskWidget extends StatefulWidget {
+  const EditTaskWidget({
     super.key,
     required this.task,
     required this.onDismissed,
@@ -13,16 +13,23 @@ class NewTaskWidget extends StatefulWidget {
   final Function onDismissed;
 
   @override
-  State<NewTaskWidget> createState() => _NewTaskWidgetState();
+  State<EditTaskWidget> createState() => _EditTaskWidgetState();
 }
 
-class _NewTaskWidgetState extends State<NewTaskWidget> {
-  List<String> spinnerItems = [
-    "Never",
-    "Daily",
-    "Weekly",
-    "Monthly",
-  ];
+class _EditTaskWidgetState extends State<EditTaskWidget> {
+  late List<String> spinnerItems;
+
+  @override
+  void initState() {
+    super.initState();
+
+    spinnerItems = [
+      "Never",
+      "Daily",
+      "Weekly",
+      "Monthly",
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +93,7 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
                         CustomTextField2(
                           hintText:
                               "Think about a milestone you can check off...",
+                          initialText: widget.task.name,
                           onChanged: (value) {
                             setState(() {
                               widget.task.name = value;
@@ -160,7 +168,7 @@ class CustomTextField2 extends StatelessWidget {
   const CustomTextField2({
     super.key,
     required this.hintText,
-    this.controller,
+    required this.initialText,
     this.onTap,
     this.readOnly,
     this.suffixIcon,
@@ -168,7 +176,7 @@ class CustomTextField2 extends StatelessWidget {
   });
 
   final String hintText;
-  final TextEditingController? controller;
+  final String initialText;
   final Function? onTap;
   final bool? readOnly;
   final Widget? suffixIcon;
@@ -183,8 +191,8 @@ class CustomTextField2 extends StatelessWidget {
           onTap!();
         }
       },
+      initialValue: initialText,
       scrollPadding: const EdgeInsets.all(0),
-      controller: controller,
       readOnly: readOnly ?? false,
       decoration: InputDecoration(
         isDense: true,
