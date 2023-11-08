@@ -35,7 +35,7 @@ class Task {
       "name": name,
       "repeat": repeat,
       "start_date": (startDate ?? DateTime.now()).toIso8601String(),
-      "next_date": nextDate!.toIso8601String(),
+      "next_date": (nextDate ?? DateTime.now()).toIso8601String(),
       "complete": complete,
       "owner": owner,
     };

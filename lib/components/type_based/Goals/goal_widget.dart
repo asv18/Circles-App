@@ -1,5 +1,5 @@
-import 'package:circlesapp/routes.dart';
-import 'package:circlesapp/variable_screens/goalscreen.dart';
+// import 'package:circlesapp/routes.dart';
+// import 'package:circlesapp/variable_screens/goalscreen.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -8,11 +8,11 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class GoalWidget extends StatelessWidget {
   const GoalWidget({
-    Key? key,
+    super.key,
     required this.goal,
     required this.showActionsGoalMenu,
     required this.getTapPosition,
-  }) : super(key: key);
+  });
 
   final Goal goal;
   final Function showActionsGoalMenu;
@@ -37,15 +37,15 @@ class GoalWidget extends StatelessWidget {
             context,
             goal,
           ),
-          onTap: () {
-            mainKeyNav.currentState!.push(
-              MaterialPageRoute(
-                builder: (context) => GoalScreen(
-                  goal: goal,
-                ),
-              ),
-            );
-          },
+          // onTap: () {
+          //   mainKeyNav.currentState!.push(
+          //     MaterialPageRoute(
+          //       builder: (context) => GoalScreen(
+          //         goal: goal,
+          //       ),
+          //     ),
+          //   );
+          // },
           child: Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 10.0,

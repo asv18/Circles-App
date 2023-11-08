@@ -1,11 +1,8 @@
-import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import '../../../variable_screens/goalscreen.dart';
 
 class GoalsListWidget extends StatelessWidget {
   const GoalsListWidget({
@@ -39,15 +36,6 @@ class GoalsListWidget extends StatelessWidget {
             context,
             goal,
           ),
-          onTap: () {
-            mainKeyNav.currentState!.push(
-              MaterialPageRoute(
-                builder: (context) => GoalScreen(
-                  goal: goal,
-                ),
-              ),
-            );
-          },
           child: Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 10.0,

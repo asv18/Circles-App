@@ -7,10 +7,15 @@ class EditTaskWidget extends StatefulWidget {
     super.key,
     required this.task,
     required this.onDismissed,
+    required this.onChangedDropdown,
+    required this.onChangedName,
   });
 
   final Task task;
   final Function onDismissed;
+
+  final Function onChangedDropdown;
+  final Function onChangedName;
 
   @override
   State<EditTaskWidget> createState() => _EditTaskWidgetState();
@@ -94,11 +99,7 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
                           hintText:
                               "Think about a milestone you can check off...",
                           initialText: widget.task.name,
-                          onChanged: (value) {
-                            setState(() {
-                              widget.task.name = value;
-                            });
-                          },
+                          onChanged: (value) => widget.onChangedName(value),
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,11 +129,8 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
                                   color: Colors.black,
                                   size: 15,
                                 ),
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    widget.task.repeat = value!;
-                                  });
-                                },
+                                onChanged: (value) =>
+                                    widget.onChangedDropdown(value),
                                 items:
                                     spinnerItems.map<DropdownMenuItem<String>>(
                                   (String value) {

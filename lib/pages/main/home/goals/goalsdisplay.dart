@@ -71,13 +71,19 @@ class _GoalsDispState extends State<GoalsDisp> {
 
     if (result == "Edit Goal") {
       if (mainKeyNav.currentState!.mounted) {
-        await mainKeyNav.currentState!.push(
+        final result = (await mainKeyNav.currentState!.push(
           MaterialPageRoute(
             builder: (context) => GoalScreen(
               goal: goal,
             ),
           ),
-        );
+        )) as List;
+
+        if (result[0] == "Updated Goal") {
+          await GoalService().fetchGoals();
+
+          setState(() {});
+        }
       }
     } else if (result == "Delete Goal") {
       await GoalService().deleteGoal(goal.id!);

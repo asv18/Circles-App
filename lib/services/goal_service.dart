@@ -130,4 +130,49 @@ class GoalService {
 
     return response;
   }
+
+  Future<http.Response> updateGoal(
+    Goal goal,
+    List<Task> tasks,
+    List<Task> newTasks,
+  ) async {
+    for (int i = 0; i < tasks.length; i++) {
+      await updateTask(tasks[i]);
+    }
+
+    for (int i = tasks.length; i < newTasks.length; i++) {
+      await addTask(goal, tasks[i]);
+    }
+
+    final http.Response response = await http.patch(
+      Uri.parse(
+        '${link}user/goals/${goal.id}/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        goal.toJson(),
+      ),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> addTask(
+    Goal goal,
+    Task task,
+  ) async {
+    return await http.post(
+      Uri.parse(
+        '${link}user/goals/${goal.id}/tasks/new/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        task.toJson(),
+      ),
+    );
+  }
 }

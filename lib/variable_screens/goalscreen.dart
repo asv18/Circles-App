@@ -2,13 +2,11 @@ import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
-import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
-import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
+import 'package:circlesapp/components/type_based/Goals/Tasks/edit_task_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -33,145 +31,14 @@ class _GoalScreenState extends State<GoalScreen> {
     duration: Duration(seconds: 5),
   );
 
-  Offset _tapPosition = Offset.zero;
-
   late final TextEditingController _goalNameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _dateTextController;
   late DateTime _selectedDate;
   late List<Task> tasks;
+  late List<Task> newTasks;
 
   List<bool> toggled = [];
-
-  Future<void> _markTaskCompleteOrIncomplete(Task task) async {
-    if (task.complete! && mainKeyNav.currentState!.mounted) {
-      DateTime nextDate = DateTime.now();
-
-      switch (task.repeat) {
-        case "Daily":
-          {
-            nextDate = DateTime(
-              nextDate.year,
-              nextDate.month,
-              nextDate.day + 1,
-            );
-            break;
-          }
-        case "Weekly":
-          {
-            nextDate = DateTime(
-              nextDate.year,
-              nextDate.month,
-              nextDate.day - nextDate.weekday % 7 + 7,
-            );
-            break;
-          }
-        case "Monthly":
-          {
-            nextDate = DateTime(nextDate.year, nextDate.month + 1, 0);
-            break;
-          }
-      }
-
-      task.nextDate = nextDate;
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return TaskCompleteDialog(
-            // onPressedShare: () async {
-            //   CirclePost taskPost = CirclePost(
-            //     taskID: task.id.toString(),
-            //     title: "${UserService.dataUser.name} completed ${task.name}!",
-            //   );
-
-            //   await CircleService().createPost(taskPost, )
-            // },
-            onPressedDismiss: () {
-              mainKeyNav.currentState!.pop();
-            },
-          );
-        },
-      );
-    } else {
-      DateTime nextDate = DateTime.now();
-
-      switch (task.repeat) {
-        case "Weekly":
-          {
-            nextDate = DateTime(
-              nextDate.year,
-              nextDate.month,
-              nextDate.day - nextDate.weekday % 7,
-            );
-            break;
-          }
-        case "Monthly":
-          {
-            nextDate = DateTime(nextDate.year, nextDate.month - 1, 0);
-            break;
-          }
-      }
-
-      task.nextDate = nextDate;
-    }
-
-    await GoalService().updateTask(task);
-  }
-
-  void _getTapPosition(TapDownDetails details) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    setState(() {
-      _tapPosition = renderBox.globalToLocal(details.globalPosition);
-    });
-  }
-
-  void _showActionsTaskMenu(BuildContext context, Task task) async {
-    final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
-
-    final result = await showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
-        Rect.fromLTWH(
-          0,
-          0,
-          overlay!.paintBounds.size.width,
-          overlay.paintBounds.size.height,
-        ),
-      ),
-      items: [
-        PopupMenuItem(
-          value: "Edit Task",
-          child: Text("Edit ${task.name}"),
-        ),
-        PopupMenuItem(
-          value: "Complete Task",
-          child: Text(
-            "Mark ${task.name} as ${(task.complete!) ? "incomplete" : "complete"}",
-          ),
-        ),
-      ],
-    );
-
-    if (result == "Edit Task") {
-      if (mainKeyNav.currentState!.mounted) {
-        mainKeyNav.currentState!.push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => TaskScreen(
-              task: task,
-            ),
-          ),
-        );
-      }
-    } else if (result == "Complete Task") {
-      setState(() {
-        task.complete = !task.complete!;
-        _markTaskCompleteOrIncomplete(task);
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -190,7 +57,9 @@ class _GoalScreenState extends State<GoalScreen> {
           "${_selectedDate.month} / ${_selectedDate.day} / ${_selectedDate.year}",
     );
 
-    tasks = widget.goal.tasks!;
+    tasks = [...widget.goal.tasks!];
+
+    newTasks = [...widget.goal.tasks!];
   }
 
   @override
@@ -212,7 +81,7 @@ class _GoalScreenState extends State<GoalScreen> {
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [
-                    "Goal Not Edited",
+                    "No Update Goal",
                   ],
                 );
               },
@@ -284,25 +153,42 @@ class _GoalScreenState extends State<GoalScreen> {
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 10.0),
-                height: 120,
                 child: (tasks.isNotEmpty)
                     ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
-                        itemCount: tasks.length,
-                        scrollDirection: Axis.horizontal,
+                        itemCount: newTasks.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return TaskWidget(
+                          return EditTaskWidget(
                             task: tasks[index],
-                            onChanged: (bool? value) {
+                            onDismissed: (direction) {
                               setState(() {
-                                tasks[index].complete = value!;
-                                _markTaskCompleteOrIncomplete(
-                                  tasks[index],
-                                );
+                                if (index < tasks.length) {
+                                  tasks.removeAt(index);
+                                }
+
+                                newTasks.removeAt(index);
                               });
                             },
-                            showActionsTaskMenu: _showActionsTaskMenu,
-                            getTapPosition: _getTapPosition,
+                            onChangedName: (value) {
+                              setState(() {
+                                if (index < tasks.length) {
+                                  tasks[index].name = value!;
+                                }
+
+                                newTasks[index].name = value!;
+                              });
+                            },
+                            onChangedDropdown: (String? value) {
+                              setState(() {
+                                if (index < tasks.length) {
+                                  tasks[index].repeat = value!;
+                                }
+
+                                newTasks[index].repeat = value!;
+                              });
+                            },
                           );
                         },
                       )
@@ -332,6 +218,13 @@ class _GoalScreenState extends State<GoalScreen> {
                             repeat: "Never",
                           ),
                         );
+
+                        newTasks.add(
+                          Task(
+                            name: "",
+                            repeat: "Never",
+                          ),
+                        );
                       });
                     },
                   ),
@@ -343,7 +236,51 @@ class _GoalScreenState extends State<GoalScreen> {
               Align(
                 alignment: Alignment.center,
                 child: CustomTextButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    if (_goalNameController.text.isEmpty ||
+                        _dateTextController.text == "mm / dd / yyyy" ||
+                        anyNull(newTasks)) {
+                      List<String> neglected = [];
+
+                      if (_goalNameController.text.isEmpty) {
+                        neglected.add("Goal Name");
+                      }
+
+                      if (_dateTextController.text == "mm / dd / yyyy") {
+                        neglected.add("Date");
+                      }
+
+                      if (anyNull(tasks)) {
+                        neglected.add("Task Names/Repeats");
+                      }
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          "You have left the following fields blank: ${neglected.toString().substring(1, neglected.toString().length - 1)}",
+                          textAlign: TextAlign.center,
+                        ),
+                        duration: const Duration(seconds: 5),
+                      ));
+                    } else {
+                      widget.goal.name = _goalNameController.text;
+                      widget.goal.endDate = _selectedDate;
+                      widget.goal.description = _descriptionController.text;
+
+                      await GoalService().updateGoal(
+                        widget.goal,
+                        tasks,
+                        newTasks,
+                      );
+
+                      if (mounted) {
+                        mainKeyNav.currentState!.pop(
+                          [
+                            "Updated Goal",
+                          ],
+                        );
+                      }
+                    }
+                  },
                   text: "Update Goal",
                 ),
               ),

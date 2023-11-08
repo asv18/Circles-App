@@ -1,9 +1,10 @@
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/task.dart';
 
 class Goal implements Comparable<Goal> {
   String? id;
-  final String name;
-  final DateTime endDate;
+  String name;
+  DateTime endDate;
   DateTime? startDate;
   String? description;
   List<Task>? tasks;
@@ -54,11 +55,12 @@ class Goal implements Comparable<Goal> {
     return {
       "id": id,
       "name": name,
-      "end_date": endDate,
-      "start_date": startDate,
+      "end_date": endDate.toIso8601String(),
+      "start_date": startDate!.toIso8601String(),
       "description": description,
       "progress": progress,
       "tasks": tasks,
+      "user_id": UserService.dataUser.id,
     };
   }
 
