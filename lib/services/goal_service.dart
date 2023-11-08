@@ -141,7 +141,7 @@ class GoalService {
     }
 
     for (int i = tasks.length; i < newTasks.length; i++) {
-      await addTask(goal, tasks[i]);
+      await addTask(goal, newTasks[i]);
     }
 
     final http.Response response = await http.patch(

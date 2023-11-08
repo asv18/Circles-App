@@ -6,12 +6,17 @@ import 'package:flutter/material.dart';
 
 class CircleWidget extends StatelessWidget {
   const CircleWidget({
-    Key? key,
+    super.key,
     required this.circle,
-  }) : super(key: key);
+    required this.showActionsCircleMenu,
+    required this.getTapPosition,
+  });
 
   final Circle circle;
   final type = "circle/widget/hero";
+
+  final Function showActionsCircleMenu;
+  final Function getTapPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +30,11 @@ class CircleWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: InkWell(
+          onTapDown: (details) => getTapPosition(details),
+          onLongPress: () => showActionsCircleMenu(
+            context,
+            circle,
+          ),
           onTap: () {
             mainKeyNav.currentState!.push(
               PageRouteBuilder(

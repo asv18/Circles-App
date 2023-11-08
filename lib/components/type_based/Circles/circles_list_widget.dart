@@ -8,11 +8,16 @@ class CircleListWidget extends StatelessWidget {
     required this.circle,
     required this.navigate,
     required this.tag,
+    this.showActionsCircleMenu,
+    this.getTapPosition,
   });
 
   final Circle circle;
   final Function navigate;
   final String tag;
+
+  final Function? showActionsCircleMenu;
+  final Function? getTapPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,19 @@ class CircleListWidget extends StatelessWidget {
         child: InkWell(
           onTap: () {
             navigate();
+          },
+          onTapDown: (details) {
+            if (getTapPosition != null) {
+              getTapPosition!(details);
+            }
+          },
+          onLongPress: () {
+            if (showActionsCircleMenu != null) {
+              showActionsCircleMenu!(
+                context,
+                circle,
+              );
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

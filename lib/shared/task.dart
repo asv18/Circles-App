@@ -1,3 +1,5 @@
+import 'package:circlesapp/services/user_service.dart';
+
 class Task {
   BigInt? id;
   String name;
@@ -38,6 +40,7 @@ class Task {
       "next_date": (nextDate ?? DateTime.now()).toIso8601String(),
       "complete": complete,
       "owner": owner,
+      "user_id": UserService.dataUser.id,
     };
   }
 

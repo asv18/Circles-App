@@ -2,6 +2,7 @@ import 'package:circlesapp/components/type_based/Circles/circle_widget.dart';
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,44 @@ class CirclesDisp extends StatefulWidget {
 }
 
 class _CirclesDispState extends State<CirclesDisp> {
-  @override
-  void initState() {
-    super.initState();
+  Offset _tapPosition = Offset.zero;
+
+  void _getTapPosition(TapDownDetails details) {
+    setState(() {
+      _tapPosition = details.globalPosition;
+    });
+  }
+
+  void _showActionsCircleMenu(BuildContext context, Circle circle) async {
+    final RenderObject? overlay =
+        Overlay.of(context).context.findRenderObject();
+
+    final result = await showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
+        Rect.fromLTWH(
+          0,
+          0,
+          overlay!.paintBounds.size.width,
+          overlay.paintBounds.size.height,
+        ),
+      ),
+      items: [
+        const PopupMenuItem(
+          value: "Leave Circle",
+          child: Text("Leave Circle"),
+        ),
+        if (circle.admin!.fKey == UserService.dataUser.fKey)
+          const PopupMenuItem(
+            value: "Edit Circle",
+            child: Text("Edit Circle"),
+          ),
+      ],
+    );
+
+    if (result == "Leave Circle") {
+    } else if (result == "Edit Circle") {}
   }
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
@@ -80,6 +116,8 @@ class _CirclesDispState extends State<CirclesDisp> {
                         itemBuilder: (BuildContext context, int index) {
                           return CircleWidget(
                             circle: snapshot.data![index],
+                            getTapPosition: _getTapPosition,
+                            showActionsCircleMenu: _showActionsCircleMenu,
                           );
                         },
                       ),

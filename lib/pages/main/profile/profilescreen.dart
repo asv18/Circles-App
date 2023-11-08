@@ -7,7 +7,7 @@ import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialo
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
-import 'package:circlesapp/variable_screens/goalscreen.dart';
+import 'package:circlesapp/variable_screens/edit_goal_screen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/services/auth_service.dart';
@@ -178,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _showActionsCircleMenu(BuildContext context) async {
+  void _showActionsCircleMenu(BuildContext context, Circle circle) async {
     final RenderObject? overlay =
         Overlay.of(context).context.findRenderObject();
 
@@ -195,18 +195,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       items: [
         const PopupMenuItem(
-          value: "Join Circle",
-          child: Text("Join Circle"),
+          value: "Leave Circle",
+          child: Text("Leave Circle"),
         ),
-        const PopupMenuItem(
-          value: "Create Circle",
-          child: Text("Create Circle"),
-        ),
+        if (circle.admin!.fKey == UserService.dataUser.fKey)
+          const PopupMenuItem(
+            value: "Edit Circle",
+            child: Text("Edit Circle"),
+          ),
       ],
     );
 
-    if (result == "Join Circle") {
-    } else if (result == "Create Circle") {}
+    if (result == "Leave Circle") {
+    } else if (result == "Edit Circle") {}
   }
 
   void _showActionsGoalMenu(BuildContext context, Goal goal) async {
@@ -325,7 +326,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         alignment: Alignment.center,
                         child: Center(
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              mainKeyNav.currentState!.pushNamed("/edituser");
+                            },
                             icon: const Icon(
                               Icons.settings,
                               size: 20.0,
@@ -539,6 +542,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return CircleListWidget(
                                     tag: "${snapshot.data![index].id}$type",
                                     circle: snapshot.data![index],
+                                    getTapPosition: _getTapPosition,
+                                    showActionsCircleMenu:
+                                        _showActionsCircleMenu,
                                     navigate: () {
                                       mainKeyNav.currentState!.push(
                                         PageRouteBuilder(

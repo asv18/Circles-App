@@ -161,16 +161,7 @@ class _GoalScreenState extends State<GoalScreen> {
                         itemCount: newTasks.length,
                         itemBuilder: (BuildContext context, int index) {
                           return EditTaskWidget(
-                            task: tasks[index],
-                            onDismissed: (direction) {
-                              setState(() {
-                                if (index < tasks.length) {
-                                  tasks.removeAt(index);
-                                }
-
-                                newTasks.removeAt(index);
-                              });
-                            },
+                            task: newTasks[index],
                             onChangedName: (value) {
                               setState(() {
                                 if (index < tasks.length) {
@@ -212,13 +203,6 @@ class _GoalScreenState extends State<GoalScreen> {
                     text: "Add Task",
                     onPressed: () {
                       setState(() {
-                        tasks.add(
-                          Task(
-                            name: "",
-                            repeat: "Never",
-                          ),
-                        );
-
                         newTasks.add(
                           Task(
                             name: "",

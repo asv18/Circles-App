@@ -239,7 +239,6 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
               SizedBox(
                 height: 400,
                 child: FutureBuilder<List<Circle>>(
-                  //TODO implement offset
                   future: CircleService().queryCircles(searchTerm, 0),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
