@@ -34,38 +34,7 @@ class UserService {
         jsonDecode(response.body)["data"],
       );
 
-      const secureStorage = FlutterSecureStorage();
-
-      dynamic userIDKey = await secureStorage.read(
-        key: "idKey",
-      );
-
-      if (userIDKey == null) {
-        String newKey = generateRandomString(64);
-
-        await secureStorage.write(
-          key: "idKey",
-          value: newKey,
-        );
-      }
-
-      userIDKey = await secureStorage.read(
-        key: "idKey",
-      );
-
-      final openedBox = Hive.box("userBox");
-
-      await openedBox.putAll(
-        {
-          userIDKey: dataUser.id,
-          "name": dataUser.name,
-          "username": dataUser.username,
-          "photo_url": dataUser.photoUrl ?? "null",
-          "email": dataUser.email,
-          "f_key": dataUser.fKey,
-          "phone_number": dataUser.phoneNumber,
-        },
-      );
+      await putUserInBox();
 
       await CircleService().fetchCircles();
       await GoalService().fetchGoals();
@@ -178,6 +147,61 @@ class UserService {
       // then throw an exception.
       throw Exception('Failed to load posts');
     }
+  }
+
+  Future<void> putUserInBox() async {
+    const secureStorage = FlutterSecureStorage();
+
+    dynamic userIDKey = await secureStorage.read(
+      key: "idKey",
+    );
+
+    if (userIDKey == null) {
+      String newKey = generateRandomString(64);
+
+      await secureStorage.write(
+        key: "idKey",
+        value: newKey,
+      );
+    }
+
+    userIDKey = await secureStorage.read(
+      key: "idKey",
+    );
+
+    final openedBox = Hive.box("userBox");
+
+    await openedBox.putAll(
+      {
+        userIDKey: dataUser.id,
+        "name": dataUser.name,
+        "username": dataUser.username,
+        "photo_url": dataUser.photoUrl ?? "null",
+        "email": dataUser.email,
+        "f_key": dataUser.fKey,
+        "phone_number": dataUser.phoneNumber,
+      },
+    );
+  }
+
+  Future<http.Response> updateUser() {
+    return http.patch(
+      Uri.parse(
+        '${link}user/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "id": dataUser.id,
+          "name": dataUser.name,
+          "username": dataUser.username,
+          "email": dataUser.email,
+          "photo_url": dataUser.photoUrl,
+        },
+      ),
+    );
   }
 
   //update tasks

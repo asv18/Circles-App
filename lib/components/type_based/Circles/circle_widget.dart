@@ -88,13 +88,13 @@ class CircleWidget extends StatelessWidget {
                     //     color: Colors.white,
                     //     fontSize: 24,
                     //     fontWeight: FontWeight.w400,
-                    //     shadows: [
-                    //       Shadow(
-                    //         offset: const Offset(2.5, 2.5),
-                    //         blurRadius: 10.0,
-                    //         color: Colors.black.withOpacity(0.8),
-                    //       ),
-                    //     ],
+                    // shadows: [
+                    //   Shadow(
+                    //     offset: const Offset(2.5, 2.5),
+                    //     blurRadius: 10.0,
+                    //     color: Colors.black.withOpacity(0.8),
+                    //   ),
+                    // ],
                     //   ),
                     //   child: Text(
                     //     "${circle.updates} new updates",

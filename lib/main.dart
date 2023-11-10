@@ -117,6 +117,13 @@ class _AppState extends State<MyApp> {
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: const Offset(1, 1),
+                      blurRadius: 10.0,
+                      color: Colors.black.withOpacity(0.8),
+                    ),
+                  ],
                 ),
                 titleSmall: GoogleFonts.poppins(
                   fontSize: 12,
@@ -137,6 +144,11 @@ class _AppState extends State<MyApp> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: const Color.fromARGB(255, 15, 24, 40),
+                ),
+                displayLarge: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
                 ),
               ),
               primaryColor: primaryColor,

@@ -1,17 +1,23 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class UserImageWidget extends StatelessWidget {
   const UserImageWidget({
     super.key,
-    required this.photoUrl,
+    this.photoUrl,
+    this.imgSrc,
     required this.dimensions,
     this.margin = 0,
+    this.useCachedNetwork = true,
   });
 
-  final String photoUrl;
+  final String? photoUrl;
+  final File? imgSrc;
   final double dimensions;
   final double margin;
+  final bool useCachedNetwork;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +33,14 @@ class UserImageWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         color: Colors.white,
         image: DecorationImage(
-          fit: BoxFit.contain,
-          image: CachedNetworkImageProvider(
-            photoUrl,
-          ),
+          fit: BoxFit.cover,
+          image: (useCachedNetwork
+              ? CachedNetworkImageProvider(
+                  photoUrl!,
+                )
+              : FileImage(
+                  imgSrc!,
+                )) as ImageProvider,
         ),
       ),
     );

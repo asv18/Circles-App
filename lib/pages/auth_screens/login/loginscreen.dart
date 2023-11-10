@@ -65,8 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const FlutterLogo(
-                size: 150,
+              SizedBox(
+                width: 95,
+                height: 95,
+                child: Image.asset(
+                  "assets/Circles_Logo_No_Backgroud.png",
+                  fit: BoxFit.scaleDown,
+                ),
               ),
               const SizedBox(
                 height: 40,

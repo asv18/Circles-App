@@ -269,6 +269,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  String genTag = "/profile/image";
+  String userTag = "/user/image/${UserService.dataUser.photoUrl}";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,11 +279,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
             toolbarHeight: MediaQuery.of(context).size.height / 8.5,
-            flexibleSpace: const Image(
-              image: CachedNetworkImageProvider(
-                'https://picsum.photos/600/600',
+            flexibleSpace: Hero(
+              tag: genTag,
+              child: const Image(
+                image: CachedNetworkImageProvider(
+                  'https://picsum.photos/600/600',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
             ),
             backgroundColor: Colors.transparent,
             bottom: PreferredSize(
@@ -295,24 +301,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Row(
                         children: [
-                          UserImageWidget(
-                            photoUrl: UserService.dataUser.photoUrl ??
-                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                            dimensions: 100.0,
+                          Hero(
+                            tag: userTag,
+                            child: UserImageWidget(
+                              photoUrl: UserService.dataUser.photoUrl ??
+                                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                              dimensions: 100.0,
+                            ),
                           ),
                           const SizedBox(
                             width: 15,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                UserService.dataUser.name!.replaceAll(
-                                  " ",
-                                  "\n",
-                                ),
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ],
+                          DefaultTextStyle(
+                            style: Theme.of(context).textTheme.titleLarge!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            child: Text(
+                              UserService.dataUser.name!.replaceAll(" ", "\n"),
+                            ),
                           ),
                         ],
                       ),
@@ -326,8 +332,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         alignment: Alignment.center,
                         child: Center(
                           child: IconButton(
-                            onPressed: () {
-                              mainKeyNav.currentState!.pushNamed("/edituser");
+                            onPressed: () async {
+                              await mainKeyNav.currentState!.pushNamed(
+                                "/edituser",
+                              );
+
+                              setState(() {});
                             },
                             icon: const Icon(
                               Icons.settings,

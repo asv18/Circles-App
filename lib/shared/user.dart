@@ -66,6 +66,17 @@ class User {
     exists = true;
   }
 
+  User.clone(User other)
+      : this(
+          id: other.id,
+          name: other.name,
+          username: other.username,
+          email: other.email,
+          photoUrl: other.photoUrl,
+          fKey: other.fKey,
+          phoneNumber: other.phoneNumber,
+        );
+
   @override
   String toString() {
     return jsonEncode({
