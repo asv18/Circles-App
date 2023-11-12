@@ -2,6 +2,7 @@ import 'package:circlesapp/components/UI/auth_button.dart';
 import 'package:circlesapp/components/UI/form_field.dart';
 import 'package:circlesapp/components/UI/provider_button.dart';
 import 'package:circlesapp/services/auth_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,22 +60,36 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.all(30),
+        padding: EdgeInsets.all(
+          ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            30,
+          ),
+        ),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
-                width: 95,
-                height: 95,
+                width: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  95,
+                ),
+                height: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  95,
+                ),
                 child: Image.asset(
                   "assets/Circles_Logo_No_Backgroud.png",
                   fit: BoxFit.scaleDown,
                 ),
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  40,
+                ),
               ),
               Text(
                 "Sign In",
@@ -83,8 +98,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               (_invalidUser)
                   ? Container(
-                      height: 30,
-                      margin: const EdgeInsets.only(left: 10),
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        30,
+                      ),
+                      margin: EdgeInsets.only(
+                        left: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          10,
+                        ),
+                      ),
                       child: Text(
                         "Invalid email or password",
                         textAlign: TextAlign.start,
@@ -95,8 +118,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     )
-                  : const SizedBox(
-                      height: 10,
+                  : SizedBox(
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        10,
+                      ),
                     ),
               FormTextField(
                 visibility: false,
@@ -114,7 +140,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 prefixIcon: Bootstrap.envelope,
               ),
-              const SizedBox(height: 20),
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
+              ),
               FormTextField(
                 visibility: _passNotVisibile,
                 controller: _passwordController,
@@ -139,22 +170,43 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                 },
               ),
-              const SizedBox(height: 40),
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  40,
+                ),
+              ),
               AuthButton(
                 loginFunction: loginEmailPassword,
                 text: "Sign In",
               ),
-              const SizedBox(height: 20),
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
+              ),
               Text(
                 "OR",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
-              const SizedBox(height: 20),
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
+              ),
               ProviderButton(
                 icon: SizedBox(
-                  width: 26,
-                  height: 26,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
                   child: Logo(
                     Logos.google,
                   ),
@@ -162,16 +214,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 loginMethod: AuthService().googleLogin,
                 text: "Sign in with Google",
               ),
-              const SizedBox(height: 20),
+              SizedBox(
+                height: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  20,
+                ),
+              ),
               ProviderButton(
                 icon: SizedBox(
-                  width: 26,
-                  height: 26,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
                   child: Logo(
                     Logos.apple,
                   ),
                 ),
-                loginMethod: AuthService().googleLogin,
+                loginMethod: () {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      "Coming Soon!",
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: Duration(seconds: 5),
+                  ));
+                },
                 text: "Sign in with Apple",
               ),
             ],

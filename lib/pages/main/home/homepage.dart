@@ -4,6 +4,7 @@ import 'package:circlesapp/components/UI/tab_button.dart';
 import 'package:circlesapp/pages/main/home/circles/circlesdisplay.dart';
 import 'package:circlesapp/pages/main/home/goals/goalsdisplay.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         centerTitle: true,
         flexibleSpace: SafeArea(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                16,
+              ),
+            ),
             child: Column(
               children: [
                 Row(
@@ -97,16 +103,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     UserImageWidget(
                       photoUrl: UserService.dataUser.photoUrl ??
                           'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                      dimensions: 60.0,
+                      dimensions: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        60,
+                      ),
                       margin: 0,
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    20,
+                  ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 40.0),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      40,
+                    ),
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -133,9 +150,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         backgroundColor: Theme.of(context).canvasColor,
         toolbarHeight: MediaQuery.of(context).size.height / 6.0,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(40.0),
+          preferredSize: Size.fromHeight(
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              40,
+            ),
+          ),
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                16,
+              ),
+            ),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Theme.of(context).primaryColor,
@@ -168,10 +195,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
       ),
       body: Container(
-        margin: const EdgeInsets.only(
-          top: 10.0,
-          left: 16.0,
-          right: 16.0,
+        margin: EdgeInsets.only(
+          top: ComponentService.convertHeight(
+            MediaQuery.of(context).size.height,
+            10,
+          ),
+          left: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            16,
+          ),
+          right: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            16,
+          ),
         ),
         child: TabBarView(
           controller: _tabController,

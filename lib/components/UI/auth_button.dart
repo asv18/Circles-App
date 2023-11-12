@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -14,7 +15,12 @@ class AuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 40),
+      margin: EdgeInsets.symmetric(
+        horizontal: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          40,
+        ),
+      ),
       child: ElevatedButton(
         onPressed: () => loginFunction(),
         child: Stack(
@@ -35,8 +41,14 @@ class AuthButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  width: 30,
-                  height: 30,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    30,
+                  ),
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    30,
+                  ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Theme.of(context).primaryColorDark,

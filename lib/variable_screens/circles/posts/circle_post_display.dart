@@ -1,5 +1,6 @@
 import 'package:circlesapp/components/type_based/Circles/Posts/post_widget.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,12 @@ class _CirclePostDisplayState extends State<CirclePostDisplay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: EdgeInsets.symmetric(
+        horizontal: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          16,
+        ),
+      ),
       child: FutureBuilder<List<CirclePost>>(
         future: widget.posts,
         builder: (context, snapshot) {

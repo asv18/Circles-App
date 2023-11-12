@@ -4,6 +4,7 @@ import 'package:circlesapp/pages/main/friends/friendspage.dart';
 import 'package:circlesapp/pages/main/home/homepage.dart';
 import 'package:circlesapp/pages/main/profile/profilescreen.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/user.dart';
@@ -172,9 +173,15 @@ class _MainPageState extends State<MainPage> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30.0,
-            vertical: 5.0,
+          padding: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              30,
+            ),
+            vertical: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              5,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

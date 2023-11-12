@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -23,8 +24,16 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75,
-      padding: const EdgeInsets.all(16),
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        75,
+      ),
+      padding: EdgeInsets.all(
+        ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          16,
+        ),
+      ),
       decoration: ShapeDecoration(
         color: Theme.of(context).primaryColorLight,
         shape: RoundedRectangleBorder(

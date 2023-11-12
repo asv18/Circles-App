@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -37,10 +38,16 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-        vertical: 10.0,
+      margin: EdgeInsets.symmetric(
+        vertical: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          10,
+        ),
       ),
-      height: 105.0,
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        105,
+      ),
       child: Material(
         color: Theme.of(context).primaryColorLight,
         shape: RoundedRectangleBorder(
@@ -48,7 +55,12 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
           side: BorderSide(color: Theme.of(context).primaryColorDark),
         ),
         child: Container(
-          margin: const EdgeInsets.all(16),
+          margin: EdgeInsets.all(
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,16 +83,26 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         Container(
-                          margin: const EdgeInsets.only(
-                            left: 5,
+                          margin: EdgeInsets.only(
+                            left: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              5,
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              10,
+                            ),
+                            vertical: ComponentService.convertHeight(
+                              MediaQuery.of(context).size.height,
+                              5,
+                            ),
                           ),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: DropdownButton<String>(
                             value: widget.task.repeat,
                             padding: const EdgeInsets.all(0),

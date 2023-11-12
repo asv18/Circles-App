@@ -2,7 +2,7 @@ import 'package:circlesapp/components/type_based/Circles/circle_widget.dart';
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
-import 'package:circlesapp/services/user_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -47,16 +47,19 @@ class _CirclesDispState extends State<CirclesDisp> {
           value: "Leave Circle",
           child: Text("Leave Circle"),
         ),
-        if (circle.admin!.fKey == UserService.dataUser.fKey)
-          const PopupMenuItem(
-            value: "Edit Circle",
-            child: Text("Edit Circle"),
-          ),
+        // if (circle.admin!.fKey == UserService.dataUser.fKey)
+        //   const PopupMenuItem(
+        //     value: "Edit Circle",
+        //     child: Text("Edit Circle"),
+        //   ),
       ],
     );
 
     if (result == "Leave Circle") {
-    } else if (result == "Edit Circle") {}
+      CircleService().leaveCircle(circle);
+    } else if (result == "Edit Circle") {
+      //TODO: implement edit circle screen
+    }
   }
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
@@ -125,7 +128,12 @@ class _CirclesDispState extends State<CirclesDisp> {
                   } else {
                     return Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(
+                        vertical: ComponentService.convertHeight(
+                          MediaQuery.of(context).size.height,
+                          10,
+                        ),
+                      ),
                       color: Theme.of(context).primaryColorLight,
                       child: Center(
                         child: Text(

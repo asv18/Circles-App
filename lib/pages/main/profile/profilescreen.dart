@@ -6,6 +6,7 @@ import 'package:circlesapp/components/type_based/Goals/goals_list_widget.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_complete_dialog.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
 import 'package:circlesapp/variable_screens/edit_goal_screen.dart';
 import 'package:circlesapp/services/goal_service.dart';
@@ -290,11 +291,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             backgroundColor: Colors.transparent,
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(48.0),
+              preferredSize: Size.fromHeight(
+                ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  48,
+                ),
+              ),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.symmetric(
+                  horizontal: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    20,
+                  ),
+                ),
                 child: Transform.translate(
-                  offset: const Offset(0, 15.0),
+                  offset: Offset(
+                    0,
+                    ComponentService.convertHeight(
+                      MediaQuery.of(context).size.height,
+                      15,
+                    ),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -306,11 +323,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: UserImageWidget(
                               photoUrl: UserService.dataUser.photoUrl ??
                                   'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                              dimensions: 100.0,
+                              dimensions: ComponentService.convertWidth(
+                                MediaQuery.of(context).size.width,
+                                100,
+                              ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 15,
+                          SizedBox(
+                            width: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              15,
+                            ),
                           ),
                           DefaultTextStyle(
                             style: Theme.of(context).textTheme.titleLarge!,
@@ -327,8 +350,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10.0),
                           color: Theme.of(context).canvasColor,
                         ),
-                        height: 40.0,
-                        width: 40.0,
+                        height: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          40,
+                        ),
+                        width: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          40,
+                        ),
                         alignment: Alignment.center,
                         child: Center(
                           child: IconButton(
@@ -363,7 +392,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Theme.of(context).primaryColor,
           child: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(12.0, 40.0, 12.0, 0),
+              margin: EdgeInsets.fromLTRB(
+                ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  12,
+                ),
+                ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  40,
+                ),
+                ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  12,
+                ),
+                0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -400,7 +443,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         if (tasks.isEmpty) {
                           return Container(
-                            height: 120,
+                            height: ComponentService.convertHeight(
+                              MediaQuery.of(context).size.height,
+                              120,
+                            ),
                             width: double.infinity,
                             margin: const EdgeInsets.only(top: 5),
                             color: Theme.of(context).primaryColorLight,
@@ -415,7 +461,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                         } else {
                           return SizedBox(
-                            height: 120.0,
+                            height: ComponentService.convertHeight(
+                              MediaQuery.of(context).size.height,
+                              120,
+                            ),
                             child: ListView.builder(
                               itemCount: tasks.length,
                               padding: const EdgeInsets.all(0),
@@ -445,8 +494,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                   ),
-                  const SizedBox(
-                    height: 5,
+                  SizedBox(
+                    height: ComponentService.convertHeight(
+                      MediaQuery.of(context).size.height,
+                      5,
+                    ),
                   ),
                   Column(
                     children: [
@@ -473,10 +525,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else if (snapshot.hasData) {
                             if (snapshot.data!.isEmpty) {
                               return Container(
-                                height: 120.0,
+                                height: ComponentService.convertHeight(
+                                  MediaQuery.of(context).size.height,
+                                  120,
+                                ),
                                 width: double.infinity,
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 10,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: ComponentService.convertHeight(
+                                    MediaQuery.of(context).size.height,
+                                    10,
+                                  ),
                                 ),
                                 color: Theme.of(context).primaryColorLight,
                                 child: Center(
@@ -491,7 +549,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             } else {
                               return SizedBox(
-                                height: 110.0,
+                                height: ComponentService.convertHeight(
+                                  MediaQuery.of(context).size.height,
+                                  110,
+                                ),
                                 child: ListView.builder(
                                   padding: const EdgeInsets.all(0),
                                   scrollDirection: Axis.horizontal,
@@ -535,8 +596,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: ComponentService.convertHeight(
+                          MediaQuery.of(context).size.height,
+                          10,
+                        ),
                       ),
                       FutureBuilder<List<Circle>>(
                         future: CircleService.circles,
@@ -592,10 +656,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             } else {
                               return Container(
-                                height: 120.0,
+                                height: ComponentService.convertHeight(
+                                  MediaQuery.of(context).size.height,
+                                  120,
+                                ),
                                 width: double.infinity,
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 10,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: ComponentService.convertHeight(
+                                    MediaQuery.of(context).size.height,
+                                    10,
+                                  ),
                                 ),
                                 color: Theme.of(context).primaryColorLight,
                                 child: Center(
@@ -621,8 +691,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
+                  SizedBox(
+                    height: ComponentService.convertHeight(
+                      MediaQuery.of(context).size.height,
+                      5,
+                    ),
                   ),
                   Center(
                     child: ElevatedButton(

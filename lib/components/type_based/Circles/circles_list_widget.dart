@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/components/type_based/Users/user_image_circle_widget.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +24,16 @@ class CircleListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 5.0),
-      height: 90.0,
+      margin: EdgeInsets.only(
+        bottom: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          5,
+        ),
+      ),
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        90,
+      ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         color: Theme.of(context).primaryColorLight,
@@ -51,9 +61,15 @@ class CircleListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 12.0,
+                margin: EdgeInsets.symmetric(
+                  horizontal: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    10,
+                  ),
+                  vertical: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    12,
+                  ),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,8 +104,14 @@ class CircleListWidget extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          height: 30.0,
-                          width: 120.0,
+                          height: ComponentService.convertHeight(
+                            MediaQuery.of(context).size.height,
+                            30,
+                          ),
+                          width: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            120,
+                          ),
                           child: Stack(
                             children: List.generate(
                               circle.users!.length <= 3
@@ -100,8 +122,14 @@ class CircleListWidget extends StatelessWidget {
                                   left: index * 15,
                                   child: (index == 4)
                                       ? Container(
-                                          width: 30.0,
-                                          height: 30.0,
+                                          width: ComponentService.convertWidth(
+                                            MediaQuery.of(context).size.width,
+                                            30,
+                                          ),
+                                          height: ComponentService.convertWidth(
+                                            MediaQuery.of(context).size.width,
+                                            30,
+                                          ),
                                           color: const Color.fromARGB(
                                             255,
                                             214,
@@ -115,17 +143,14 @@ class CircleListWidget extends StatelessWidget {
                                                 .displaySmall,
                                           ),
                                         )
-                                      : Container(
-                                          width: 30.0,
-                                          height: 30.0,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: CachedNetworkImageProvider(
-                                                circle.users![index].photoUrl ??
-                                                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                                              ),
-                                            ),
-                                            shape: BoxShape.circle,
+                                      : UserImageCircleWidget(
+                                          photoUrl: circle
+                                                  .users![index].photoUrl ??
+                                              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                                          dimensions:
+                                              ComponentService.convertWidth(
+                                            MediaQuery.of(context).size.width,
+                                            15,
                                           ),
                                         ),
                                 );
@@ -141,8 +166,14 @@ class CircleListWidget extends StatelessWidget {
               Hero(
                 tag: tag,
                 child: Container(
-                  width: 90,
-                  height: 90,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    90,
+                  ),
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    90,
+                  ),
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,

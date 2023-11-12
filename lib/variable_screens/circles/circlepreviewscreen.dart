@@ -3,6 +3,7 @@ import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -37,7 +38,12 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
         backgroundColor: Theme.of(context).canvasColor,
         flexibleSpace: SafeArea(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                16,
+              ),
+            ),
             child: Column(
               children: [
                 Row(
@@ -53,16 +59,25 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 10.0,
+                SizedBox(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    10,
+                  ),
                 ),
                 Row(
                   children: [
                     Hero(
                       tag: widget.tag,
                       child: Container(
-                        width: 100.0,
-                        height: 100.0,
+                        width: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          100,
+                        ),
+                        height: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          100,
+                        ),
                         alignment: Alignment.centerLeft,
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
@@ -76,11 +91,17 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10.0,
+                    SizedBox(
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        10,
+                      ),
                     ),
                     SizedBox(
-                      height: 100.0,
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        100,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,8 +122,14 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                             ],
                           ),
                           SizedBox(
-                            height: 40,
-                            width: 180,
+                            height: ComponentService.convertHeight(
+                              MediaQuery.of(context).size.height,
+                              40,
+                            ),
+                            width: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              180,
+                            ),
                             child: CustomTextButton(
                               text: "Join Circle",
                               onPressed: () async {
@@ -121,15 +148,23 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                     ),
                   ],
                 ),
-                const Divider(
-                  height: 15.0,
+                Divider(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    15,
+                  ),
                   thickness: 1,
-                  color: Color.fromARGB(255, 212, 212, 212),
+                  color: const Color.fromARGB(255, 212, 212, 212),
                 ),
                 Row(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(right: 20),
+                      margin: EdgeInsets.only(
+                        right: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          20,
+                        ),
+                      ),
                       child: Text(
                         maxLines: 2,
                         "CIRCLE\nMEMBERS",
@@ -138,21 +173,31 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                     ),
                     Expanded(
                       child: SizedBox(
-                        height: 50,
+                        height: ComponentService.convertHeight(
+                          MediaQuery.of(context).size.height,
+                          50,
+                        ),
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),
                           itemCount: widget.circle.users!.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
-                              margin: const EdgeInsets.only(right: 16),
+                              margin: EdgeInsets.only(
+                                  right: ComponentService.convertWidth(
+                                MediaQuery.of(context).size.width,
+                                16,
+                              )),
                               child: IconButton(
                                 onPressed: () {
                                   // TODO: view profile of user
                                 },
                                 padding: const EdgeInsets.all(0),
                                 icon: CircleAvatar(
-                                  radius: 25,
+                                  radius: ComponentService.convertWidth(
+                                    MediaQuery.of(context).size.width,
+                                    25,
+                                  ),
                                   backgroundImage: CachedNetworkImageProvider(
                                     widget.circle.users![index].photoUrl ??
                                         'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',

@@ -13,6 +13,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+//TODO: add responsive layout
 class MessageScreen extends StatefulWidget {
   const MessageScreen({
     super.key,
@@ -84,6 +85,7 @@ class _MessageScreenState extends State<MessageScreen> {
         if (!isTop) {
           offset = BigInt.from(messages.length) - newMessages;
 
+          //TODO: change this
           if (offset.modPow(BigInt.one, BigInt.from(20)) == BigInt.zero) {
             List<Message> newMessages = await FriendService().fetchMessages(
               widget.friendship.id!,

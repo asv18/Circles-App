@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:circlesapp/components/type_based/Goals/goal_list_toggle.dart';
 import 'package:circlesapp/services/api_services.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/shared/goal.dart';
@@ -11,7 +12,6 @@ import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/routes.dart';
-import 'package:circlesapp/shared/task.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -56,7 +56,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          50,
+        ),
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
@@ -66,7 +69,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
@@ -78,15 +86,35 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               icon: FontAwesome.x,
             ),
           ),
-          const SizedBox(
-            width: 10.0,
+          SizedBox(
+            width: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              10,
+            ),
           ),
         ],
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 40.0),
+          margin: EdgeInsets.fromLTRB(
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              15,
+            ),
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              40,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -95,23 +123,32 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 hintText: "Post title",
                 controller: _postNameController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               CustomTextField(
                 labelText: "Post Description",
                 hintText: "What describes your post?",
                 controller: _descriptionController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               Text(
                 "REFERENCE A GOAL",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               FutureBuilder<List<Goal>>(
                 future: GoalService.goals,
@@ -131,8 +168,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       itemBuilder: (context, index) {
                         return Container(
                           margin: EdgeInsets.only(
-                            bottom:
-                                (index != snapshot.data!.length - 1) ? 10 : 0,
+                            bottom: (index != snapshot.data!.length - 1)
+                                ? ComponentService.convertHeight(
+                                    MediaQuery.of(context).size.height,
+                                    10,
+                                  )
+                                : 0,
                           ),
                           child: GoalListToggle(
                             goal: snapshot.data![index],
@@ -151,7 +192,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               ),
               Container(
                 height: 200,
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(
+                  vertical: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    10,
+                  ),
+                ),
                 color: Theme.of(context).primaryColorLight,
                 child: InkWell(
                   onTap: () async {
@@ -175,8 +221,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       .textTheme
                                       .headlineMedium,
                                 ),
-                                const WidgetSpan(
-                                  child: SizedBox(width: 10),
+                                WidgetSpan(
+                                  child: SizedBox(
+                                    width: ComponentService.convertWidth(
+                                      MediaQuery.of(context).size.width,
+                                      10,
+                                    ),
+                                  ),
                                 ),
                                 const WidgetSpan(
                                   child: Icon(
@@ -250,14 +301,5 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
       ),
     );
-  }
-
-  static bool anyNull(List<Task> tasks) {
-    for (Task task in tasks) {
-      if (task.name == "") {
-        return true;
-      }
-    }
-    return false;
   }
 }

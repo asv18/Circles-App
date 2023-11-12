@@ -77,6 +77,7 @@ class _AppState extends State<MyApp> {
             routes: appRoutes,
             theme: ThemeData(
               fontFamily: "Hind",
+              visualDensity: VisualDensity.adaptivePlatformDensity,
               textTheme: TextTheme(
                 headlineLarge: GoogleFonts.poppins(
                   fontSize: 28,
@@ -197,10 +198,7 @@ class _AppState extends State<MyApp> {
         ),
         */
 
-        return const Text(
-          'loading',
-          textDirection: TextDirection.ltr,
-        );
+        return const CircularProgressIndicator();
       },
     );
   }

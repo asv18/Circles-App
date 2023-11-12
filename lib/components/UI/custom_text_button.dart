@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextButton extends StatelessWidget {
@@ -15,9 +16,15 @@ class CustomTextButton extends StatelessWidget {
       },
       style: ButtonStyle(
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          const EdgeInsets.symmetric(
-            horizontal: 40,
-            vertical: 10,
+          EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              40,
+            ),
+            vertical: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              10,
+            ),
           ),
         ),
         textStyle: MaterialStateProperty.all<TextStyle>(

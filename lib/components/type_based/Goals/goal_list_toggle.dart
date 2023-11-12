@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,10 @@ class _GoalListToggleState extends State<GoalListToggle> {
         side: BorderSide(
           color:
               widget.toggled[widget.index] ? Colors.black : Colors.transparent,
-          width: 1.0,
+          width: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            1,
+          ),
         ),
       ),
       child: InkWell(
@@ -38,8 +42,16 @@ class _GoalListToggleState extends State<GoalListToggle> {
           });
         },
         child: Container(
-          height: 40,
-          margin: const EdgeInsets.symmetric(horizontal: 12.0),
+          height: ComponentService.convertHeight(
+            MediaQuery.of(context).size.height,
+            40,
+          ),
+          margin: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              12,
+            ),
+          ),
           alignment: Alignment.centerLeft,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

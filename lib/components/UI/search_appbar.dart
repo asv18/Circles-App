@@ -1,11 +1,12 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 
 class SearchAppBar extends StatelessWidget {
   const SearchAppBar({
-    Key? key,
+    super.key,
     required this.controller,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final TextEditingController controller;
   final Function onChanged;
@@ -17,7 +18,16 @@ class SearchAppBar extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            offset: const Offset(12, 26),
+            offset: Offset(
+              ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                12,
+              ),
+              ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                26,
+              ),
+            ),
             blurRadius: 50,
             spreadRadius: 0,
             color: Colors.grey.withOpacity(.1),
@@ -42,9 +52,12 @@ class SearchAppBar extends StatelessWidget {
           hintStyle: TextStyle(
             color: Colors.black.withOpacity(.75),
           ),
-          contentPadding: const EdgeInsets.symmetric(
+          contentPadding: EdgeInsets.symmetric(
             vertical: 0.0,
-            horizontal: 20.0,
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              20,
+            ),
           ),
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(

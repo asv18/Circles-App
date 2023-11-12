@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circlesapp/components/type_based/Users/user_image_circle_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +23,16 @@ class CircleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 5.0),
-      height: 130.0,
+      margin: EdgeInsets.only(
+        bottom: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          5,
+        ),
+      ),
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        130,
+      ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         color: Theme.of(context).primaryColorLight,
@@ -67,9 +77,15 @@ class CircleWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 12.0,
+                margin: EdgeInsets.symmetric(
+                  horizontal: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    10,
+                  ),
+                  vertical: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    12,
+                  ),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,31 +97,17 @@ class CircleWidget extends StatelessWidget {
                         circle.name!,
                       ),
                     ),
-                    // Container(
-                    // margin: const EdgeInsets.symmetric(vertical: 20.0),
-                    // child: DefaultTextStyle(
-                    //   style: TextStyle(
-                    //     color: Colors.white,
-                    //     fontSize: 24,
-                    //     fontWeight: FontWeight.w400,
-                    // shadows: [
-                    //   Shadow(
-                    //     offset: const Offset(2.5, 2.5),
-                    //     blurRadius: 10.0,
-                    //     color: Colors.black.withOpacity(0.8),
-                    //   ),
-                    // ],
-                    //   ),
-                    //   child: Text(
-                    //     "${circle.updates} new updates",
-                    //   ),
-                    // ),
-                    // ),
                     Row(
                       children: [
                         SizedBox(
-                          height: 30.0,
-                          width: 120.0,
+                          height: ComponentService.convertHeight(
+                            MediaQuery.of(context).size.height,
+                            30,
+                          ),
+                          width: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            120,
+                          ),
                           child: Stack(
                             children: List.generate(
                               circle.users!.length <= 3
@@ -113,11 +115,21 @@ class CircleWidget extends StatelessWidget {
                                   : 4,
                               (index) {
                                 return Positioned(
-                                  left: index * 15,
+                                  left: index *
+                                      ComponentService.convertWidth(
+                                        MediaQuery.of(context).size.width,
+                                        15,
+                                      ),
                                   child: (index == 4)
                                       ? Container(
-                                          width: 30.0,
-                                          height: 30.0,
+                                          width: ComponentService.convertWidth(
+                                            MediaQuery.of(context).size.width,
+                                            30,
+                                          ),
+                                          height: ComponentService.convertWidth(
+                                            MediaQuery.of(context).size.width,
+                                            30,
+                                          ),
                                           color: const Color.fromARGB(
                                             255,
                                             214,
@@ -131,17 +143,14 @@ class CircleWidget extends StatelessWidget {
                                                 .displaySmall,
                                           ),
                                         )
-                                      : Container(
-                                          width: 30.0,
-                                          height: 30.0,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: CachedNetworkImageProvider(
-                                                circle.users![index].photoUrl ??
-                                                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                                              ),
-                                            ),
-                                            shape: BoxShape.circle,
+                                      : UserImageCircleWidget(
+                                          photoUrl: circle
+                                                  .users![index].photoUrl ??
+                                              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                                          dimensions:
+                                              ComponentService.convertWidth(
+                                            MediaQuery.of(context).size.width,
+                                            15,
                                           ),
                                         ),
                                 );
@@ -157,8 +166,14 @@ class CircleWidget extends StatelessWidget {
               Hero(
                 tag: "${circle.id!}$type",
                 child: Container(
-                  width: 130,
-                  height: 130,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    130,
+                  ),
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    130,
+                  ),
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,

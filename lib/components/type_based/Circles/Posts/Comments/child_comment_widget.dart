@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:circlesapp/components/type_based/Users/user_image_circle_widget.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circlepostscomments.dart';
 import 'package:circlesapp/shared/enums.dart';
 import 'package:circlesapp/shared/liked.dart';
@@ -27,9 +28,15 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 10,
+      padding: EdgeInsets.symmetric(
+        horizontal: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          8,
+        ),
+        vertical: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          10,
+        ),
       ),
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 247, 247, 252),
@@ -46,17 +53,26 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
               UserImageCircleWidget(
                 photoUrl: widget.comment.poster!.photoUrl ??
                     'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                dimensions: 25,
+                dimensions: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  25,
+                ),
               ),
-              const SizedBox(
-                width: 20,
+              SizedBox(
+                width: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  20,
+                ),
               ),
               Text(
                 widget.comment.poster!.name!,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  10,
+                ),
               ),
               Text(
                 formatDate(widget.comment.datePosted!),
@@ -65,7 +81,12 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
             ],
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
+            margin: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: Text(
               widget.comment.contents!,
               style: Theme.of(context).textTheme.bodySmall,
@@ -82,7 +103,12 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                   ),
                   Container(
                     clipBehavior: Clip.none,
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        10,
+                      ),
+                    ),
                     child: GestureDetector(
                       onTap: () => widget.replyFunction(),
                       child: Transform.flip(

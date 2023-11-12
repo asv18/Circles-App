@@ -1,6 +1,7 @@
 import 'package:circlesapp/components/UI/auth_button.dart';
 import 'package:circlesapp/components/UI/form_field.dart';
 import 'package:circlesapp/services/auth_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,7 +67,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.all(30),
+        padding: EdgeInsets.all(
+          ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            30,
+          ),
+        ),
         child: Form(
           key: _formKey,
           child: Column(
@@ -79,8 +85,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               (_invalidUser)
                   ? Container(
-                      height: 30,
-                      margin: const EdgeInsets.only(left: 10),
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        30,
+                      ),
+                      margin: EdgeInsets.only(
+                        left: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          10,
+                        ),
+                      ),
                       child: Text(
                         "Invalid email or password",
                         textAlign: TextAlign.start,
@@ -91,8 +105,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     )
-                  : const SizedBox(
-                      height: 10,
+                  : SizedBox(
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        10,
+                      ),
                     ),
               FormTextField(
                 visibility: false,
@@ -111,8 +128,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   });
                 },
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
               ),
               FormTextField(
                 visibility: false,
@@ -130,8 +150,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   });
                 },
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
               ),
               FormTextField(
                 visibility: _passNotVisibile,
@@ -157,8 +180,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   });
                 },
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
               ),
               FormTextField(
                 visibility: true,
@@ -176,24 +202,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   });
                 },
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  40,
+                ),
               ),
               AuthButton(
                 loginFunction: createEmailPassUser,
                 text: "Sign Up",
               ),
-              const SizedBox(height: 20),
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
+              ),
               Text(
                 "OR",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
-              const SizedBox(height: 20),
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
+              ),
               ProviderButton(
                 icon: SizedBox(
-                  width: 26,
-                  height: 26,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
                   child: Logo(
                     Logos.google,
                   ),
@@ -204,13 +249,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
               ProviderButton(
                 icon: SizedBox(
-                  width: 26,
-                  height: 26,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    26,
+                  ),
                   child: Logo(
                     Logos.apple,
                   ),
                 ),
-                loginMethod: AuthService().googleLogin,
+                loginMethod: () {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      "Coming Soon!",
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: Duration(seconds: 5),
+                  ));
+                },
                 text: "Sign up with Apple",
               ),
             ],

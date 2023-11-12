@@ -1,4 +1,5 @@
 import 'package:circlesapp/components/type_based/Users/user_image_circle_widget.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -16,13 +17,26 @@ class UserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
+      margin: EdgeInsets.symmetric(
+        vertical: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          10,
+        ),
       ),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.symmetric(
+          horizontal: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            10,
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2.5),
+          padding: EdgeInsets.symmetric(
+            vertical: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              2.5,
+            ),
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -34,12 +48,21 @@ class UserWidget extends StatelessWidget {
                       child: UserImageCircleWidget(
                         photoUrl: user.photoUrl ??
                             'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                        dimensions: 25,
-                        margin: 20,
+                        dimensions: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          25,
+                        ),
+                        margin: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          20,
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
+                    SizedBox(
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        10,
+                      ),
                     ),
                     Expanded(
                       flex: 2,

@@ -1,12 +1,13 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class CreateButton extends StatelessWidget {
   const CreateButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final String text;
   final Function onPressed;
@@ -14,16 +15,13 @@ class CreateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.0,
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        40,
+      ),
       child: TextButton(
         onPressed: () => onPressed(),
         style: ButtonStyle(
-          // padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          //   const EdgeInsets.symmetric(
-          //     horizontal: 40,
-          //     vertical: 10,
-          //   ),
-          // ),
           backgroundColor: MaterialStateProperty.all<Color>(
             Theme.of(context).primaryColor,
           ),

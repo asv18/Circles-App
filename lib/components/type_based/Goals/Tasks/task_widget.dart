@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,8 +21,24 @@ class TaskWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 330.0,
-      margin: const EdgeInsets.only(right: 2.5, top: 10.0, bottom: 10.0),
+      width: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
+        330,
+      ),
+      margin: EdgeInsets.only(
+        right: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          2.5,
+        ),
+        top: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          10,
+        ),
+        bottom: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          10,
+        ),
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -45,7 +62,12 @@ class TaskWidget extends StatelessWidget {
               Flexible(
                 flex: 2,
                 child: Container(
-                  margin: const EdgeInsets.all(10.0),
+                  margin: EdgeInsets.all(
+                    ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      10,
+                    ),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +105,12 @@ class TaskWidget extends StatelessWidget {
                               ? Colors.red[400]
                               : Theme.of(context).primaryColorDark
                           : Theme.of(context).primaryColorDark,
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(
+                    ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      10,
+                    ),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,8 +123,14 @@ class TaskWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 24,
-                        width: 24,
+                        height: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          24,
+                        ),
+                        width: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          24,
+                        ),
                         child: Checkbox(
                           checkColor: Theme.of(context).indicatorColor,
                           fillColor: MaterialStateProperty.resolveWith(

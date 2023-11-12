@@ -20,6 +20,7 @@ class FriendService {
         <String, dynamic>{
           'user_fkey_1': UserService.dataUser.fKey,
           'user_fkey_2': friendFKey,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -46,6 +47,7 @@ class FriendService {
       body: jsonEncode(
         <String, dynamic>{
           'user_fkey': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -79,6 +81,7 @@ class FriendService {
       body: jsonEncode(
         <String, dynamic>{
           'friendship_id': friendshipID.toString(),
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -111,6 +114,7 @@ class FriendService {
           'contents': message["contents"],
           'friendship_id': message["friendship_id"],
           'user_fkey': message["user_fkey"],
+          'user_id': UserService.dataUser.id,
           'reply_fkey': message["reply_fkey"],
         },
       ),

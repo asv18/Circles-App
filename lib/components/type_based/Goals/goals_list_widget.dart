@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -19,9 +20,20 @@ class GoalsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      height: 90.0,
-      width: 330,
+      margin: EdgeInsets.symmetric(
+        vertical: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          10,
+        ),
+      ),
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        90,
+      ),
+      width: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
+        330,
+      ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         color: goal.progress! > 100
@@ -37,9 +49,15 @@ class GoalsListWidget extends StatelessWidget {
             goal,
           ),
           child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-              vertical: 12.0,
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                12,
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +68,10 @@ class GoalsListWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 200,
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        200,
+                      ),
                       child: Text(
                         goal.name,
                         style: Theme.of(context).textTheme.headlineMedium,
@@ -59,8 +80,11 @@ class GoalsListWidget extends StatelessWidget {
                         softWrap: false,
                       ),
                     ),
-                    const SizedBox(
-                      height: 4.0,
+                    SizedBox(
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        4,
+                      ),
                     ),
                     Row(
                       children: [
@@ -69,8 +93,11 @@ class GoalsListWidget extends StatelessWidget {
                           color: Colors.red,
                           size: 15,
                         ),
-                        const SizedBox(
-                          width: 4.0,
+                        SizedBox(
+                          width: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            4,
+                          ),
                         ),
                         Text(
                           // "Time Left: ${timeLeft(goals[index].endDate)}",
@@ -82,7 +109,10 @@ class GoalsListWidget extends StatelessWidget {
                   ],
                 ),
                 CircularPercentIndicator(
-                  radius: 25,
+                  radius: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    25,
+                  ),
                   percent:
                       (goal.progress! / 100.0 > 1) ? 1 : goal.progress! / 100.0,
                   center: Text(

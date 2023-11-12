@@ -1,4 +1,5 @@
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -27,7 +28,10 @@ class _TaskScreenState extends State<TaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          100,
+        ),
         leading: IconButton(
           onPressed: () {
             mainKeyNav.currentState!.pop();
@@ -50,7 +54,12 @@ class _TaskScreenState extends State<TaskScreen> {
         backgroundColor: Colors.grey[50],
       ),
       body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10.0),
+        margin: EdgeInsets.symmetric(
+          horizontal: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            10,
+          ),
+        ),
         alignment: Alignment.center,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +84,12 @@ class _TaskScreenState extends State<TaskScreen> {
               },
             ),
             Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: EdgeInsets.only(
+                top: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
+              ),
               alignment: Alignment.centerLeft,
               child: DropdownButton<String>(
                 value: widget.task.repeat,

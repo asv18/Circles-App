@@ -3,6 +3,7 @@ import 'package:circlesapp/components/UI/search_appbar.dart';
 import 'package:circlesapp/components/type_based/Users/user_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/user.dart';
@@ -40,7 +41,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 75,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          75,
+        ),
         backgroundColor: Theme.of(context).canvasColor,
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -50,7 +54,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
@@ -62,14 +71,27 @@ class _AddUserScreenState extends State<AddUserScreen> {
               icon: FontAwesome.x,
             ),
           ),
-          const SizedBox(
-            width: 10.0,
+          SizedBox(
+            width: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              10,
+            ),
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30),
+          preferredSize: Size.fromHeight(
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              30,
+            ),
+          ),
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+            ),
             child: SearchAppBar(
               controller: _textEditingControllerSearchUsers,
               onChanged: (value) {
@@ -88,7 +110,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
             future: usersFuture,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                print(snapshot.error);
                 return const Text("ERROR!!!!!");
               } else if (snapshot.hasData) {
                 return ListView(
@@ -120,8 +141,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                               );
                             },
                           ),
-                        )
-                        .toList(),
+                        ),
                   ],
                 );
               }

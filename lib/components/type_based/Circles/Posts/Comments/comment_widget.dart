@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:circlesapp/components/type_based/Circles/Posts/Comments/child_comment_widget.dart';
 import 'package:circlesapp/components/type_based/Users/user_image_circle_widget.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circlepostscomments.dart';
 import 'package:circlesapp/shared/enums.dart';
 import 'package:circlesapp/shared/liked.dart';
@@ -38,17 +39,26 @@ class _CommentWidgetState extends State<CommentWidget> {
             UserImageCircleWidget(
               photoUrl: widget.comment.poster!.photoUrl ??
                   'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-              dimensions: 25,
+              dimensions: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                25,
+              ),
             ),
-            const SizedBox(
-              width: 20,
+            SizedBox(
+              width: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                20,
+              ),
             ),
             Text(
               widget.comment.poster!.name!,
               style: Theme.of(context).textTheme.displayMedium,
             ),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
             ),
             Text(
               formatDate(widget.comment.datePosted!),
@@ -57,7 +67,12 @@ class _CommentWidgetState extends State<CommentWidget> {
           ],
         ),
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 5),
+          margin: EdgeInsets.symmetric(
+            vertical: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              5,
+            ),
+          ),
           child: Text(
             widget.comment.contents!,
             style: Theme.of(context).textTheme.bodySmall,
@@ -74,7 +89,12 @@ class _CommentWidgetState extends State<CommentWidget> {
                 ),
                 Container(
                   clipBehavior: Clip.none,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      10,
+                    ),
+                  ),
                   child: GestureDetector(
                     onTap: () => widget.replyFunction(),
                     child: Transform.flip(
@@ -135,7 +155,12 @@ class _CommentWidgetState extends State<CommentWidget> {
           ],
         ),
         SizedBox(
-          height: (widget.comment.children!.isNotEmpty) ? 30 : 0,
+          height: (widget.comment.children!.isNotEmpty)
+              ? ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  30,
+                )
+              : 0,
           child: const VerticalDivider(
             width: 0,
             thickness: 1,
@@ -158,8 +183,11 @@ class _CommentWidgetState extends State<CommentWidget> {
                         thickness: 1,
                         color: Color.fromARGB(255, 108, 117, 125),
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          20,
+                        ),
                       ),
                       Expanded(
                         child: ChildCommentWidget(
@@ -172,9 +200,12 @@ class _CommentWidgetState extends State<CommentWidget> {
                 ),
                 if (widget.comment.children!.length > 1 &&
                     widget.comment.children!.length - 1 != index)
-                  const SizedBox(
-                    height: 10,
-                    child: VerticalDivider(
+                  SizedBox(
+                    height: ComponentService.convertHeight(
+                      MediaQuery.of(context).size.height,
+                      10,
+                    ),
+                    child: const VerticalDivider(
                       width: 0,
                       thickness: 1,
                       color: Color.fromARGB(255, 108, 117, 125),

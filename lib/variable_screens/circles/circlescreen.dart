@@ -4,6 +4,7 @@ import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/pages/add_user_screen/add_user_screen.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/variable_screens/circles/posts/circle_post_display.dart';
@@ -88,7 +89,12 @@ class _CircleScreenState extends State<CircleScreen> {
         backgroundColor: Theme.of(context).canvasColor,
         flexibleSpace: SafeArea(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                16,
+              ),
+            ),
             child: Column(
               children: [
                 Row(
@@ -102,16 +108,25 @@ class _CircleScreenState extends State<CircleScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 10.0,
+                SizedBox(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    10,
+                  ),
                 ),
                 Row(
                   children: [
                     Hero(
                       tag: widget.tag,
                       child: Container(
-                        width: 100.0,
-                        height: 100.0,
+                        width: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          100,
+                        ),
+                        height: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          100,
+                        ),
                         alignment: Alignment.centerLeft,
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
@@ -125,11 +140,17 @@ class _CircleScreenState extends State<CircleScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10.0,
+                    SizedBox(
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        10,
+                      ),
                     ),
                     SizedBox(
-                      height: 100.0,
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        100,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,8 +174,14 @@ class _CircleScreenState extends State<CircleScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                height: 40,
-                                width: 180,
+                                height: ComponentService.convertHeight(
+                                  MediaQuery.of(context).size.height,
+                                  40,
+                                ),
+                                width: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  180,
+                                ),
                                 child: CustomTextButton(
                                   text: "Create Post",
                                   onPressed: () async {
@@ -162,12 +189,21 @@ class _CircleScreenState extends State<CircleScreen> {
                                   },
                                 ),
                               ),
-                              const SizedBox(
-                                width: 20,
+                              SizedBox(
+                                width: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  20,
+                                ),
                               ),
                               Container(
-                                height: 40,
-                                width: 40,
+                                height: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  40,
+                                ),
+                                width: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  40,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
                                   borderRadius: BorderRadius.circular(12),
@@ -199,15 +235,23 @@ class _CircleScreenState extends State<CircleScreen> {
                     ),
                   ],
                 ),
-                const Divider(
-                  height: 15.0,
+                Divider(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    15,
+                  ),
                   thickness: 1,
-                  color: Color.fromARGB(255, 212, 212, 212),
+                  color: const Color.fromARGB(255, 212, 212, 212),
                 ),
                 Row(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(right: 20),
+                      margin: EdgeInsets.only(
+                        right: ComponentService.convertWidth(
+                          MediaQuery.of(context).size.width,
+                          20,
+                        ),
+                      ),
                       child: Text(
                         maxLines: 2,
                         "CIRCLE\nMEMBERS",
@@ -216,21 +260,32 @@ class _CircleScreenState extends State<CircleScreen> {
                     ),
                     Expanded(
                       child: SizedBox(
-                        height: 50,
+                        height: ComponentService.convertHeight(
+                          MediaQuery.of(context).size.height,
+                          50,
+                        ),
                         child: ListView.builder(
                           padding: const EdgeInsets.all(0),
                           itemCount: circle.users!.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
-                              margin: const EdgeInsets.only(right: 16),
+                              margin: EdgeInsets.only(
+                                right: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  16,
+                                ),
+                              ),
                               child: IconButton(
                                 onPressed: () {
                                   // TODO: view profile of user
                                 },
                                 padding: const EdgeInsets.all(0),
                                 icon: CircleAvatar(
-                                  radius: 25,
+                                  radius: ComponentService.convertWidth(
+                                    MediaQuery.of(context).size.width,
+                                    25,
+                                  ),
                                   backgroundImage: CachedNetworkImageProvider(
                                     circle.users![index].photoUrl ??
                                         'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
@@ -244,10 +299,13 @@ class _CircleScreenState extends State<CircleScreen> {
                     ),
                   ],
                 ),
-                const Divider(
-                  height: 15.0,
+                Divider(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    15,
+                  ),
                   thickness: 1,
-                  color: Color.fromARGB(255, 212, 212, 212),
+                  color: const Color.fromARGB(255, 212, 212, 212),
                 ),
               ],
             ),
@@ -268,10 +326,3 @@ class _CircleScreenState extends State<CircleScreen> {
     );
   }
 }
-
-/**
- * 
- * CirclePostDisplay(
-    circle: circle,
-  ),
- */

@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,9 +22,15 @@ class ProviderButton extends StatelessWidget {
       child: ElevatedButton.icon(
         style: ButtonStyle(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-            const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
+            EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                10,
+              ),
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
@@ -39,18 +46,6 @@ class ProviderButton extends StatelessWidget {
         icon: Container(
           child: icon,
         ),
-        /**
-         * Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: icon,
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-        ),
-         */
         label: Text(
           text,
           textAlign: TextAlign.center,

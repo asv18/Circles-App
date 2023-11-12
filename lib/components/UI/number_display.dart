@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +18,14 @@ class NumberDisplay extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 45,
-          height: 45,
+          width: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            45,
+          ),
+          height: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            45,
+          ),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Theme.of(context).primaryColorLight,
@@ -62,8 +69,11 @@ class NumberDisplay extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(
-          height: 3,
+        SizedBox(
+          height: ComponentService.convertHeight(
+            MediaQuery.of(context).size.height,
+            3,
+          ),
         ),
         Text(
           text,

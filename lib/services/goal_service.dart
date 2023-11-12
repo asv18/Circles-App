@@ -19,7 +19,7 @@ class GoalService {
       },
       body: jsonEncode(
         <String, dynamic>{
-          "id": UserService.dataUser.id,
+          "user_id": UserService.dataUser.id,
         },
       ),
     );

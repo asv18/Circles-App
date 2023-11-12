@@ -1,5 +1,6 @@
 import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:circlesapp/shared/friendship.dart';
 import 'package:circlesapp/shared/message.dart';
@@ -41,13 +42,26 @@ class FriendWidget extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 10,
+        margin: EdgeInsets.symmetric(
+          vertical: ComponentService.convertHeight(
+            MediaQuery.of(context).size.height,
+            10,
+          ),
         ),
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              10,
+            ),
+          ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                2.5,
+              ),
+            ),
             child: Row(
               children: [
                 Flexible(
@@ -55,8 +69,14 @@ class FriendWidget extends StatelessWidget {
                   child: UserImageWidget(
                     photoUrl: friend.photoUrl ??
                         'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                    dimensions: 55,
-                    margin: 20,
+                    dimensions: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      55,
+                    ),
+                    margin: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      20,
+                    ),
                   ),
                 ),
                 Flexible(

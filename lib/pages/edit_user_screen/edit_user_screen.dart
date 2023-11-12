@@ -7,6 +7,7 @@ import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/api_services.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -66,7 +67,16 @@ class _EditUserScreenState extends State<EditUserScreen> {
         ),
         automaticallyImplyLeading: false,
         leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 12),
+          padding: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              7,
+            ),
+            vertical: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              12,
+            ),
+          ),
           child: ExitButton(
             onPressed: () {
               mainKeyNav.currentState!.pop(
@@ -79,11 +89,27 @@ class _EditUserScreenState extends State<EditUserScreen> {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(150.0),
+          preferredSize: Size.fromHeight(
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              150,
+            ),
+          ),
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20.0),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                20,
+              ),
+            ),
             child: Transform.translate(
-              offset: const Offset(0, 75.0),
+              offset: Offset(
+                0,
+                ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  75,
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,20 +126,38 @@ class _EditUserScreenState extends State<EditUserScreen> {
                               ? UserImageWidget(
                                   photoUrl: UserService.dataUser.photoUrl ??
                                       'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                                  dimensions: 150.0,
+                                  dimensions: ComponentService.convertWidth(
+                                    MediaQuery.of(context).size.width,
+                                    150,
+                                  ),
                                 )
                               : UserImageWidget(
                                   imgSrc: _imageSrc,
                                   useCachedNetwork: false,
-                                  dimensions: 150.0,
+                                  dimensions: ComponentService.convertWidth(
+                                    MediaQuery.of(context).size.width,
+                                    150,
+                                  ),
                                 ),
                         ),
                         Positioned(
-                          left: 120,
-                          top: 120,
+                          left: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            120,
+                          ),
+                          top: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            120,
+                          ),
                           child: Container(
-                            width: 20,
-                            height: 20,
+                            width: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              20,
+                            ),
+                            height: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              20,
+                            ),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),

@@ -4,6 +4,7 @@ import 'package:circlesapp/components/UI/custom_text_field.dart';
 import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/edit_task_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
@@ -66,7 +67,10 @@ class _GoalScreenState extends State<GoalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          50,
+        ),
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
@@ -76,7 +80,12 @@ class _GoalScreenState extends State<GoalScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
@@ -88,15 +97,35 @@ class _GoalScreenState extends State<GoalScreen> {
               icon: FontAwesome.x,
             ),
           ),
-          const SizedBox(
-            width: 10.0,
+          SizedBox(
+            width: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              10,
+            ),
           ),
         ],
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 40.0),
+          margin: EdgeInsets.fromLTRB(
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              15,
+            ),
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              40,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -105,16 +134,22 @@ class _GoalScreenState extends State<GoalScreen> {
                 hintText: "What do you want to achieve?",
                 controller: _goalNameController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               CustomTextField(
                 labelText: "Goal Description",
                 hintText: "What best describes your goal?",
                 controller: _descriptionController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  10,
+                ),
               ),
               CustomTextField(
                 labelText: "Goal End Date",
@@ -143,8 +178,11 @@ class _GoalScreenState extends State<GoalScreen> {
                   }
                 },
               ),
-              const SizedBox(
-                height: 20.0,
+              SizedBox(
+                height: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  20,
+                ),
               ),
               Text(
                 "Your tasks for this goal",
@@ -152,7 +190,12 @@ class _GoalScreenState extends State<GoalScreen> {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 10.0),
+                margin: EdgeInsets.only(
+                  bottom: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    10,
+                  ),
+                ),
                 child: (tasks.isNotEmpty)
                     ? ListView.builder(
                         shrinkWrap: true,
@@ -185,7 +228,12 @@ class _GoalScreenState extends State<GoalScreen> {
                       )
                     : Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(
+                          ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            20,
+                          ),
+                        ),
                         color: Theme.of(context).primaryColorLight,
                         child: Center(
                           child: Text(
@@ -214,8 +262,11 @@ class _GoalScreenState extends State<GoalScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 100,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  100,
+                ),
               ),
               Align(
                 alignment: Alignment.center,

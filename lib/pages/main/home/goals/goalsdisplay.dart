@@ -1,6 +1,7 @@
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/type_based/Goals/goal_widget.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/variable_screens/edit_goal_screen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
@@ -138,8 +139,11 @@ class _GoalsDispState extends State<GoalsDisp> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              10,
+            ),
           ),
           Expanded(
             child: FutureBuilder<List<Goal>>(
@@ -164,7 +168,12 @@ class _GoalsDispState extends State<GoalsDisp> {
                   } else {
                     return Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(
+                        vertical: ComponentService.convertHeight(
+                          MediaQuery.of(context).size.height,
+                          10,
+                        ),
+                      ),
                       color: Theme.of(context).primaryColorLight,
                       child: Center(
                         child: Text(

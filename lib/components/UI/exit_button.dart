@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 
 class ExitButton extends StatelessWidget {
@@ -13,8 +14,14 @@ class ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40,
-      height: 40,
+      width: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
+        40,
+      ),
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
+        40,
+      ),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),

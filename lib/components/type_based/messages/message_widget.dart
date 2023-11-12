@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/message.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,12 @@ class MessageWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(
+                      ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        8,
+                      ),
+                    ),
                     child: Text(
                       getFormattedTime(message.dateSent!),
                     ),
@@ -64,7 +70,12 @@ class MessageWidget extends StatelessWidget {
                 // ),
                 Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(
+                      ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        8,
+                      ),
+                    ),
                     child: Text(
                       getFormattedTime(message.dateSent!),
                     ),
@@ -78,8 +89,24 @@ class MessageWidget extends StatelessWidget {
             ? Alignment.topLeft
             : Alignment.topRight),
         padding: EdgeInsets.only(
-          left: (message.userFKey != UserService.dataUser.fKey ? 5 : 20),
-          right: (message.userFKey != UserService.dataUser.fKey ? 20 : 5),
+          left: (message.userFKey != UserService.dataUser.fKey
+              ? ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  5,
+                )
+              : ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  20,
+                )),
+          right: (message.userFKey != UserService.dataUser.fKey
+              ? ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  20,
+                )
+              : ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  5,
+                )),
           top: margin,
         ),
         child: Container(

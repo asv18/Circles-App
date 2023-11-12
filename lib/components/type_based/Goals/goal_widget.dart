@@ -1,5 +1,6 @@
 // import 'package:circlesapp/routes.dart';
 // import 'package:circlesapp/variable_screens/goalscreen.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -21,8 +22,16 @@ class GoalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 5.0),
-      height: 130.0,
+      margin: EdgeInsets.only(
+        bottom: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          5,
+        ),
+      ),
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        130,
+      ),
       child: Card(
         clipBehavior: Clip.antiAlias,
         color: goal.progress! > 100
@@ -47,9 +56,15 @@ class GoalWidget extends StatelessWidget {
           //   );
           // },
           child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-              vertical: 12.0,
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                12,
+              ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,7 +77,10 @@ class GoalWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 250,
+                          width: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            250,
+                          ),
                           child: Text(
                             goal.name,
                             style: Theme.of(context).textTheme.headlineMedium,
@@ -71,8 +89,11 @@ class GoalWidget extends StatelessWidget {
                             softWrap: false,
                           ),
                         ),
-                        const SizedBox(
-                          height: 4.0,
+                        SizedBox(
+                          height: ComponentService.convertHeight(
+                            MediaQuery.of(context).size.height,
+                            4,
+                          ),
                         ),
                         Row(
                           children: [
@@ -81,8 +102,11 @@ class GoalWidget extends StatelessWidget {
                               color: Colors.red,
                               size: 15,
                             ),
-                            const SizedBox(
-                              width: 4.0,
+                            SizedBox(
+                              width: ComponentService.convertWidth(
+                                MediaQuery.of(context).size.width,
+                                4,
+                              ),
                             ),
                             Text(
                               "${formatDate(goal.startDate!)} - ${formatDate(goal.endDate)}",
@@ -93,7 +117,10 @@ class GoalWidget extends StatelessWidget {
                       ],
                     ),
                     CircularPercentIndicator(
-                      radius: 25,
+                      radius: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        25,
+                      ),
                       percent: (goal.progress! / 100.0 > 1)
                           ? 1
                           : goal.progress! / 100.0,
@@ -107,7 +134,12 @@ class GoalWidget extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.only(right: 125),
+                  margin: EdgeInsets.only(
+                    right: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      125,
+                    ),
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

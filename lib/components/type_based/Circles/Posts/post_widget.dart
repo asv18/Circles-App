@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/shared/enums.dart';
@@ -54,7 +55,20 @@ class _PostWidgetState extends State<PostWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            margin: const EdgeInsets.only(left: 10, right: 10, top: 12),
+            margin: EdgeInsets.only(
+              left: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+              right: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+              top: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                12,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,14 +76,20 @@ class _PostWidgetState extends State<PostWidget> {
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: 25,
+                      radius: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        25,
+                      ),
                       backgroundImage: CachedNetworkImageProvider(
                         widget.post.poster!.photoUrl ??
                             'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
+                    SizedBox(
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        10,
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,8 +121,11 @@ class _PostWidgetState extends State<PostWidget> {
                             color: Theme.of(context).indicatorColor,
                             size: 20,
                           ),
-                          const SizedBox(
-                            width: 5,
+                          SizedBox(
+                            width: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
+                              5,
+                            ),
                           ),
                           Text(
                             widget.post.title!,
@@ -122,7 +145,10 @@ class _PostWidgetState extends State<PostWidget> {
           if (widget.post.image != null)
             Container(
               width: double.infinity,
-              height: 150,
+              height: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                150,
+              ),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: CachedNetworkImageProvider(
@@ -134,7 +160,12 @@ class _PostWidgetState extends State<PostWidget> {
             ),
           if (widget.post.description != null)
             Container(
-              margin: const EdgeInsets.only(top: 0, left: 10),
+              margin: EdgeInsets.only(
+                left: ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  10,
+                ),
+              ),
               alignment: Alignment.centerLeft,
               child: Text(
                 widget.post.description!,
@@ -142,7 +173,16 @@ class _PostWidgetState extends State<PostWidget> {
               ),
             ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                10,
+              ),
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                10,
+              ),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,8 +233,11 @@ class _PostWidgetState extends State<PostWidget> {
                         size: 22,
                       ),
                     ),
-                    const SizedBox(
-                      width: 5.0,
+                    SizedBox(
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        5,
+                      ),
                     ),
                     Text(
                       "${widget.post.likes} likes",
@@ -246,8 +289,11 @@ class _PostWidgetState extends State<PostWidget> {
                         size: 22,
                       ),
                     ),
-                    const SizedBox(
-                      width: 5.0,
+                    SizedBox(
+                      width: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        5,
+                      ),
                     ),
                     Text(
                       "${widget.post.comments} comments",

@@ -24,7 +24,7 @@ class UserService {
       },
       body: jsonEncode(
         <String, dynamic>{
-          "id": dataUser.id,
+          "user_id": dataUser.id,
         },
       ),
     );
@@ -129,6 +129,7 @@ class UserService {
       },
       body: jsonEncode(
         <String, dynamic>{
+          "user_id": dataUser.id,
           "circle_id": circleID,
         },
       ),
@@ -194,7 +195,7 @@ class UserService {
       },
       body: jsonEncode(
         <String, dynamic>{
-          "id": dataUser.id,
+          "user_id": dataUser.id,
           "name": dataUser.name,
           "username": dataUser.username,
           "email": dataUser.email,

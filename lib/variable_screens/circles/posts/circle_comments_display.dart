@@ -2,6 +2,7 @@ import 'package:circlesapp/components/UI/exit_button.dart';
 import 'package:circlesapp/components/type_based/Circles/Posts/Comments/comment_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/shared/circlepostscomments.dart';
@@ -68,13 +69,21 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          50,
+        ),
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: ExitButton(
               onPressed: () {
                 listKeyNav.currentState!.pop();
@@ -82,8 +91,11 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
               icon: FontAwesome.x,
             ),
           ),
-          const SizedBox(
-            width: 16,
+          SizedBox(
+            width: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
           ),
         ],
         backgroundColor: Theme.of(context).canvasColor,
@@ -102,7 +114,12 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
         backgroundColor: Theme.of(context).primaryColorLight,
         color: Theme.of(context).primaryColor,
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
+          margin: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+          ),
           child: FutureBuilder<List<PostComment>>(
             future: comments,
             builder: (context, snapshot) {
@@ -123,8 +140,11 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                             });
                           },
                         ),
-                        const SizedBox(
-                          height: 20,
+                        SizedBox(
+                          height: ComponentService.convertHeight(
+                            MediaQuery.of(context).size.height,
+                            20,
+                          ),
                         )
                       ],
                     );
@@ -140,10 +160,21 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        height: replyID == null ? 80 : 109,
+        height: replyID == null
+            ? ComponentService.convertHeight(
+                MediaQuery.of(context).size.width,
+                80,
+              )
+            : ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                109,
+              ),
         child: SafeArea(
           child: Container(
-            height: 60,
+            height: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              60,
+            ),
             width: double.infinity,
             color: Colors.white,
             child: Column(
@@ -161,12 +192,19 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                               thickness: 1,
                               color: Color.fromARGB(255, 237, 237, 237),
                             ),
-                            const SizedBox(
-                              height: 5,
+                            SizedBox(
+                              height: ComponentService.convertHeight(
+                                MediaQuery.of(context).size.height,
+                                5,
+                              ),
                             ),
                             Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              margin: EdgeInsets.symmetric(
+                                horizontal: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  10,
+                                ),
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -192,8 +230,14 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                                     },
                                   ),
                                   SizedBox(
-                                    width: 24,
-                                    height: 24,
+                                    width: ComponentService.convertWidth(
+                                      MediaQuery.of(context).size.width,
+                                      24,
+                                    ),
+                                    height: ComponentService.convertWidth(
+                                      MediaQuery.of(context).size.width,
+                                      24,
+                                    ),
                                     child: IconButton(
                                       onPressed: () {
                                         setState(() {

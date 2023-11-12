@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -34,8 +35,11 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
       background: Container(
         alignment: Alignment.centerLeft,
         child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 50.0,
+          margin: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              50,
+            ),
           ),
           child: const Icon(
             Icons.delete,
@@ -47,8 +51,11 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
         child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 50.0,
+          margin: EdgeInsets.symmetric(
+            horizontal: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              50,
+            ),
           ),
           child: const Icon(
             Icons.delete,
@@ -58,8 +65,11 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 10.0,
+        margin: EdgeInsets.symmetric(
+          vertical: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            10,
+          ),
         ),
         child: Material(
           shape: RoundedRectangleBorder(
@@ -67,13 +77,21 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
             side: BorderSide(color: Theme.of(context).primaryColorDark),
           ),
           child: Container(
-            height: 105.0,
+            height: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              105,
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColorLight,
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Container(
-              margin: const EdgeInsets.all(16),
+              margin: EdgeInsets.all(
+                ComponentService.convertWidth(
+                  MediaQuery.of(context).size.width,
+                  16,
+                ),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,16 +118,26 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
                               style: Theme.of(context).textTheme.labelMedium,
                             ),
                             Container(
-                              margin: const EdgeInsets.only(
-                                left: 5,
+                              margin: EdgeInsets.only(
+                                left: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  5,
+                                ),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  10,
+                                ),
+                                vertical: ComponentService.convertHeight(
+                                  MediaQuery.of(context).size.height,
+                                  5,
+                                ),
                               ),
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: DropdownButton<String>(
                                 value: widget.task.repeat,
                                 padding: const EdgeInsets.all(0),

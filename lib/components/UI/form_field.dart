@@ -1,3 +1,4 @@
+import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -78,9 +79,15 @@ class FormTextField extends StatelessWidget {
           size: 22,
         ),
         suffixIcon: suffixIcon,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
+        contentPadding: EdgeInsets.symmetric(
+          vertical: ComponentService.convertHeight(
+            MediaQuery.of(context).size.height,
+            20,
+          ),
+          horizontal: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            20,
+          ),
         ),
       ),
       validator: (value) => validator(value),

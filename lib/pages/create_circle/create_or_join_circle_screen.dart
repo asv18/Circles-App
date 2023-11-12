@@ -8,6 +8,7 @@ import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dar
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/api_services.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/variable_screens/circles/circlepreviewscreen.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,10 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          50,
+        ),
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
@@ -60,7 +64,12 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
@@ -72,15 +81,35 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
               icon: FontAwesome.x,
             ),
           ),
-          const SizedBox(
-            width: 10.0,
+          SizedBox(
+            width: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              10,
+            ),
           ),
         ],
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 40.0),
+          margin: EdgeInsets.fromLTRB(
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              15,
+            ),
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              40,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -89,16 +118,22 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                 maxLines: 2,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
-              const SizedBox(
-                height: 20.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
               ),
               CustomTextField(
                 labelText: "Circle Name",
                 hintText: "What do want the goal of this circle to be?",
                 controller: _circleNameController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               CustomDropDownButton(
                   spinnerItems: spinnerItems,
@@ -109,8 +144,16 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                     });
                   }),
               Container(
-                height: 200,
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  200,
+                ),
+                margin: EdgeInsets.symmetric(
+                  vertical: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    10,
+                  ),
+                ),
                 color: Theme.of(context).primaryColorLight,
                 child: InkWell(
                   onTap: () async {
@@ -134,8 +177,13 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                                       .textTheme
                                       .headlineMedium,
                                 ),
-                                const WidgetSpan(
-                                  child: SizedBox(width: 10),
+                                WidgetSpan(
+                                  child: SizedBox(
+                                    width: ComponentService.convertWidth(
+                                      MediaQuery.of(context).size.width,
+                                      20,
+                                    ),
+                                  ),
                                 ),
                                 const WidgetSpan(
                                   child: Icon(
@@ -153,7 +201,10 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  width: 200,
+                  width: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    200,
+                  ),
                   child: CustomTextButton(
                     onPressed: () async {
                       if (_circleNameController.text.isEmpty) {
@@ -197,22 +248,34 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Divider(
                       color: Colors.black,
-                      height: 40,
-                      endIndent: 20,
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        40,
+                      ),
+                      endIndent: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        20,
+                      ),
                     ),
                   ),
                   Text(
                     "OR",
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Divider(
                       color: Colors.black,
-                      height: 40,
-                      indent: 20,
+                      height: ComponentService.convertHeight(
+                        MediaQuery.of(context).size.height,
+                        40,
+                      ),
+                      indent: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        20,
+                      ),
                     ),
                   ),
                 ],
@@ -222,8 +285,11 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                 maxLines: 2,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
-              const SizedBox(
-                height: 20.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
               ),
               SearchAppBar(
                 controller: _queryController,
@@ -233,11 +299,17 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                   });
                 },
               ),
-              const SizedBox(
-                height: 30.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  30,
+                ),
               ),
               SizedBox(
-                height: 400,
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  400,
+                ),
                 child: FutureBuilder<List<Circle>>(
                   future: CircleService().queryCircles(searchTerm, 0),
                   builder: (context, snapshot) {
@@ -318,8 +390,16 @@ class CustomDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75,
-      padding: const EdgeInsets.all(16),
+      height: ComponentService.convertHeight(
+        MediaQuery.of(context).size.height,
+        75,
+      ),
+      padding: EdgeInsets.all(
+        ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          16,
+        ),
+      ),
       decoration: ShapeDecoration(
         color: Theme.of(context).primaryColorLight,
         shape: RoundedRectangleBorder(

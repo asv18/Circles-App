@@ -24,6 +24,7 @@ class CircleService {
       },
       body: jsonEncode(
         <String, dynamic>{
+          'user_id': UserService.dataUser.id,
           'user_fkey': UserService.dataUser.fKey,
         },
       ),
@@ -56,6 +57,7 @@ class CircleService {
       },
       body: jsonEncode(
         <String, dynamic>{
+          'user_id': UserService.dataUser.id,
           'circle_id': circleID,
         },
       ),
@@ -85,6 +87,7 @@ class CircleService {
           'circle_id': circleID,
           'user_fkey': UserService.dataUser.fKey,
           'offset': offset,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -120,6 +123,7 @@ class CircleService {
           <String, dynamic>{
             'connection_id': connectionID,
             'user_fkey': UserService.dataUser.fKey,
+            'user_id': UserService.dataUser.id,
           },
         ),
       );
@@ -136,6 +140,7 @@ class CircleService {
             'connection_id': connectionID,
             'like_id': liked.id,
             'user_fkey': UserService.dataUser.fKey,
+            'user_id': UserService.dataUser.id,
             'like_status':
                 liked.likeStatus == LikedStatus.liked ? "liked" : "not liked",
           },
@@ -159,6 +164,7 @@ class CircleService {
         <String, dynamic>{
           'post_connection_id': postConnectionID,
           'user_fkey': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
           'offset': offset,
         },
       ),
@@ -198,6 +204,7 @@ class CircleService {
           'post_connection_id': postConnectionID,
           'comment_id': parentID,
           'user_fkey': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
           'offset': offset,
         },
       ),
@@ -236,6 +243,7 @@ class CircleService {
           <String, dynamic>{
             'comment_id': commentID,
             'user_fkey': UserService.dataUser.fKey,
+            'user_id': UserService.dataUser.id,
           },
         ),
       );
@@ -252,6 +260,7 @@ class CircleService {
             'comment_id': commentID,
             'like_id': liked.id,
             'user_fkey': UserService.dataUser.fKey,
+            'user_id': UserService.dataUser.id,
             'like_status':
                 liked.likeStatus == LikedStatus.liked ? "liked" : "not liked",
           },
@@ -279,6 +288,7 @@ class CircleService {
           'contents': contents,
           'post_id': postID,
           'parent_id': replyID,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -307,6 +317,7 @@ class CircleService {
           'query': query,
           'offset': offset,
           'user_fkey': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -338,6 +349,7 @@ class CircleService {
         <String, dynamic>{
           'circle_id': circleID,
           'user_fkey': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -358,6 +370,7 @@ class CircleService {
         <String, dynamic>{
           'circle_id': circleID,
           'user_fkey': userID,
+          'user_id': UserService.dataUser.id,
         },
       ),
     );
@@ -376,6 +389,7 @@ class CircleService {
           'circle_name': circle.name,
           'image': circle.image ?? 'https://picsum.photos/570/300',
           'user_creator': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
           'publicity': circle.status,
         },
       ),
@@ -396,10 +410,28 @@ class CircleService {
           'description': post.description,
           'image': post.image,
           'user_fkey': UserService.dataUser.fKey,
+          'user_id': UserService.dataUser.id,
           'goal_id': post.goalID,
           'circle_ids': [
             circleID,
           ],
+        },
+      ),
+    );
+  }
+
+  Future<http.Response> leaveCircle(Circle circle) async {
+    return await http.post(
+      Uri.parse(
+        '${link}users/circles/disconnect/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'user_id': UserService.dataUser.id,
+          'circle_id': circle.id,
         },
       ),
     );

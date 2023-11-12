@@ -6,6 +6,7 @@ import 'package:circlesapp/components/type_based/Circles/circle_list_toggle.dart
 import 'package:circlesapp/components/type_based/Goals/Tasks/new_task_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
@@ -48,7 +49,10 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50,
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          50,
+        ),
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
@@ -58,7 +62,12 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.symmetric(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                5,
+              ),
+            ),
             child: ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
@@ -70,15 +79,35 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               icon: FontAwesome.x,
             ),
           ),
-          const SizedBox(
-            width: 10.0,
+          SizedBox(
+            width: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              10,
+            ),
           ),
         ],
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 40.0),
+          margin: EdgeInsets.fromLTRB(
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              15,
+            ),
+            ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              16,
+            ),
+            ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              40,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -87,16 +116,22 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                 hintText: "What do you want to achieve?",
                 controller: _goalNameController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               CustomTextField(
                 labelText: "Goal Description",
                 hintText: "What best describes your goal?",
                 controller: _descriptionController,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               CustomTextField(
                 labelText: "Goal End Date",
@@ -125,8 +160,11 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                   }
                 },
               ),
-              const SizedBox(
-                height: 20.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  20,
+                ),
               ),
               Text(
                 "What are some tasks that will help you get there?",
@@ -134,7 +172,12 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 10.0),
+                margin: EdgeInsets.only(
+                  bottom: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    10,
+                  ),
+                ),
                 child: (tasks.isNotEmpty)
                     ? ListView.builder(
                         shrinkWrap: true,
@@ -154,7 +197,12 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                       )
                     : Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(
+                          ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            20,
+                          ),
+                        ),
                         color: Theme.of(context).primaryColorLight,
                         child: Center(
                           child: Text(
@@ -183,15 +231,21 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               Text(
                 "POST TO CIRCLES",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(
-                height: 10.0,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
               ),
               FutureBuilder<List<Circle>>(
                 future: CircleService.circles,
@@ -212,8 +266,12 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                         itemBuilder: (context, index) {
                           return Container(
                             margin: EdgeInsets.only(
-                              bottom:
-                                  (index != snapshot.data!.length - 1) ? 10 : 0,
+                              bottom: (index != snapshot.data!.length - 1)
+                                  ? ComponentService.convertHeight(
+                                      MediaQuery.of(context).size.height,
+                                      10,
+                                    )
+                                  : 0,
                             ),
                             child: CircleListToggle(
                               circle: snapshot.data![index],
@@ -226,7 +284,12 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                     } else {
                       return Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(
+                          ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
+                            20,
+                          ),
+                        ),
                         color: Theme.of(context).primaryColorLight,
                         child: Center(
                           child: Text(
@@ -244,8 +307,11 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                   );
                 },
               ),
-              const SizedBox(
-                height: 100,
+              SizedBox(
+                height: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  100,
+                ),
               ),
               Align(
                 alignment: Alignment.center,
