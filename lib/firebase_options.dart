@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '202786949583',
     projectId: 'circles-a21cb',
     storageBucket: 'circles-a21cb.appspot.com',
-    androidClientId: '202786949583-rk82iok1vcgt5r20cd9so7n0a1hnqu01.apps.googleusercontent.com',
+    androidClientId: '202786949583-of1hd295infomhikoad2h7oiah130kjp.apps.googleusercontent.com',
     iosClientId: '202786949583-ui2ogp1cr2rnep2b10p2nu08tpi548q6.apps.googleusercontent.com',
     iosBundleId: 'com.example.circlesapp',
   );

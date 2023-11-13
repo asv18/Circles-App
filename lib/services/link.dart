@@ -1,3 +1,0 @@
-String link = "http://localhost:3000/api/v1/";
-
-// String link = "https://circles-backend.deno.dev/api/v1/";
