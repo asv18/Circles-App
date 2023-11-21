@@ -85,17 +85,22 @@ class _CircleScreenState extends State<CircleScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        toolbarHeight: MediaQuery.of(context).size.height / 4.0,
+        toolbarHeight: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          260,
+        ),
         backgroundColor: Theme.of(context).canvasColor,
         flexibleSpace: SafeArea(
           child: Container(
             margin: EdgeInsets.symmetric(
-              horizontal: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
                 16,
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -121,11 +126,11 @@ class _CircleScreenState extends State<CircleScreen> {
                       child: Container(
                         width: ComponentService.convertWidth(
                           MediaQuery.of(context).size.width,
-                          100,
+                          125,
                         ),
                         height: ComponentService.convertWidth(
                           MediaQuery.of(context).size.width,
-                          100,
+                          125,
                         ),
                         alignment: Alignment.centerLeft,
                         clipBehavior: Clip.antiAlias,
@@ -147,9 +152,9 @@ class _CircleScreenState extends State<CircleScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: ComponentService.convertHeight(
-                        MediaQuery.of(context).size.height,
-                        100,
+                      height: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        125,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,8 +179,8 @@ class _CircleScreenState extends State<CircleScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                height: ComponentService.convertHeight(
-                                  MediaQuery.of(context).size.height,
+                                height: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
                                   40,
                                 ),
                                 width: ComponentService.convertWidth(
@@ -236,8 +241,8 @@ class _CircleScreenState extends State<CircleScreen> {
                   ],
                 ),
                 Divider(
-                  height: ComponentService.convertHeight(
-                    MediaQuery.of(context).size.height,
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
                     15,
                   ),
                   thickness: 1,
@@ -273,7 +278,7 @@ class _CircleScreenState extends State<CircleScreen> {
                               margin: EdgeInsets.only(
                                 right: ComponentService.convertWidth(
                                   MediaQuery.of(context).size.width,
-                                  16,
+                                  10,
                                 ),
                               ),
                               child: IconButton(

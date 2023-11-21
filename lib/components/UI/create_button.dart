@@ -15,8 +15,8 @@ class CreateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
         40,
       ),
       child: TextButton(

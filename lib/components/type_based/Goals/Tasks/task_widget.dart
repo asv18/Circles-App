@@ -105,10 +105,14 @@ class TaskWidget extends StatelessWidget {
                               ? Colors.red[400]
                               : Theme.of(context).primaryColorDark
                           : Theme.of(context).primaryColorDark,
-                  padding: EdgeInsets.all(
-                    ComponentService.convertWidth(
+                  padding: EdgeInsets.symmetric(
+                    vertical: ComponentService.convertWidth(
                       MediaQuery.of(context).size.width,
                       10,
+                    ),
+                    horizontal: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      7.5,
                     ),
                   ),
                   child: Row(

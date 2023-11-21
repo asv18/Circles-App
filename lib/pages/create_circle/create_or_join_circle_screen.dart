@@ -28,8 +28,9 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
   List<String> spinnerItems = ["Public", /*"Friends Only",*/ "Private"];
   String value = "Public";
 
+  Future<List<Circle>>? circles;
+
   final _queryController = TextEditingController();
-  String searchTerm = "";
 
   String type = "/createorjoin/circle/tag";
 
@@ -41,10 +42,16 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
     final XFile? pickedImage = await picker.pickImage(source: imageSource);
 
     setState(() {
-      if (pickedImage != null) {
-        _imageSrc = File(pickedImage.path);
+      if (pickedImage == null) {
+        _imageSrc = File(pickedImage!.path);
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    circles = CircleService().queryCircles("", 0);
   }
 
   @override
@@ -53,7 +60,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
       appBar: AppBar(
         toolbarHeight: ComponentService.convertHeight(
           MediaQuery.of(context).size.height,
-          50,
+          60,
         ),
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -65,8 +72,8 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(
-              vertical: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
+              vertical: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
                 5,
               ),
             ),
@@ -163,7 +170,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                       ? Center(
                           child: Image.file(
                             _imageSrc!,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                           ),
                         )
                       : Center(
@@ -295,7 +302,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                 controller: _queryController,
                 onChanged: (value) {
                   setState(() {
-                    searchTerm = value.toString().toLowerCase();
+                    circles = CircleService().queryCircles(value, 0);
                   });
                 },
               ),
@@ -311,7 +318,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                   400,
                 ),
                 child: FutureBuilder<List<Circle>>(
-                  future: CircleService().queryCircles(searchTerm, 0),
+                  future: circles,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -390,8 +397,8 @@ class CustomDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
         75,
       ),
       padding: EdgeInsets.all(

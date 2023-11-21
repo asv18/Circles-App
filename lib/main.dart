@@ -73,6 +73,7 @@ class _AppState extends State<MyApp> {
 
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             navigatorKey: mainKeyNav,
             routes: appRoutes,
             theme: ThemeData(

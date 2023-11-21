@@ -44,8 +44,8 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
           10,
         ),
       ),
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
         105,
       ),
       child: Material(

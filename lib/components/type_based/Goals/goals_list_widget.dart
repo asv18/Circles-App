@@ -26,9 +26,9 @@ class GoalsListWidget extends StatelessWidget {
           10,
         ),
       ),
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
-        90,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
+        100,
       ),
       width: ComponentService.convertWidth(
         MediaQuery.of(context).size.width,

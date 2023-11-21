@@ -51,7 +51,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
       appBar: AppBar(
         toolbarHeight: ComponentService.convertHeight(
           MediaQuery.of(context).size.height,
-          50,
+          60,
         ),
         automaticallyImplyLeading: false,
         elevation: 0,

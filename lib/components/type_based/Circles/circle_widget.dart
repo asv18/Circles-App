@@ -29,8 +29,8 @@ class CircleWidget extends StatelessWidget {
           5,
         ),
       ),
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
         130,
       ),
       child: Card(
@@ -82,8 +82,8 @@ class CircleWidget extends StatelessWidget {
                     MediaQuery.of(context).size.width,
                     10,
                   ),
-                  vertical: ComponentService.convertHeight(
-                    MediaQuery.of(context).size.height,
+                  vertical: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
                     12,
                   ),
                 ),
@@ -100,8 +100,8 @@ class CircleWidget extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          height: ComponentService.convertHeight(
-                            MediaQuery.of(context).size.height,
+                          height: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
                             30,
                           ),
                           width: ComponentService.convertWidth(
@@ -120,7 +120,7 @@ class CircleWidget extends StatelessWidget {
                                         MediaQuery.of(context).size.width,
                                         15,
                                       ),
-                                  child: (index == 4)
+                                  child: (index == 3)
                                       ? Container(
                                           width: ComponentService.convertWidth(
                                             MediaQuery.of(context).size.width,
@@ -130,12 +130,16 @@ class CircleWidget extends StatelessWidget {
                                             MediaQuery.of(context).size.width,
                                             30,
                                           ),
-                                          color: const Color.fromARGB(
-                                            255,
-                                            214,
-                                            226,
-                                            255,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromARGB(
+                                              255,
+                                              214,
+                                              226,
+                                              255,
+                                            ),
                                           ),
+                                          alignment: Alignment.center,
                                           child: Text(
                                             "+${circle.users!.length - 3}",
                                             style: Theme.of(context)
@@ -170,8 +174,8 @@ class CircleWidget extends StatelessWidget {
                     MediaQuery.of(context).size.width,
                     130,
                   ),
-                  height: ComponentService.convertHeight(
-                    MediaQuery.of(context).size.height,
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
                     130,
                   ),
                   decoration: BoxDecoration(

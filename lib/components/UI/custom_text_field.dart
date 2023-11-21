@@ -24,12 +24,16 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
         75,
       ),
-      padding: EdgeInsets.all(
-        ComponentService.convertWidth(
+      padding: EdgeInsets.symmetric(
+        vertical: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          16,
+        ),
+        horizontal: ComponentService.convertWidth(
           MediaQuery.of(context).size.width,
           16,
         ),

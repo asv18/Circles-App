@@ -71,7 +71,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
       appBar: AppBar(
         toolbarHeight: ComponentService.convertHeight(
           MediaQuery.of(context).size.height,
-          50,
+          60,
         ),
         automaticallyImplyLeading: false,
         elevation: 0,

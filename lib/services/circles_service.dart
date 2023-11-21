@@ -421,7 +421,7 @@ class CircleService {
   }
 
   Future<http.Response> leaveCircle(Circle circle) async {
-    return await http.post(
+    return await http.delete(
       Uri.parse(
         '${link}users/circles/disconnect/',
       ),
@@ -431,6 +431,25 @@ class CircleService {
       body: jsonEncode(
         <String, dynamic>{
           'user_id': UserService.dataUser.id,
+          'user_fkey': UserService.dataUser.fKey,
+          'circle_id': circle.id,
+        },
+      ),
+    );
+  }
+
+  Future<http.Response> deleteCircle(Circle circle) async {
+    return await http.delete(
+      Uri.parse(
+        '${link}circles/',
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'user_id': UserService.dataUser.id,
+          'user_fkey': UserService.dataUser.fKey,
           'circle_id': circle.id,
         },
       ),

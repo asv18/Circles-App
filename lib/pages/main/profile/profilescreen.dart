@@ -274,12 +274,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userTag = "/user/image/${UserService.dataUser.photoUrl}";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
-            toolbarHeight: MediaQuery.of(context).size.height / 8.5,
+            toolbarHeight: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
+              110,
+            ),
             flexibleSpace: Hero(
               tag: genTag,
               child: const Image(
@@ -307,8 +315,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Transform.translate(
                   offset: Offset(
                     0,
-                    ComponentService.convertHeight(
-                      MediaQuery.of(context).size.height,
+                    ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
                       15,
                     ),
                   ),
@@ -340,7 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             child: Text(
-                              UserService.dataUser.name!.replaceAll(" ", "\n"),
+                              UserService.dataUser.name!,
                             ),
                           ),
                         ],
@@ -443,8 +451,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         if (tasks.isEmpty) {
                           return Container(
-                            height: ComponentService.convertHeight(
-                              MediaQuery.of(context).size.height,
+                            height: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
                               120,
                             ),
                             width: double.infinity,
@@ -461,8 +469,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                         } else {
                           return SizedBox(
-                            height: ComponentService.convertHeight(
-                              MediaQuery.of(context).size.height,
+                            height: ComponentService.convertWidth(
+                              MediaQuery.of(context).size.width,
                               120,
                             ),
                             child: ListView.builder(
@@ -525,8 +533,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else if (snapshot.hasData) {
                             if (snapshot.data!.isEmpty) {
                               return Container(
-                                height: ComponentService.convertHeight(
-                                  MediaQuery.of(context).size.height,
+                                height: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
                                   120,
                                 ),
                                 width: double.infinity,
@@ -549,8 +557,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             } else {
                               return SizedBox(
-                                height: ComponentService.convertHeight(
-                                  MediaQuery.of(context).size.height,
+                                height: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
                                   110,
                                 ),
                                 child: ListView.builder(
@@ -576,8 +584,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
+                  SizedBox(
+                    height: ComponentService.convertHeight(
+                      MediaQuery.of(context).size.height,
+                      5,
+                    ),
                   ),
                   Column(
                     children: [
@@ -589,7 +600,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           CreateButton(
-                            text: "Join or Create Circle",
+                            text: "Create or Join Circle",
                             onPressed: () {
                               _navigateAndRefresh(context);
                             },

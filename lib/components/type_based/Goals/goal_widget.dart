@@ -28,8 +28,8 @@ class GoalWidget extends StatelessWidget {
           5,
         ),
       ),
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
         130,
       ),
       child: Card(
@@ -46,15 +46,6 @@ class GoalWidget extends StatelessWidget {
             context,
             goal,
           ),
-          // onTap: () {
-          //   mainKeyNav.currentState!.push(
-          //     MaterialPageRoute(
-          //       builder: (context) => GoalScreen(
-          //         goal: goal,
-          //       ),
-          //     ),
-          //   );
-          // },
           child: Container(
             margin: EdgeInsets.symmetric(
               horizontal: ComponentService.convertWidth(

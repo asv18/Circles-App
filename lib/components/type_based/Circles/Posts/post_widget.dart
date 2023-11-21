@@ -178,8 +178,8 @@ class _PostWidgetState extends State<PostWidget> {
                 MediaQuery.of(context).size.width,
                 10,
               ),
-              vertical: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
+              vertical: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
                 10,
               ),
             ),

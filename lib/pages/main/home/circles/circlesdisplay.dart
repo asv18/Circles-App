@@ -3,6 +3,7 @@ import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/component_service.dart';
+import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -43,9 +44,15 @@ class _CirclesDispState extends State<CirclesDisp> {
         ),
       ),
       items: [
-        const PopupMenuItem(
-          value: "Leave Circle",
-          child: Text("Leave Circle"),
+        PopupMenuItem(
+          value: (circle.admin!.fKey == UserService.dataUser.fKey)
+              ? "Delete Circle"
+              : "Leave Circle",
+          child: Text(
+            (circle.admin!.fKey == UserService.dataUser.fKey)
+                ? "Delete Circle"
+                : "Leave Circle",
+          ),
         ),
         // if (circle.admin!.fKey == UserService.dataUser.fKey)
         //   const PopupMenuItem(
@@ -56,10 +63,16 @@ class _CirclesDispState extends State<CirclesDisp> {
     );
 
     if (result == "Leave Circle") {
-      CircleService().leaveCircle(circle);
+      await CircleService().leaveCircle(circle);
+      await CircleService().fetchCircles();
+    } else if (result == "Delete Circle") {
+      await CircleService().deleteCircle(circle);
+      await CircleService().fetchCircles();
     } else if (result == "Edit Circle") {
       //TODO: implement edit circle screen
     }
+
+    setState(() {});
   }
 
   Future<void> _navigateAndRefresh(BuildContext context) async {
@@ -98,12 +111,15 @@ class _CirclesDispState extends State<CirclesDisp> {
                 onPressed: () async {
                   _navigateAndRefresh(context);
                 },
-                text: "Join or Create Circle",
+                text: "Create or Join Circle",
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: ComponentService.convertHeight(
+              MediaQuery.of(context).size.height,
+              10,
+            ),
           ),
           Expanded(
             child: FutureBuilder<List<Circle>>(

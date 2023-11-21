@@ -95,8 +95,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
             child: SearchAppBar(
               controller: _textEditingControllerSearchUsers,
               onChanged: (value) {
-                usersFuture =
-                    UserService().queryUsers(value, widget.circle.id!);
+                setState(() {
+                  usersFuture =
+                      UserService().queryUsers(value, widget.circle.id!);
+                });
               },
             ),
           ),
@@ -112,37 +114,25 @@ class _AddUserScreenState extends State<AddUserScreen> {
               if (snapshot.hasError) {
                 return const Text("ERROR!!!!!");
               } else if (snapshot.hasData) {
-                return ListView(
-                  children: [
-                    ...snapshot.data!
-                        .where(
-                          (prospect) =>
-                              searchTerm.isEmpty ||
-                              prospect.name!
-                                  .toLowerCase()
-                                  .contains(searchTerm) ||
-                              prospect.username!
-                                  .toLowerCase()
-                                  .contains(searchTerm),
-                        )
-                        .map(
-                          (prospect) => UserWidget(
-                            user: prospect,
-                            onPressed: () async {
-                              await CircleService().connectForeignUserToCircle(
-                                prospect.fKey!,
-                                widget.circle.id!,
-                              );
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return UserWidget(
+                      user: snapshot.data![index],
+                      onPressed: () async {
+                        await CircleService().connectForeignUserToCircle(
+                          snapshot.data![index].fKey!,
+                          widget.circle.id!,
+                        );
 
-                              mainKeyNav.currentState!.pop(
-                                [
-                                  "User Added",
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                  ],
+                        mainKeyNav.currentState!.pop(
+                          [
+                            "User Added",
+                          ],
+                        );
+                      },
+                    );
+                  },
                 );
               }
 

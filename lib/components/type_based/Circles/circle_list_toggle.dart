@@ -42,8 +42,8 @@ class _CircleListToggleState extends State<CircleListToggle> {
           });
         },
         child: Container(
-          height: ComponentService.convertHeight(
-            MediaQuery.of(context).size.height,
+          height: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
             40,
           ),
           //12

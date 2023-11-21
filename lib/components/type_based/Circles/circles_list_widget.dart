@@ -30,9 +30,9 @@ class CircleListWidget extends StatelessWidget {
           5,
         ),
       ),
-      height: ComponentService.convertHeight(
-        MediaQuery.of(context).size.height,
-        90,
+      height: ComponentService.convertWidth(
+        MediaQuery.of(context).size.width,
+        100,
       ),
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -66,8 +66,8 @@ class CircleListWidget extends StatelessWidget {
                     MediaQuery.of(context).size.width,
                     10,
                   ),
-                  vertical: ComponentService.convertHeight(
-                    MediaQuery.of(context).size.height,
+                  vertical: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
                     12,
                   ),
                 ),
@@ -81,31 +81,11 @@ class CircleListWidget extends StatelessWidget {
                         circle.name!,
                       ),
                     ),
-                    // Container(
-                    // margin: const EdgeInsets.symmetric(vertical: 20.0),
-                    // child: DefaultTextStyle(
-                    //   style: TextStyle(
-                    //     color: Colors.white,
-                    //     fontSize: 24,
-                    //     fontWeight: FontWeight.w400,
-                    //     shadows: [
-                    //       Shadow(
-                    //         offset: const Offset(2.5, 2.5),
-                    //         blurRadius: 10.0,
-                    //         color: Colors.black.withOpacity(0.8),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   child: Text(
-                    //     "${circle.updates} new updates",
-                    //   ),
-                    // ),
-                    // ),
                     Row(
                       children: [
                         SizedBox(
-                          height: ComponentService.convertHeight(
-                            MediaQuery.of(context).size.height,
+                          height: ComponentService.convertWidth(
+                            MediaQuery.of(context).size.width,
                             30,
                           ),
                           width: ComponentService.convertWidth(
@@ -168,11 +148,11 @@ class CircleListWidget extends StatelessWidget {
                 child: Container(
                   width: ComponentService.convertWidth(
                     MediaQuery.of(context).size.width,
-                    90,
+                    100,
                   ),
-                  height: ComponentService.convertHeight(
-                    MediaQuery.of(context).size.height,
-                    90,
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
+                    100,
                   ),
                   decoration: BoxDecoration(
                     image: DecorationImage(

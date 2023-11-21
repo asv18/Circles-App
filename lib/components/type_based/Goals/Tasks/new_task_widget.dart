@@ -77,8 +77,8 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
             side: BorderSide(color: Theme.of(context).primaryColorDark),
           ),
           child: Container(
-            height: ComponentService.convertHeight(
-              MediaQuery.of(context).size.height,
+            height: ComponentService.convertWidth(
+              MediaQuery.of(context).size.width,
               105,
             ),
             decoration: BoxDecoration(
