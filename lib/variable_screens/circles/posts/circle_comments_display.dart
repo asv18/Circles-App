@@ -161,13 +161,13 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
       ),
       bottomNavigationBar: BottomAppBar(
         height: replyID == null
-            ? ComponentService.convertHeight(
+            ? ComponentService.convertWidth(
                 MediaQuery.of(context).size.width,
                 80,
               )
-            : ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
-                109,
+            : ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                110,
               ),
         child: SafeArea(
           child: Container(

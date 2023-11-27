@@ -18,7 +18,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow access to photo library</string>
 	<key>CFBundleDisplayName</key>
-	<string>Circlesapp</string>
+	<string>Circles</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
