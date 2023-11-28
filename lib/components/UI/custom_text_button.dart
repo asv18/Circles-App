@@ -19,7 +19,7 @@ class CustomTextButton extends StatelessWidget {
           EdgeInsets.symmetric(
             horizontal: ComponentService.convertWidth(
               MediaQuery.of(context).size.width,
-              40,
+              20,
             ),
             vertical: ComponentService.convertHeight(
               MediaQuery.of(context).size.height,

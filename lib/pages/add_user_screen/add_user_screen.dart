@@ -40,6 +40,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: ComponentService.convertHeight(
           MediaQuery.of(context).size.height,
@@ -136,7 +137,9 @@ class _AddUserScreenState extends State<AddUserScreen> {
                 );
               }
 
-              return const CircularProgressIndicator();
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             },
           ),
         ),
