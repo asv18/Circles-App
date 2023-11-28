@@ -55,7 +55,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        toolbarHeight: MediaQuery.of(context).size.height / 10,
+        toolbarHeight: MediaQuery.of(context).size.height / 7.5,
         flexibleSpace: Hero(
           tag: genTag,
           child: const Image(
