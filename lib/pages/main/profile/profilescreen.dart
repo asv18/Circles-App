@@ -15,7 +15,6 @@ import 'package:circlesapp/services/auth_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
-import 'package:circlesapp/variable_screens/taskscreen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../services/circles_service.dart';
@@ -30,22 +29,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   Offset _tapPosition = Offset.zero;
   String type = "/profile/circles/tag";
-
-  Future<void> _navigateAndRefresh(BuildContext context) async {
-    // Navigator.push returns a Future that completes after calling
-    // Navigator.pop on the Selection Screen.
-    final response = (await mainKeyNav.currentState!.pushNamed(
-      '/creategoal',
-    )) as List;
-
-    if (!mainKeyNav.currentState!.mounted) return;
-
-    if (response[0] == "Goal Created") {
-      await GoalService().fetchGoals();
-
-      setState(() {});
-    }
-  }
 
   List<Task> tasks = List.empty(growable: true);
 
@@ -125,13 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await GoalService().updateTask(task);
   }
 
-  void _getTapPosition(TapDownDetails details) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    setState(() {
-      _tapPosition = renderBox.globalToLocal(details.globalPosition);
-    });
-  }
-
   void _showActionsTaskMenu(BuildContext context, Task task) async {
     final RenderObject? overlay =
         Overlay.of(context).context.findRenderObject();
@@ -163,13 +139,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (result == "Edit Task") {
       if (mainKeyNav.currentState!.mounted) {
-        mainKeyNav.currentState!.push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => TaskScreen(
-              task: task,
-            ),
-          ),
+        Goal? goal = await GoalService.goals.then(
+          (value) {
+            for (Goal g in value) {
+              if (g.id == task.owner) return g;
+            }
+            return null;
+          },
         );
+
+        if (goal != null) {
+          await mainKeyNav.currentState!.push(
+            MaterialPageRoute(
+              builder: (context) => GoalScreen(
+                goal: goal,
+              ),
+            ),
+          );
+        }
       }
     } else if (result == "Complete Task") {
       setState(() {
@@ -179,95 +166,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _showActionsCircleMenu(BuildContext context, Circle circle) async {
-    final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
-
-    final result = await showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
-        Rect.fromLTWH(
-          0,
-          0,
-          overlay!.paintBounds.size.width,
-          overlay.paintBounds.size.height,
-        ),
-      ),
-      items: [
-        const PopupMenuItem(
-          value: "Leave Circle",
-          child: Text("Leave Circle"),
-        ),
-        if (circle.admin!.fKey == UserService.dataUser.fKey)
-          const PopupMenuItem(
-            value: "Edit Circle",
-            child: Text("Edit Circle"),
-          ),
-      ],
-    );
-
-    if (result == "Leave Circle") {
-    } else if (result == "Edit Circle") {}
-  }
-
-  void _showActionsGoalMenu(BuildContext context, Goal goal) async {
-    final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
-
-    final result = await showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
-        Rect.fromLTWH(
-          0,
-          0,
-          overlay!.paintBounds.size.width,
-          overlay.paintBounds.size.height,
-        ),
-      ),
-      items: [
-        PopupMenuItem(
-          value: "Edit Goal",
-          child: Text("Edit ${goal.name}"),
-        ),
-        PopupMenuItem(
-          value: "Delete Goal",
-          child: Text("Delete ${goal.name}"),
-        ),
-      ],
-    );
-
-    if (result == "Edit Goal") {
-      if (mainKeyNav.currentState!.mounted) {
-        await mainKeyNav.currentState!.push(
-          MaterialPageRoute(
-            builder: (context) => GoalScreen(
-              goal: goal,
-            ),
-          ),
-        );
-      }
-    } else if (result == "Delete Goal") {
-      await GoalService().deleteGoal(goal.id!);
-
-      setState(() {
-        List<Goal> goals = List.empty(growable: true);
-        GoalService.goals.then(
-          (value) {
-            for (Goal obj in value) {
-              if (obj.id != goal.id) {
-                goals.add(obj);
-              }
-            }
-          },
-        );
-
-        GoalService.goals = Future.value(
-          goals,
-        );
-      });
-    }
+  void _getTapPosition(TapDownDetails details) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    setState(() {
+      _tapPosition = renderBox.globalToLocal(details.globalPosition);
+    });
   }
 
   String genTag = "/profile/image";
@@ -519,8 +422,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           CreateButton(
                             text: "Create Goal",
-                            onPressed: () {
-                              _navigateAndRefresh(context);
+                            onPressed: () async {
+                              await ComponentService
+                                  .navigateAndRefreshCreateGoal(
+                                context,
+                                null,
+                              );
+
+                              setState(() {});
                             },
                           ),
                         ],
@@ -568,7 +477,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   itemBuilder: (context, index) {
                                     return GoalsListWidget(
                                       goal: snapshot.data![index],
-                                      showActionsGoalMenu: _showActionsGoalMenu,
+                                      showActionsGoalMenu: () async {
+                                        await ComponentService
+                                            .showActionsGoalMenu(
+                                          context,
+                                          snapshot.data![index],
+                                          _tapPosition,
+                                          () {
+                                            setState(() {
+                                              List<Goal> goals =
+                                                  List.empty(growable: true);
+                                              GoalService.goals.then(
+                                                (value) {
+                                                  for (Goal obj in value) {
+                                                    if (obj.id !=
+                                                        snapshot
+                                                            .data![index].id) {
+                                                      goals.add(obj);
+                                                    }
+                                                  }
+                                                },
+                                              );
+
+                                              GoalService.goals = Future.value(
+                                                goals,
+                                              );
+                                            });
+                                          },
+                                        );
+
+                                        setState(() {});
+                                      },
                                       getTapPosition: _getTapPosition,
                                     );
                                   },
@@ -601,8 +540,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           CreateButton(
                             text: "Create or Join Circle",
-                            onPressed: () {
-                              _navigateAndRefresh(context);
+                            onPressed: () async {
+                              await ComponentService
+                                  .navigateAndRefreshCreateCircles(
+                                context,
+                                null,
+                              );
+
+                              setState(() {});
                             },
                           ),
                         ],
@@ -628,8 +573,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     tag: "${snapshot.data![index].id}$type",
                                     circle: snapshot.data![index],
                                     getTapPosition: _getTapPosition,
-                                    showActionsCircleMenu:
-                                        _showActionsCircleMenu,
+                                    showActionsCircleMenu: () async {
+                                      await ComponentService
+                                          .showActionsCircleMenu(
+                                        context,
+                                        snapshot.data![index],
+                                        _tapPosition,
+                                      );
+
+                                      setState(() {});
+                                    },
                                     navigate: () {
                                       mainKeyNav.currentState!.push(
                                         PageRouteBuilder(

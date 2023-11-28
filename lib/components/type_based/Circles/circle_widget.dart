@@ -41,10 +41,7 @@ class CircleWidget extends StatelessWidget {
         ),
         child: InkWell(
           onTapDown: (details) => getTapPosition(details),
-          onLongPress: () => showActionsCircleMenu(
-            context,
-            circle,
-          ),
+          onLongPress: () => showActionsCircleMenu(),
           onTap: () {
             mainKeyNav.currentState!.push(
               PageRouteBuilder(

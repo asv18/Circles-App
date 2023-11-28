@@ -44,10 +44,7 @@ class GoalsListWidget extends StatelessWidget {
         ),
         child: InkWell(
           onTapDown: (details) => getTapPosition(details),
-          onLongPress: () => showActionsGoalMenu(
-            context,
-            goal,
-          ),
+          onLongPress: () => showActionsGoalMenu(),
           child: Container(
             margin: EdgeInsets.symmetric(
               horizontal: ComponentService.convertWidth(

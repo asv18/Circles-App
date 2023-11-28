@@ -1,8 +1,6 @@
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/type_based/Goals/goal_widget.dart';
-import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/component_service.dart';
-import 'package:circlesapp/variable_screens/edit_goal_screen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
@@ -22,90 +20,10 @@ class GoalsDisp extends StatefulWidget {
 class _GoalsDispState extends State<GoalsDisp> {
   Offset _tapPosition = Offset.zero;
 
-  Future<void> _navigateAndRefresh(BuildContext context) async {
-    final response = (await mainKeyNav.currentState!.pushNamed(
-      '/creategoal',
-    )) as List;
-
-    if (!mainKeyNav.currentState!.mounted) return;
-
-    if (response[0] == "Goal Created") {
-      await GoalService().fetchGoals();
-
-      widget.callback();
-      setState(() {});
-    }
-  }
-
   void _getTapPosition(TapDownDetails details) {
     setState(() {
       _tapPosition = details.globalPosition;
     });
-  }
-
-  void _showActionsGoalMenu(BuildContext context, Goal goal) async {
-    final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
-
-    final result = await showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 100, 100),
-        Rect.fromLTWH(
-          0,
-          0,
-          overlay!.paintBounds.size.width,
-          overlay.paintBounds.size.height,
-        ),
-      ),
-      items: [
-        PopupMenuItem(
-          value: "Edit Goal",
-          child: Text("Edit ${goal.name}"),
-        ),
-        PopupMenuItem(
-          value: "Delete Goal",
-          child: Text("Delete ${goal.name}"),
-        ),
-      ],
-    );
-
-    if (result == "Edit Goal") {
-      if (mainKeyNav.currentState!.mounted) {
-        final result = (await mainKeyNav.currentState!.push(
-          MaterialPageRoute(
-            builder: (context) => GoalScreen(
-              goal: goal,
-            ),
-          ),
-        )) as List;
-
-        if (result[0] == "Updated Goal") {
-          await GoalService().fetchGoals();
-
-          setState(() {});
-        }
-      }
-    } else if (result == "Delete Goal") {
-      await GoalService().deleteGoal(goal.id!);
-
-      setState(() {
-        List<Goal> goals = List.empty(growable: true);
-        GoalService.goals.then(
-          (value) {
-            for (Goal obj in value) {
-              if (obj.id != goal.id) {
-                goals.add(obj);
-              }
-            }
-          },
-        );
-
-        GoalService.goals = Future.value(
-          goals,
-        );
-      });
-    }
   }
 
   @override
@@ -132,8 +50,13 @@ class _GoalsDispState extends State<GoalsDisp> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               CreateButton(
-                onPressed: () {
-                  _navigateAndRefresh(context);
+                onPressed: () async {
+                  await ComponentService.navigateAndRefreshCreateGoal(
+                    context,
+                    widget.callback,
+                  );
+
+                  setState(() {});
                 },
                 text: "Create Goal",
               ),
@@ -159,7 +82,35 @@ class _GoalsDispState extends State<GoalsDisp> {
                         itemBuilder: (BuildContext context, int index) {
                           return GoalWidget(
                             goal: snapshot.data![index],
-                            showActionsGoalMenu: _showActionsGoalMenu,
+                            showActionsGoalMenu: () async {
+                              await ComponentService.showActionsGoalMenu(
+                                context,
+                                snapshot.data![index],
+                                _tapPosition,
+                                () {
+                                  setState(() {
+                                    List<Goal> goals =
+                                        List.empty(growable: true);
+                                    GoalService.goals.then(
+                                      (value) {
+                                        for (Goal obj in value) {
+                                          if (obj.id !=
+                                              snapshot.data![index].id) {
+                                            goals.add(obj);
+                                          }
+                                        }
+                                      },
+                                    );
+
+                                    GoalService.goals = Future.value(
+                                      goals,
+                                    );
+                                  });
+                                },
+                              );
+
+                              setState(() {});
+                            },
                             getTapPosition: _getTapPosition,
                           );
                         },

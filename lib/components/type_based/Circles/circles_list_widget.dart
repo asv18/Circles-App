@@ -51,10 +51,7 @@ class CircleListWidget extends StatelessWidget {
           },
           onLongPress: () {
             if (showActionsCircleMenu != null) {
-              showActionsCircleMenu!(
-                context,
-                circle,
-              );
+              showActionsCircleMenu!();
             }
           },
           child: Row(
