@@ -31,10 +31,11 @@ class ExitButton extends StatelessWidget {
         onPressed: () {
           onPressed();
         },
-        child: Icon(
-          icon,
-          size: 18,
-          color: Colors.black,
+        child: FittedBox(
+          child: Icon(
+            icon,
+            color: Colors.black,
+          ),
         ),
       ),
     );

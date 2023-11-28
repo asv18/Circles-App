@@ -68,6 +68,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: ComponentService.convertHeight(
           MediaQuery.of(context).size.height,
@@ -160,6 +161,8 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.zero,
+        color: Colors.white,
         height: replyID == null
             ? ComponentService.convertWidth(
                 MediaQuery.of(context).size.width,
@@ -169,184 +172,87 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                 MediaQuery.of(context).size.width,
                 110,
               ),
-        child: SafeArea(
-          child: Container(
-            height: ComponentService.convertHeight(
-              MediaQuery.of(context).size.height,
-              60,
-            ),
-            width: double.infinity,
-            color: Colors.white,
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Visibility(
-                        visible: replyID != null,
-                        child: Column(
-                          children: [
-                            const Divider(
-                              height: 0,
-                              thickness: 1,
-                              color: Color.fromARGB(255, 237, 237, 237),
+        child: Container(
+          height: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            80,
+          ),
+          width: double.infinity,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Visibility(
+                      visible: replyID != null,
+                      child: Column(
+                        children: [
+                          const Divider(
+                            height: 0,
+                            thickness: 1,
+                            color: Color.fromARGB(255, 237, 237, 237),
+                          ),
+                          SizedBox(
+                            height: ComponentService.convertHeight(
+                              MediaQuery.of(context).size.height,
+                              5,
                             ),
-                            SizedBox(
-                              height: ComponentService.convertHeight(
-                                MediaQuery.of(context).size.height,
-                                5,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: ComponentService.convertWidth(
+                                MediaQuery.of(context).size.width,
+                                10,
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: ComponentService.convertWidth(
-                                  MediaQuery.of(context).size.width,
-                                  10,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  FutureBuilder(
-                                    future: comments,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        for (var comment in snapshot.data!) {
-                                          if (comment.id == replyID) {
-                                            return Text(
-                                              "replying to ${comment.poster!.name}'s comment",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelMedium,
-                                            );
-                                          }
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                FutureBuilder(
+                                  future: comments,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      for (var comment in snapshot.data!) {
+                                        if (comment.id == replyID) {
+                                          return Text(
+                                            "replying to ${comment.poster!.name}'s comment",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium,
+                                          );
                                         }
                                       }
+                                    }
 
-                                      return const CircularProgressIndicator();
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: ComponentService.convertWidth(
-                                      MediaQuery.of(context).size.width,
-                                      24,
-                                    ),
-                                    height: ComponentService.convertWidth(
-                                      MediaQuery.of(context).size.width,
-                                      24,
-                                    ),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          replyID = null;
-                                        });
-                                      },
-                                      icon: const Icon(
-                                        FontAwesome.x,
-                                        size: 10,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    const Divider(
-                      height: 10,
-                      thickness: 1,
-                      color: Color.fromARGB(255, 237, 237, 237),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              cursorColor: Theme.of(context).primaryColor,
-                              controller: _commentTextController,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 247, 247, 252),
-                                focusColor:
-                                    const Color.fromARGB(255, 247, 247, 252),
-                                hintText: "Write a comment...",
-                                hintStyle:
-                                    Theme.of(context).textTheme.bodySmall,
-                                border: InputBorder.none,
-                              ),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Material(
-                            child: Ink(
-                              width: 50,
-                              height: 40,
-                              child: IconButton(
-                                onPressed: () async {
-                                  if (_commentTextController.value !=
-                                          TextEditingValue.empty &&
-                                      _commentTextController.text
-                                              .replaceAll(" ", "") !=
-                                          "") {
-                                    PostComment comment =
-                                        await CircleService().postComment(
-                                      UserService.dataUser.fKey!,
-                                      _commentTextController.text,
-                                      widget.post.connectionID.toString(),
-                                      replyID.toString(),
-                                    );
-
-                                    _commentTextController.clear();
-
-                                    setState(() {
-                                      replyID = null;
-
-                                      comments.then(
-                                        (value) {
-                                          if (comment.parentId == null) {
-                                            value.insert(0, comment);
-                                          } else {
-                                            for (var element in value) {
-                                              if (element.id.toString() ==
-                                                  comment.parentId.toString()) {
-                                                element.children!.insert(
-                                                  0,
-                                                  comment,
-                                                );
-
-                                                element.childrenCount =
-                                                    element.childrenCount! + 1;
-                                              }
-                                            }
-                                          }
-                                        },
-                                      );
-                                    });
-
-                                    widget.postWidgetCallback();
-                                  }
-                                },
-                                icon: Icon(
-                                  Bootstrap.send_fill,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 17.5,
+                                    return const CircularProgressIndicator();
+                                  },
                                 ),
-                              ),
+                                SizedBox(
+                                  width: ComponentService.convertWidth(
+                                    MediaQuery.of(context).size.width,
+                                    24,
+                                  ),
+                                  height: ComponentService.convertWidth(
+                                    MediaQuery.of(context).size.width,
+                                    24,
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        replyID = null;
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      FontAwesome.x,
+                                      size: 10,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ],
@@ -354,8 +260,101 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Column(
+                children: [
+                  const Divider(
+                    height: 10,
+                    thickness: 1,
+                    color: Color.fromARGB(255, 237, 237, 237),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            cursorColor: Theme.of(context).primaryColor,
+                            controller: _commentTextController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor:
+                                  const Color.fromARGB(255, 247, 247, 252),
+                              focusColor:
+                                  const Color.fromARGB(255, 247, 247, 252),
+                              hintText: "Write a comment...",
+                              hintStyle: Theme.of(context).textTheme.bodySmall,
+                              border: InputBorder.none,
+                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Material(
+                          child: Ink(
+                            width: 50,
+                            height: 40,
+                            child: IconButton(
+                              onPressed: () async {
+                                if (_commentTextController.value !=
+                                        TextEditingValue.empty &&
+                                    _commentTextController.text
+                                            .replaceAll(" ", "") !=
+                                        "") {
+                                  PostComment comment =
+                                      await CircleService().postComment(
+                                    UserService.dataUser.fKey!,
+                                    _commentTextController.text,
+                                    widget.post.connectionID.toString(),
+                                    replyID.toString(),
+                                  );
+
+                                  _commentTextController.clear();
+
+                                  setState(() {
+                                    replyID = null;
+
+                                    comments.then(
+                                      (value) {
+                                        if (comment.parentId == null) {
+                                          value.insert(0, comment);
+                                        } else {
+                                          for (var element in value) {
+                                            if (element.id.toString() ==
+                                                comment.parentId.toString()) {
+                                              element.children!.insert(
+                                                0,
+                                                comment,
+                                              );
+
+                                              element.childrenCount =
+                                                  element.childrenCount! + 1;
+                                            }
+                                          }
+                                        }
+                                      },
+                                    );
+                                  });
+
+                                  widget.postWidgetCallback();
+                                }
+                              },
+                              icon: Icon(
+                                Bootstrap.send_fill,
+                                color: Theme.of(context).primaryColor,
+                                size: 17.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

@@ -49,178 +49,176 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          flexibleSpace: SafeArea(
-            child: Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: ComponentService.convertWidth(
-                  MediaQuery.of(context).size.width,
-                  16,
-                ),
-                vertical: ComponentService.convertHeight(
-                  MediaQuery.of(context).size.height,
-                  10,
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        flexibleSpace: SafeArea(
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                16,
               ),
-              child: Column(
-                children: [
-                  Row(
+              vertical: ComponentService.convertHeight(
+                MediaQuery.of(context).size.height,
+                10,
+              ),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Hello, ",
+                                  style: GoogleFonts.karla(
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      "${UserService.dataUser.name!.split(" ")[0]}!",
+                                  style: GoogleFonts.karla(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Text(
+                            "Let's get something done today!",
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                    UserImageWidget(
+                      photoUrl: UserService.dataUser.photoUrl ??
+                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                      dimensions: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        60,
+                      ),
+                      margin: 0,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    20,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ComponentService.convertWidth(
+                      MediaQuery.of(context).size.width,
+                      40,
+                    ),
+                  ),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Hello, ",
-                                    style: GoogleFonts.karla(
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        "${UserService.dataUser.name!.split(" ")[0]}!",
-                                    style: GoogleFonts.karla(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                      fontSize: 24,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Text(
-                              "Let's get something done today!",
-                              style: Theme.of(context).textTheme.displaySmall,
-                            ),
-                          ],
-                        ),
+                      NumberDisplay(
+                        future: GoalService.goals,
+                        text: "Tasks",
                       ),
-                      UserImageWidget(
-                        photoUrl: UserService.dataUser.photoUrl ??
-                            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-                        dimensions: ComponentService.convertWidth(
-                          MediaQuery.of(context).size.width,
-                          60,
-                        ),
-                        margin: 0,
+                      NumberDisplay(
+                        future: GoalService.goals,
+                        text: "Goals",
+                      ),
+                      NumberDisplay(
+                        future: CircleService.circles,
+                        text: "Circles",
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: ComponentService.convertHeight(
-                      MediaQuery.of(context).size.height,
-                      20,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: ComponentService.convertWidth(
-                        MediaQuery.of(context).size.width,
-                        40,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        NumberDisplay(
-                          future: GoalService.goals,
-                          text: "Tasks",
-                        ),
-                        NumberDisplay(
-                          future: GoalService.goals,
-                          text: "Goals",
-                        ),
-                        NumberDisplay(
-                          future: CircleService.circles,
-                          text: "Circles",
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          elevation: 0,
-          backgroundColor: Theme.of(context).canvasColor,
-          toolbarHeight: ComponentService.convertWidth(
-            MediaQuery.of(context).size.width,
-            160,
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(
-              ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
-                40,
-              ),
-            ),
-            child: Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: ComponentService.convertWidth(
-                  MediaQuery.of(context).size.width,
-                  16,
                 ),
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).primaryColor,
-                ),
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              child: TabBar(
-                indicatorColor: Theme.of(context).primaryColor,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicator: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                ),
-                controller: _tabController,
-                labelStyle: const TextStyle(
-                  color: Colors.black,
-                ),
-                labelPadding: EdgeInsets.zero,
-                labelColor: Colors.white,
-                unselectedLabelColor: Theme.of(context).primaryColor,
-                tabs: const [
-                  TabButton(
-                    name: "Circles",
-                  ),
-                  TabButton(
-                    name: "Goals",
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
-        body: Container(
-          margin: EdgeInsets.only(
-            top: ComponentService.convertHeight(
+        elevation: 0,
+        backgroundColor: Theme.of(context).canvasColor,
+        toolbarHeight: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          160,
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(
+            ComponentService.convertHeight(
               MediaQuery.of(context).size.height,
-              10,
-            ),
-            left: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              16,
-            ),
-            right: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              16,
+              40,
             ),
           ),
-          child: TabBarView(
-            controller: _tabController,
-            children: pages,
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: ComponentService.convertWidth(
+                MediaQuery.of(context).size.width,
+                16,
+              ),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).primaryColor,
+              ),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: TabBar(
+              indicatorColor: Theme.of(context).primaryColor,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              controller: _tabController,
+              labelStyle: const TextStyle(
+                color: Colors.black,
+              ),
+              labelPadding: EdgeInsets.zero,
+              labelColor: Colors.white,
+              unselectedLabelColor: Theme.of(context).primaryColor,
+              tabs: const [
+                TabButton(
+                  name: "Circles",
+                ),
+                TabButton(
+                  name: "Goals",
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
+      body: Container(
+        margin: EdgeInsets.only(
+          top: ComponentService.convertHeight(
+            MediaQuery.of(context).size.height,
+            10,
+          ),
+          left: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            16,
+          ),
+          right: ComponentService.convertWidth(
+            MediaQuery.of(context).size.width,
+            16,
+          ),
+        ),
+        child: TabBarView(
+          controller: _tabController,
+          children: pages,
         ),
       ),
     );

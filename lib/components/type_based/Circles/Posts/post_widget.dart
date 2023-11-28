@@ -145,6 +145,12 @@ class _PostWidgetState extends State<PostWidget> {
           if (widget.post.image != null)
             Container(
               width: double.infinity,
+              margin: EdgeInsets.symmetric(
+                vertical: ComponentService.convertHeight(
+                  MediaQuery.of(context).size.height,
+                  10,
+                ),
+              ),
               height: ComponentService.convertHeight(
                 MediaQuery.of(context).size.height,
                 150,

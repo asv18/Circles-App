@@ -1,5 +1,6 @@
 import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class AuthButton extends StatelessWidget {
@@ -33,6 +34,11 @@ class AuthButton extends StatelessWidget {
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -56,6 +62,7 @@ class AuthButton extends StatelessWidget {
                   child: const Icon(
                     FontAwesome.arrow_right,
                     size: 13,
+                    color: Colors.white,
                   ),
                 ),
               ],

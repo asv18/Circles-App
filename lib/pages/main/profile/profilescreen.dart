@@ -666,7 +666,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                       ),
-                      child: const Text('Signout'),
+                      child: Text(
+                        'Sign Out',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
                       onPressed: () async {
                         await AuthService().signOut();
                         if (mainKeyNav.currentState!.mounted) {
