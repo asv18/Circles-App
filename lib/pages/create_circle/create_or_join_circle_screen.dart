@@ -65,36 +65,25 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
-        title: Text(
-          "CREATE OR JOIN A CIRCLE",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: ComponentService.convertWidth(
-                MediaQuery.of(context).size.width,
-                5,
-              ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "CREATE OR JOIN A CIRCLE",
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            child: ExitButton(
+            ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [
-                    "Goal Not Created",
+                    "Circle not joined/created",
                   ],
                 );
               },
               icon: FontAwesome.x,
             ),
-          ),
-          SizedBox(
-            width: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              10,
-            ),
-          ),
-        ],
+          ],
+        ),
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(

@@ -56,19 +56,14 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
-        title: Text(
-          "CREATE A NEW GOAL",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
-                5,
-              ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "CREATE A NEW GOAL",
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            child: ExitButton(
+            ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [
@@ -78,14 +73,8 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
               },
               icon: FontAwesome.x,
             ),
-          ),
-          SizedBox(
-            width: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              10,
-            ),
-          ),
-        ],
+          ],
+        ),
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(

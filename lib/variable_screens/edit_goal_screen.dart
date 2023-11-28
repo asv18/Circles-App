@@ -74,19 +74,14 @@ class _GoalScreenState extends State<GoalScreen> {
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
-        title: Text(
-          widget.goal.name,
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
-                5,
-              ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.goal.name,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            child: ExitButton(
+            ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [
@@ -96,14 +91,8 @@ class _GoalScreenState extends State<GoalScreen> {
               },
               icon: FontAwesome.x,
             ),
-          ),
-          SizedBox(
-            width: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              10,
-            ),
-          ),
-        ],
+          ],
+        ),
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(

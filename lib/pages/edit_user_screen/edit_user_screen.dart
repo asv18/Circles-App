@@ -66,27 +66,16 @@ class _EditUserScreenState extends State<EditUserScreen> {
           ),
         ),
         automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              7,
-            ),
-            vertical: ComponentService.convertHeight(
-              MediaQuery.of(context).size.height,
-              12,
-            ),
-          ),
-          child: ExitButton(
-            onPressed: () {
-              mainKeyNav.currentState!.pop(
-                [
-                  "User Not Edited",
-                ],
-              );
-            },
-            icon: FontAwesome.x,
-          ),
+        centerTitle: false,
+        title: ExitButton(
+          onPressed: () {
+            mainKeyNav.currentState!.pop(
+              [
+                "User Not Edited",
+              ],
+            );
+          },
+          icon: FontAwesome.x,
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(
@@ -188,63 +177,65 @@ class _EditUserScreenState extends State<EditUserScreen> {
           ),
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 100),
-        child: Column(
-          children: [
-            CustomTextField(
-              labelText: "Full Name",
-              hintText: "Your full name",
-              controller: _nameController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomTextField(
-              labelText: "Username",
-              hintText: "Your username",
-              controller: _usernameController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomTextField(
-              labelText: "Email",
-              hintText: "Your email",
-              controller: TextEditingController(
-                text: UserService.dataUser.email,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.only(right: 10, left: 10, top: 100),
+          child: Column(
+            children: [
+              CustomTextField(
+                labelText: "Full Name",
+                hintText: "Your full name",
+                controller: _nameController,
               ),
-              readOnly: true,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            CustomTextButton(
-              text: "Save",
-              onPressed: () async {
-                if (_nameController.text.isNotEmpty &&
-                    _usernameController.text.isNotEmpty) {
-                  UserService.dataUser.name = _nameController.text;
-                  UserService.dataUser.username = _usernameController.text;
-                }
+              const SizedBox(
+                height: 10,
+              ),
+              CustomTextField(
+                labelText: "Username",
+                hintText: "Your username",
+                controller: _usernameController,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomTextField(
+                labelText: "Email",
+                hintText: "Your email",
+                controller: TextEditingController(
+                  text: UserService.dataUser.email,
+                ),
+                readOnly: true,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              CustomTextButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_nameController.text.isNotEmpty &&
+                      _usernameController.text.isNotEmpty) {
+                    UserService.dataUser.name = _nameController.text;
+                    UserService.dataUser.username = _usernameController.text;
+                  }
 
-                if (_imageSrc != null) {
-                  _imageURL = await APIServices().uploadImage(
-                    _imageSrc!,
-                  );
-                }
+                  if (_imageSrc != null) {
+                    _imageURL = await APIServices().uploadImage(
+                      _imageSrc!,
+                    );
+                  }
 
-                if (_imageURL != null) {
-                  UserService.dataUser.photoUrl = _imageURL;
-                }
+                  if (_imageURL != null) {
+                    UserService.dataUser.photoUrl = _imageURL;
+                  }
 
-                await UserService().putUserInBox();
-                await UserService().updateUser();
+                  await UserService().putUserInBox();
+                  await UserService().updateUser();
 
-                mainKeyNav.currentState!.pop();
-              },
-            ),
-          ],
+                  mainKeyNav.currentState!.pop();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

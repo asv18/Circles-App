@@ -49,19 +49,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
         backgroundColor: Theme.of(context).canvasColor,
         automaticallyImplyLeading: false,
         elevation: 0,
-        title: Text(
-          "ADD A USER",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
-                5,
-              ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "ADD A USER",
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            child: ExitButton(
+            ExitButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [
@@ -71,14 +66,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
               },
               icon: FontAwesome.x,
             ),
-          ),
-          SizedBox(
-            width: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              10,
-            ),
-          ),
-        ],
+          ],
+        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(
             ComponentService.convertHeight(

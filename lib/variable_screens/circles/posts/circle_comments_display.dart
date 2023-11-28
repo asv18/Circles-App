@@ -77,28 +77,12 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: ComponentService.convertHeight(
-                MediaQuery.of(context).size.height,
-                5,
-              ),
-            ),
-            child: ExitButton(
-              onPressed: () {
-                listKeyNav.currentState!.pop();
-              },
-              icon: FontAwesome.x,
-            ),
-          ),
-          SizedBox(
-            width: ComponentService.convertWidth(
-              MediaQuery.of(context).size.width,
-              16,
-            ),
-          ),
-        ],
+        title: ExitButton(
+          onPressed: () {
+            listKeyNav.currentState!.pop();
+          },
+          icon: FontAwesome.x,
+        ),
         backgroundColor: Theme.of(context).canvasColor,
       ),
       body: RefreshIndicator(
