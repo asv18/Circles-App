@@ -95,6 +95,11 @@ class _AppState extends State<MyApp> {
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
+                displayLarge: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
                 displayMedium: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -146,11 +151,6 @@ class _AppState extends State<MyApp> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: const Color.fromARGB(255, 15, 24, 40),
-                ),
-                displayLarge: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
                 ),
               ),
               primaryColor: primaryColor,
