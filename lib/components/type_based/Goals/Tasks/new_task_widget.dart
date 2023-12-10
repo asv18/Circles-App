@@ -139,6 +139,7 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: DropdownButton<String>(
+                                style: Theme.of(context).textTheme.titleMedium,
                                 value: widget.task.repeat,
                                 padding: const EdgeInsets.all(0),
                                 isDense: true,
@@ -162,7 +163,7 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
                                         value,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyLarge,
+                                            .titleMedium,
                                       ),
                                     );
                                   },
@@ -205,6 +206,7 @@ class CustomTextField2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: Theme.of(context).textTheme.titleMedium,
       cursorColor: Colors.black,
       onTap: () {
         if (onTap != null) {

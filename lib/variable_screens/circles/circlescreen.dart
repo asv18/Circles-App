@@ -9,7 +9,9 @@ import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/circleposts.dart';
 import 'package:circlesapp/variable_screens/circles/posts/circle_post_display.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CircleScreen extends StatefulWidget {
   const CircleScreen({
@@ -166,8 +168,11 @@ class _CircleScreenState extends State<CircleScreen> {
                             children: [
                               Text(
                                 circle.name!,
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
                               ),
                               Text(
                                 "Admin: ${circle.admin!.name}",

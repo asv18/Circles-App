@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:circlesapp/routes.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -72,119 +73,128 @@ class _AppState extends State<MyApp> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            navigatorKey: mainKeyNav,
-            routes: appRoutes,
-            theme: ThemeData(
-              fontFamily: "Hind",
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              textTheme: TextTheme(
-                headlineLarge: GoogleFonts.poppins(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-                headlineMedium: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-                headlineSmall: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-                displayLarge: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-                displayMedium: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-                displaySmall: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-                labelLarge: GoogleFonts.nunito(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: const Color.fromARGB(255, 108, 117, 125),
-                ),
-                labelMedium: GoogleFonts.nunito(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: const Color.fromARGB(255, 108, 117, 125),
-                ),
-                titleLarge: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      offset: const Offset(1, 1),
-                      blurRadius: 10.0,
-                      color: Colors.black.withOpacity(0.8),
-                    ),
-                  ],
-                ),
-                titleSmall: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-                bodyLarge: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-                bodyMedium: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: const Color.fromARGB(255, 108, 117, 125),
-                ),
-                bodySmall: GoogleFonts.hind(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color.fromARGB(255, 15, 24, 40),
-                ),
-              ),
-              primaryColor: primaryColor,
-              primaryColorLight: primaryColorLight,
-              primaryColorDark: primaryColorDark,
-              canvasColor: canvasColor,
-              indicatorColor: indicatorColor,
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-                  ),
-                  textStyle: MaterialStateProperty.all<TextStyle>(
-                    GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 14,
+          return ResponsiveSizer(
+            builder: (context, orientation, deviceType) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                navigatorKey: mainKeyNav,
+                routes: appRoutes,
+                theme: ThemeData(
+                  fontFamily: "Hind",
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  textTheme: TextTheme(
+                    headlineLarge: GoogleFonts.poppins(
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                    headlineMedium: GoogleFonts.poppins(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                    headlineSmall: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                    displayLarge: GoogleFonts.poppins(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                    displayMedium: GoogleFonts.poppins(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                    displaySmall: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                    labelLarge: GoogleFonts.nunito(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color.fromARGB(255, 108, 117, 125),
+                    ),
+                    labelMedium: GoogleFonts.nunito(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w300,
+                      color: const Color.fromARGB(255, 108, 117, 125),
+                    ),
+                    titleLarge: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          offset: const Offset(1, 1),
+                          blurRadius: 10.0,
+                          color: Colors.black.withOpacity(0.8),
+                        ),
+                      ],
+                    ),
+                    titleMedium: GoogleFonts.nunito(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                    titleSmall: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                    bodyLarge: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                    bodyMedium: GoogleFonts.nunito(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color.fromARGB(255, 108, 117, 125),
+                    ),
+                    bodySmall: GoogleFonts.hind(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color.fromARGB(255, 15, 24, 40),
                     ),
                   ),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    primaryColor,
-                  ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+                  primaryColor: primaryColor,
+                  primaryColorLight: primaryColorLight,
+                  primaryColorDark: primaryColorDark,
+                  canvasColor: canvasColor,
+                  indicatorColor: indicatorColor,
+                  elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 10,
+                        ),
+                      ),
+                      textStyle: MaterialStateProperty.all<TextStyle>(
+                        GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        primaryColor,
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                     ),
                   ),
+                  dividerColor: const Color.fromARGB(255, 215, 227, 255),
                 ),
-              ),
-              dividerColor: const Color.fromARGB(255, 215, 227, 255),
-            ),
+              );
+            },
           );
         }
 

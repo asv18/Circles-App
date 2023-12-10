@@ -4,6 +4,7 @@ import 'package:circlesapp/services/friend_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../shared/user.dart';
 
@@ -50,7 +51,7 @@ class _FriendsPageState extends State<FriendsPage> {
                   Text(
                     "Conversations",
                     style: GoogleFonts.karla(
-                      fontSize: 36,
+                      fontSize: 36.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

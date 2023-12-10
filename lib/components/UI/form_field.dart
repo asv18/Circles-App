@@ -25,6 +25,7 @@ class FormTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: Theme.of(context).textTheme.titleMedium,
       cursorColor: Theme.of(context).primaryColor,
       keyboardType: (hintText == "Phone Number") ? TextInputType.phone : null,
       onChanged: (value) => onChanged(),
@@ -68,9 +69,9 @@ class FormTextField extends StatelessWidget {
         iconColor: Theme.of(context).primaryColor,
         label: Text(
           hintText,
-          style: GoogleFonts.poppins(),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
-        floatingLabelStyle: GoogleFonts.poppins(
+        floatingLabelStyle: GoogleFonts.nunito(
           color: Theme.of(context).primaryColor,
         ),
         prefixIcon: Icon(

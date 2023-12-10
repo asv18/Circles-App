@@ -1,6 +1,7 @@
 import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class TabButton extends StatelessWidget {
   const TabButton({
@@ -26,7 +27,7 @@ class TabButton extends StatelessWidget {
       child: Text(
         name,
         style: GoogleFonts.poppins(
-          fontSize: 13,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w400,
         ),
       ),

@@ -104,6 +104,7 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: DropdownButton<String>(
+                            style: Theme.of(context).textTheme.titleMedium,
                             value: widget.task.repeat,
                             padding: const EdgeInsets.all(0),
                             isDense: true,
@@ -122,7 +123,7 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
                                   child: Text(
                                     value,
                                     style:
-                                        Theme.of(context).textTheme.bodyLarge,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 );
                               },
@@ -163,6 +164,7 @@ class CustomTextField2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: Theme.of(context).textTheme.titleMedium,
       cursorColor: Colors.black,
       onTap: () {
         if (onTap != null) {

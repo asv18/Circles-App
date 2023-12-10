@@ -7,6 +7,7 @@ import 'package:circlesapp/shared/message.dart';
 import 'package:circlesapp/shared/user.dart';
 import 'package:circlesapp/variable_screens/messagescreen.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class FriendWidget extends StatelessWidget {
   const FriendWidget({
@@ -87,14 +88,14 @@ class FriendWidget extends StatelessWidget {
                     children: [
                       Text(
                         "${friend.name}",
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16.sp,
                         ),
                       ),
                       Text(
                         friend.username!,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 1.2.sp,
                           color: Colors.grey[600],
                         ),
                       ),

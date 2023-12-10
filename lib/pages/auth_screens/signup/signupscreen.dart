@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../components/UI/provider_button.dart';
 
@@ -80,7 +81,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               Text(
                 "Sign Up",
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: GoogleFonts.poppins(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
                 textAlign: TextAlign.start,
               ),
               (_invalidUser)
@@ -100,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textAlign: TextAlign.start,
                         style: GoogleFonts.montserrat(
                           color: Colors.red,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.normal,
                         ),
                       ),

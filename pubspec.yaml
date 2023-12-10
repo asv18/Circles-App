@@ -38,6 +38,8 @@ dependencies:
   percent_indicator: ^4.2.3
   cloudinary: ^1.2.0
   image_picker: ^1.0.4
+  sizer: ^2.0.15
+  responsive_sizer: ^3.2.0
 
 dev_dependencies:
   flutter_test:

@@ -11,6 +11,7 @@ import 'package:circlesapp/shared/user.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 //TODO: add responsive layout
@@ -144,8 +145,8 @@ class _MessageScreenState extends State<MessageScreen> {
                 Expanded(
                   child: Text(
                     "${widget.friend.name}",
-                    style: const TextStyle(
-                      fontSize: 20,
+                    style: TextStyle(
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -171,9 +172,9 @@ class _MessageScreenState extends State<MessageScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "This is the beginning of your conversation history with ${widget.friend.name}",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                     ),
                     textAlign: TextAlign.center,
                   ),

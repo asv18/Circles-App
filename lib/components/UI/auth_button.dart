@@ -2,6 +2,7 @@ import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AuthButton extends StatelessWidget {
   const AuthButton({
@@ -35,7 +36,7 @@ class AuthButton extends StatelessWidget {
                     text,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),

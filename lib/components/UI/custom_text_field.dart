@@ -57,6 +57,7 @@ class CustomTextField extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
                 TextFormField(
+                  style: Theme.of(context).textTheme.titleMedium,
                   cursorColor: Colors.black,
                   keyboardType:
                       (hintText == "Phone Number") ? TextInputType.phone : null,
@@ -69,6 +70,7 @@ class CustomTextField extends StatelessWidget {
                   controller: controller,
                   readOnly: readOnly ?? false,
                   decoration: InputDecoration(
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
                     isDense: true,
                     filled: false,
                     focusedErrorBorder: OutlineInputBorder(
