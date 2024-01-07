@@ -109,7 +109,7 @@ class _AppState extends State<MyApp> {
                       color: Colors.black,
                     ),
                     displaySmall: GoogleFonts.poppins(
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
                     ),
@@ -136,12 +136,12 @@ class _AppState extends State<MyApp> {
                       ],
                     ),
                     titleMedium: GoogleFonts.nunito(
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
                     titleSmall: GoogleFonts.poppins(
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -151,7 +151,7 @@ class _AppState extends State<MyApp> {
                       color: Colors.black,
                     ),
                     bodyMedium: GoogleFonts.nunito(
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: const Color.fromARGB(255, 108, 117, 125),
                     ),

@@ -388,7 +388,7 @@ class CustomDropDownButton extends StatelessWidget {
     return Container(
       height: ComponentService.convertWidth(
         MediaQuery.of(context).size.width,
-        80,
+        85,
       ),
       padding: EdgeInsets.all(
         ComponentService.convertWidth(
@@ -404,6 +404,7 @@ class CustomDropDownButton extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             "Circle Status",

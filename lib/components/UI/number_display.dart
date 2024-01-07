@@ -49,7 +49,7 @@ class NumberDisplay extends StatelessWidget {
                         ? "99+"
                         : tasksLength.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
-                      fontSize: 18.sp,
+                      fontSize: 16.sp,
                       color: Colors.black,
                     ),
                   );
@@ -59,7 +59,7 @@ class NumberDisplay extends StatelessWidget {
                         ? "20+"
                         : snapshot.data!.length.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
-                      fontSize: 18.sp,
+                      fontSize: 16.sp,
                       color: Colors.black,
                     ),
                   );

@@ -281,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             icon: const Icon(
                               Icons.settings,
-                              size: 20.0,
+                              size: 18.0,
                               color: Colors.black,
                             ),
                           ),

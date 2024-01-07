@@ -30,7 +30,7 @@ class GoalWidget extends StatelessWidget {
       ),
       height: ComponentService.convertWidth(
         MediaQuery.of(context).size.width,
-        130,
+        140,
       ),
       child: Card(
         clipBehavior: Clip.antiAlias,

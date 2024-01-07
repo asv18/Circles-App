@@ -26,7 +26,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       height: ComponentService.convertWidth(
         MediaQuery.of(context).size.width,
-        80,
+        85,
       ),
       padding: EdgeInsets.symmetric(
         vertical: ComponentService.convertHeight(
