@@ -195,7 +195,7 @@ class _MainPageState extends State<MainPage> {
                     _index = 0;
                   });
                 },
-                icon: OctIcons.home_fill_24,
+                icon: OctIcons.home,
                 color:
                     _index == 0 ? Theme.of(context).primaryColor : Colors.grey,
               ),

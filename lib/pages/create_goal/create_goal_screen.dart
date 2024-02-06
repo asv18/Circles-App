@@ -71,7 +71,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                   ],
                 );
               },
-              icon: FontAwesome.x,
+              icon: FontAwesome.x_solid,
             ),
           ],
         ),

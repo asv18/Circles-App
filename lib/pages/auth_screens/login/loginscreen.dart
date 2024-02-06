@@ -16,7 +16,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
 
@@ -27,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _emailRegex =
       r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""";
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -34,6 +36,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 12500),
+      vsync: this,
+    );
+
+    _animationController.forward();
+    _animationController.repeat();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   void _toggleVisibility() {
@@ -81,9 +96,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   MediaQuery.of(context).size.width,
                   95,
                 ),
-                child: Image.asset(
-                  "assets/Circles_Logo_No_Backgroud.png",
-                  fit: BoxFit.scaleDown,
+                child: RotationTransition(
+                  turns: Tween(
+                    begin: 0.0,
+                    end: 1.0,
+                  ).animate(_animationController),
+                  child: Image.asset(
+                    "assets/Circles_Logo_No_Backgroud.png",
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
               ),
               SizedBox(
@@ -212,8 +233,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     MediaQuery.of(context).size.width,
                     26,
                   ),
-                  child: Logo(
-                    Logos.google,
+                  child: Brand(
+                    Brands.google,
                   ),
                 ),
                 loginMethod: AuthService().googleLogin,
@@ -235,8 +256,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     MediaQuery.of(context).size.width,
                     26,
                   ),
-                  child: Logo(
-                    Logos.apple,
+                  child: Brand(
+                    Brands.apple_logo,
                   ),
                 ),
                 loginMethod: () {

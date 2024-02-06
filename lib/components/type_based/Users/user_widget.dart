@@ -77,7 +77,7 @@ class UserWidget extends StatelessWidget {
               IconButton(
                 onPressed: () async => onPressed(),
                 icon: const Icon(
-                  FontAwesome.plus,
+                  FontAwesome.plus_solid,
                   color: Colors.black,
                   size: 20,
                 ),

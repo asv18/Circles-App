@@ -280,11 +280,8 @@ class _CircleScreenState extends State<CircleScreen> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
-                              margin: EdgeInsets.only(
-                                right: ComponentService.convertWidth(
-                                  MediaQuery.of(context).size.width,
-                                  10,
-                                ),
+                              margin: const EdgeInsets.only(
+                                right: 5,
                               ),
                               child: IconButton(
                                 onPressed: () {

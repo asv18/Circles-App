@@ -61,7 +61,7 @@ class AuthButton extends StatelessWidget {
                     color: Theme.of(context).primaryColorDark,
                   ),
                   child: const Icon(
-                    FontAwesome.arrow_right,
+                    FontAwesome.arrow_right_solid,
                     size: 13,
                     color: Colors.white,
                   ),

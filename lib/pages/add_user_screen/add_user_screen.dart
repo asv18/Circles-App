@@ -64,7 +64,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   ],
                 );
               },
-              icon: FontAwesome.x,
+              icon: FontAwesome.x_solid,
             ),
           ],
         ),

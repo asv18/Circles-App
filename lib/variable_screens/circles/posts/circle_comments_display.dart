@@ -81,7 +81,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
           onPressed: () {
             listKeyNav.currentState!.pop();
           },
-          icon: FontAwesome.x,
+          icon: FontAwesome.x_solid,
         ),
         backgroundColor: Theme.of(context).canvasColor,
       ),
@@ -230,7 +230,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
                                       });
                                     },
                                     icon: const Icon(
-                                      FontAwesome.x,
+                                      FontAwesome.x_solid,
                                       size: 10,
                                       color: Colors.black,
                                     ),

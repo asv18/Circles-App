@@ -80,7 +80,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                   ],
                 );
               },
-              icon: FontAwesome.x,
+              icon: FontAwesome.x_solid,
             ),
           ],
         ),
@@ -183,7 +183,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
                                 ),
                                 const WidgetSpan(
                                   child: Icon(
-                                    FontAwesome.pen,
+                                    FontAwesome.pen_solid,
                                     color: Colors.black,
                                     size: 20,
                                   ),

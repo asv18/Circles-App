@@ -233,8 +233,8 @@ class _PostWidgetState extends State<PostWidget> {
                       },
                       child: Icon(
                         (widget.post.liked!.likeStatus == LikedStatus.liked)
-                            ? OctIcons.heart_fill_24
-                            : OctIcons.heart_24,
+                            ? OctIcons.heart_fill
+                            : OctIcons.heart,
                         color: Colors.red,
                         size: 22,
                       ),
@@ -290,7 +290,7 @@ class _PostWidgetState extends State<PostWidget> {
                         );
                       },
                       child: Icon(
-                        OctIcons.comment_24,
+                        OctIcons.comment,
                         color: Theme.of(context).primaryColor,
                         size: 22,
                       ),

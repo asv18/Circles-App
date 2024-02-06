@@ -75,7 +75,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
               ],
             );
           },
-          icon: FontAwesome.x,
+          icon: FontAwesome.x_solid,
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(
@@ -153,7 +153,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                               color: Theme.of(context).primaryColorLight,
                             ),
                             child: const Icon(
-                              FontAwesome.pencil,
+                              FontAwesome.pencil_solid,
                               color: Colors.black,
                               size: 14,
                             ),

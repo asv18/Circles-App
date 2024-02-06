@@ -89,7 +89,7 @@ class _GoalScreenState extends State<GoalScreen> {
                   ],
                 );
               },
-              icon: FontAwesome.x,
+              icon: FontAwesome.x_solid,
             ),
           ],
         ),

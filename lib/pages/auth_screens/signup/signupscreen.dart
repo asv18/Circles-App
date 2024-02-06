@@ -244,8 +244,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     MediaQuery.of(context).size.width,
                     26,
                   ),
-                  child: Logo(
-                    Logos.google,
+                  child: Brand(
+                    Brands.google,
                   ),
                 ),
                 loginMethod: AuthService().googleLogin,
@@ -262,8 +262,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     MediaQuery.of(context).size.width,
                     26,
                   ),
-                  child: Logo(
-                    Logos.apple,
+                  child: Brand(
+                    Brands.apple_logo,
                   ),
                 ),
                 loginMethod: () {

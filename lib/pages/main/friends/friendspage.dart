@@ -58,7 +58,7 @@ class _FriendsPageState extends State<FriendsPage> {
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(
-                      FontAwesome.user_plus,
+                      FontAwesome.user_plus_solid,
                     ),
                   ),
                 ],

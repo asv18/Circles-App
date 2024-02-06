@@ -6,7 +6,9 @@ import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CirclePreviewScreen extends StatefulWidget {
   const CirclePreviewScreen({
@@ -34,7 +36,10 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        toolbarHeight: MediaQuery.of(context).size.height / 4.0,
+        toolbarHeight: ComponentService.convertWidth(
+          MediaQuery.of(context).size.width,
+          260,
+        ),
         backgroundColor: Theme.of(context).canvasColor,
         flexibleSpace: SafeArea(
           child: Container(
@@ -45,6 +50,8 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -53,7 +60,7 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                       icon: IonIcons.caret_back,
                       onPressed: () {
                         mainKeyNav.currentState!.pop(
-                          ["Did not join"],
+                          ["Not Joined"],
                         );
                       },
                     ),
@@ -72,11 +79,11 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                       child: Container(
                         width: ComponentService.convertWidth(
                           MediaQuery.of(context).size.width,
-                          100,
+                          125,
                         ),
                         height: ComponentService.convertWidth(
                           MediaQuery.of(context).size.width,
-                          100,
+                          125,
                         ),
                         alignment: Alignment.centerLeft,
                         clipBehavior: Clip.antiAlias,
@@ -98,9 +105,9 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: ComponentService.convertHeight(
-                        MediaQuery.of(context).size.height,
-                        100,
+                      height: ComponentService.convertWidth(
+                        MediaQuery.of(context).size.width,
+                        125,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,9 +118,12 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${widget.circle.name}",
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge,
+                                widget.circle.name!,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
                               ),
                               Text(
                                 "Admin: ${widget.circle.admin!.name}",
@@ -121,27 +131,38 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: ComponentService.convertHeight(
-                              MediaQuery.of(context).size.height,
-                              40,
-                            ),
-                            width: ComponentService.convertWidth(
-                              MediaQuery.of(context).size.width,
-                              180,
-                            ),
-                            child: CustomTextButton(
-                              text: "Join Circle",
-                              onPressed: () async {
-                                await CircleService().connectUserToCircle(
-                                  widget.circle.id!,
-                                );
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  40,
+                                ),
+                                width: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  180,
+                                ),
+                                child: CustomTextButton(
+                                  text: "Join Circle",
+                                  onPressed: () async {
+                                    await CircleService().connectUserToCircle(
+                                      widget.circle.id!,
+                                    );
 
-                                mainKeyNav.currentState!.pop(
-                                  ["Joined"],
-                                );
-                              },
-                            ),
+                                    mainKeyNav.currentState!.pop(
+                                      ["Joined"],
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: ComponentService.convertWidth(
+                                  MediaQuery.of(context).size.width,
+                                  20,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -149,8 +170,8 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                   ],
                 ),
                 Divider(
-                  height: ComponentService.convertHeight(
-                    MediaQuery.of(context).size.height,
+                  height: ComponentService.convertWidth(
+                    MediaQuery.of(context).size.width,
                     15,
                   ),
                   thickness: 1,
@@ -183,11 +204,9 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
-                              margin: EdgeInsets.only(
-                                  right: ComponentService.convertWidth(
-                                MediaQuery.of(context).size.width,
-                                16,
-                              )),
+                              margin: const EdgeInsets.only(
+                                right: 5,
+                              ),
                               child: IconButton(
                                 onPressed: () {
                                   // TODO: view profile of user
@@ -211,10 +230,13 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                     ),
                   ],
                 ),
-                const Divider(
-                  height: 15.0,
+                Divider(
+                  height: ComponentService.convertHeight(
+                    MediaQuery.of(context).size.height,
+                    15,
+                  ),
                   thickness: 1,
-                  color: Color.fromARGB(255, 212, 212, 212),
+                  color: const Color.fromARGB(255, 212, 212, 212),
                 ),
               ],
             ),

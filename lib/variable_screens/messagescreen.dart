@@ -129,7 +129,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     mainKeyNav.currentState!.pop();
                   },
                   icon: const Icon(
-                    FontAwesome.arrow_left,
+                    FontAwesome.arrow_left_solid,
                     color: Colors.white,
                   ),
                 ),
@@ -153,7 +153,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 const Icon(
-                  FontAwesome.gear,
+                  FontAwesome.gear_solid,
                   color: Colors.white,
                 ),
               ],

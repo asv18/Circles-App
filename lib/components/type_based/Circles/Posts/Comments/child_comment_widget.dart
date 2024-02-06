@@ -114,7 +114,7 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                       child: Transform.flip(
                         flipX: true,
                         child: const Icon(
-                          OctIcons.reply_24,
+                          OctIcons.reply,
                           size: 20,
                           color: Color.fromARGB(255, 108, 117, 125),
                         ),
@@ -158,8 +158,8 @@ class _ChildCommentWidgetState extends State<ChildCommentWidget> {
                 },
                 child: Icon(
                   widget.comment.liked!.likeStatus == LikedStatus.liked
-                      ? OctIcons.heart_fill_24
-                      : OctIcons.heart_24,
+                      ? MingCute.heart_fill
+                      : MingCute.heart_line,
                   size: 20,
                   color: Colors.red,
                 ),
