@@ -117,7 +117,7 @@ class GoalsListWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   progressColor: Theme.of(context).indicatorColor,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).canvasColor,
                 ),
               ],
             ),

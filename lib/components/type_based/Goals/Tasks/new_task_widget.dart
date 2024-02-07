@@ -135,7 +135,7 @@ class _NewTaskWidgetState extends State<NewTaskWidget> {
                                 ),
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Theme.of(context).canvasColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: DropdownButton<String>(

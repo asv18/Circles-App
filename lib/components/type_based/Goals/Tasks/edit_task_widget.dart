@@ -100,7 +100,7 @@ class _EditTaskWidgetState extends State<EditTaskWidget> {
                             ),
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).canvasColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: DropdownButton<String>(

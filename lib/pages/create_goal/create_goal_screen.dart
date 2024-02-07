@@ -79,6 +79,7 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          color: Theme.of(context).canvasColor,
           margin: EdgeInsets.fromLTRB(
             ComponentService.convertWidth(
               MediaQuery.of(context).size.width,

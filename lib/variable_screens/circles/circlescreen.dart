@@ -230,10 +230,10 @@ class _CircleScreenState extends State<CircleScreen> {
                                   onPressed: () async {
                                     _navigateAndRefreshUsers(context);
                                   },
-                                  child: const FittedBox(
+                                  child: FittedBox(
                                     child: Icon(
                                       Icons.person_add_alt_outlined,
-                                      color: Colors.white,
+                                      color: Theme.of(context).canvasColor,
                                     ),
                                   ),
                                 ),

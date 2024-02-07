@@ -124,7 +124,7 @@ class TaskWidget extends StatelessWidget {
                         "Complete",
                         style: GoogleFonts.poppins(
                           fontSize: 14.sp,
-                          color: Colors.white,
+                          color: Theme.of(context).canvasColor,
                         ),
                       ),
                       SizedBox(
@@ -139,7 +139,7 @@ class TaskWidget extends StatelessWidget {
                         child: Checkbox(
                           checkColor: Theme.of(context).indicatorColor,
                           fillColor: MaterialStateProperty.resolveWith(
-                            (states) => Colors.white,
+                            (states) => Theme.of(context).canvasColor,
                           ),
                           value: task.complete,
                           side: BorderSide.none,

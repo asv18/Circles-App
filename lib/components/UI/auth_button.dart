@@ -38,7 +38,7 @@ class AuthButton extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: Theme.of(context).canvasColor,
                     ),
                   ),
                 ),
@@ -60,10 +60,10 @@ class AuthButton extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Theme.of(context).primaryColorDark,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     FontAwesome.arrow_right_solid,
                     size: 13,
-                    color: Colors.white,
+                    color: Theme.of(context).canvasColor,
                   ),
                 ),
               ],

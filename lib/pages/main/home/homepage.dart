@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color: Colors.black,
               ),
               labelPadding: EdgeInsets.zero,
-              labelColor: Colors.white,
+              labelColor: Theme.of(context).canvasColor,
               unselectedLabelColor: Theme.of(context).primaryColor,
               tabs: const [
                 TabButton(

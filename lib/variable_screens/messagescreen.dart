@@ -128,9 +128,9 @@ class _MessageScreenState extends State<MessageScreen> {
                   onPressed: () {
                     mainKeyNav.currentState!.pop();
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     FontAwesome.arrow_left_solid,
-                    color: Colors.white,
+                    color: Theme.of(context).canvasColor,
                   ),
                 ),
                 const SizedBox(
@@ -148,13 +148,13 @@ class _MessageScreenState extends State<MessageScreen> {
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: Theme.of(context).canvasColor,
                     ),
                   ),
                 ),
-                const Icon(
+                Icon(
                   FontAwesome.gear_solid,
-                  color: Colors.white,
+                  color: Theme.of(context).canvasColor,
                 ),
               ],
             ),
@@ -396,7 +396,7 @@ class _MessageScreenState extends State<MessageScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 20),
             height: 60,
             width: double.infinity,
-            color: Colors.white,
+            color: Theme.of(context).canvasColor,
             alignment: Alignment.center,
             child: Row(
               children: [
@@ -409,9 +409,9 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                   child: IconButton(
                     onPressed: () {},
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add,
-                      color: Colors.white,
+                      color: Theme.of(context).canvasColor,
                     ),
                   ),
                 ),
@@ -461,9 +461,9 @@ class _MessageScreenState extends State<MessageScreen> {
 
                       _messageController.clear();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.send,
-                      color: Colors.white,
+                      color: Theme.of(context).canvasColor,
                       size: 15,
                     ),
                   ),

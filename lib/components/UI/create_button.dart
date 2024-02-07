@@ -35,9 +35,9 @@ class CreateButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Bootstrap.plus,
-              color: Colors.white,
+              color: Theme.of(context).canvasColor,
             ),
             Text(
               text,

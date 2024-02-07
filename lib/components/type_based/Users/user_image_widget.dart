@@ -31,7 +31,7 @@ class UserImageWidget extends StatelessWidget {
           width: 2,
         ),
         borderRadius: BorderRadius.circular(10.0),
-        color: Colors.white,
+        color: Theme.of(context).canvasColor,
         image: DecorationImage(
           fit: BoxFit.cover,
           image: (useCachedNetwork

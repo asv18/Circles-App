@@ -172,6 +172,7 @@ class _MainPageState extends State<MainPage> {
         children: pages,
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).canvasColor,
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: ComponentService.convertWidth(

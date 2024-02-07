@@ -62,7 +62,7 @@ class _AppState extends State<MyApp> {
   final primaryColorLight = const Color.fromARGB(255, 245, 248, 255);
   final primaryColorDark = const Color.fromARGB(255, 90, 86, 180);
   final borderColor = const Color.fromARGB(255, 218, 229, 255);
-  final canvasColor = Colors.white;
+  final canvasColor = const Color(0xFFFAFAFF);
   final indicatorColor = const Color.fromARGB(255, 78, 177, 88);
 
   @override
@@ -85,6 +85,7 @@ class _AppState extends State<MyApp> {
                 navigatorKey: mainKeyNav,
                 routes: appRoutes,
                 theme: ThemeData(
+                  scaffoldBackgroundColor: canvasColor,
                   fontFamily: "Hind",
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   textTheme: TextTheme(
@@ -131,7 +132,7 @@ class _AppState extends State<MyApp> {
                     titleLarge: GoogleFonts.poppins(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: canvasColor,
                       shadows: [
                         Shadow(
                           offset: const Offset(1, 1),
@@ -148,7 +149,7 @@ class _AppState extends State<MyApp> {
                     titleSmall: GoogleFonts.poppins(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: canvasColor,
                     ),
                     bodyLarge: GoogleFonts.poppins(
                       fontSize: 18.sp,

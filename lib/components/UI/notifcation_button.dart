@@ -43,7 +43,8 @@ class NotifButton extends StatelessWidget {
           ),
           child: Text(
             contents,
-            style: const TextStyle(color: Colors.white, fontSize: 14.0),
+            style:
+                TextStyle(color: Theme.of(context).canvasColor, fontSize: 14.0),
           ),
         ),
       ),

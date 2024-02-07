@@ -68,7 +68,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).canvasColor,
       appBar: AppBar(
         toolbarHeight: ComponentService.convertHeight(
           MediaQuery.of(context).size.height,
@@ -146,7 +146,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
       ),
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
-        color: Colors.white,
+        color: Theme.of(context).canvasColor,
         height: replyID == null
             ? ComponentService.convertWidth(
                 MediaQuery.of(context).size.width,
@@ -162,11 +162,11 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
             80,
           ),
           width: double.infinity,
-          color: Colors.white,
+          color: Theme.of(context).canvasColor,
           child: Column(
             children: [
               Container(
-                color: Colors.white,
+                color: Theme.of(context).canvasColor,
                 child: Column(
                   children: [
                     Visibility(

@@ -124,7 +124,7 @@ class MessageWidget extends StatelessWidget {
               fontSize: 15.sp,
               color: (message.userFKey != UserService.dataUser.fKey
                   ? Colors.black
-                  : Colors.white),
+                  : Theme.of(context).canvasColor),
             ),
           ),
         ),
