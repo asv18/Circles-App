@@ -204,18 +204,18 @@ class _MainPageState extends State<MainPage> {
                 width: width,
                 height: height,
                 onPressed: () {
-                  // _pageController.jumpToPage(1);
-                  // setState(() {
-                  //   _index = 1;
-                  // });
+                  _pageController.jumpToPage(1);
+                  setState(() {
+                    _index = 1;
+                  });
 
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text(
-                      "Coming soon!",
-                      textAlign: TextAlign.center,
-                    ),
-                    duration: Duration(seconds: 3),
-                  ));
+                  // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  //   content: Text(
+                  //     "Coming soon!",
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  //   duration: Duration(seconds: 3),
+                  // ));
                 },
                 icon: MingCute.group_fill,
                 color:

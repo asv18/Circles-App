@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/components/UI/search_appbar.dart';
 import 'package:circlesapp/components/type_based/Circles/circles_list_widget.dart';
 import 'package:circlesapp/routes.dart';
@@ -72,7 +72,7 @@ class _CreateOrJoinCircleScreenState extends State<CreateOrJoinCircleScreen> {
               "CREATE OR JOIN A CIRCLE",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ExitButton(
+            CustomIconButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [

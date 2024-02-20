@@ -1,4 +1,4 @@
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/components/UI/search_appbar.dart';
 import 'package:circlesapp/components/type_based/Users/user_widget.dart';
 import 'package:circlesapp/routes.dart';
@@ -56,7 +56,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
               "ADD A USER",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ExitButton(
+            CustomIconButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [

@@ -1,4 +1,4 @@
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/components/type_based/Circles/Posts/Comments/comment_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
@@ -77,7 +77,7 @@ class _CircleCommentsDisplayState extends State<CircleCommentsDisplay> {
         automaticallyImplyLeading: false,
         elevation: 0,
         centerTitle: false,
-        title: ExitButton(
+        title: CustomIconButton(
           onPressed: () {
             listKeyNav.currentState!.pop();
           },

@@ -1,7 +1,7 @@
 import 'package:circlesapp/components/UI/create_button.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/components/type_based/Goals/Tasks/edit_task_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/component_service.dart';
@@ -83,7 +83,7 @@ class _GoalScreenState extends State<GoalScreen> {
               widget.goal.name,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ExitButton(
+            CustomIconButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [

@@ -86,7 +86,7 @@ class _MessageScreenState extends State<MessageScreen> {
         if (!isTop) {
           offset = BigInt.from(messages.length) - newMessages;
 
-          //TODO: change this
+          //TODO: change this - fetches incorrectly
           if (offset.modPow(BigInt.one, BigInt.from(20)) == BigInt.zero) {
             List<Message> newMessages = await FriendService().fetchMessages(
               widget.friendship.id!,

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/components/type_based/Users/user_image_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/api_services.dart';
@@ -67,7 +67,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
         ),
         automaticallyImplyLeading: false,
         centerTitle: false,
-        title: ExitButton(
+        title: CustomIconButton(
           onPressed: () {
             mainKeyNav.currentState!.pop(
               [

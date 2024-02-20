@@ -1,15 +1,19 @@
 import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 
-class ExitButton extends StatelessWidget {
-  const ExitButton({
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
     super.key,
     required this.icon,
     required this.onPressed,
+    this.color = const Color.fromARGB(255, 245, 248, 255),
+    this.iconColor = Colors.black,
   });
 
   final IconData icon;
   final Function onPressed;
+  final Color color;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class ExitButton extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        color: Theme.of(context).primaryColorLight,
+        color: color,
       ),
       child: TextButton(
         onPressed: () {
@@ -34,7 +38,7 @@ class ExitButton extends StatelessWidget {
         child: FittedBox(
           child: Icon(
             icon,
-            color: Colors.black,
+            color: iconColor,
           ),
         ),
       ),

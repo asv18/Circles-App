@@ -10,7 +10,7 @@ import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
 import 'package:circlesapp/components/UI/custom_text_field.dart';
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,7 +70,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               "CREATE A NEW POST",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ExitButton(
+            CustomIconButton(
               onPressed: () {
                 mainKeyNav.currentState!.pop(
                   [

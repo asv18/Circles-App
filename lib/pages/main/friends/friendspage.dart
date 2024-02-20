@@ -1,10 +1,9 @@
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/components/type_based/Users/friend_widget.dart';
-import 'package:circlesapp/components/UI/search_appbar.dart';
+import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/services/friend_service.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../shared/user.dart';
 
@@ -34,46 +33,29 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorLight,
-        elevation: 2,
-        toolbarHeight: MediaQuery.of(context).size.height / 6.0,
-        centerTitle: true,
-        title: Column(
+        toolbarHeight: ComponentService.convertHeight(
+          MediaQuery.of(context).size.height,
+          60,
+        ),
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        centerTitle: false,
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Conversations",
-                    style: GoogleFonts.karla(
-                      fontSize: 36.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      FontAwesome.user_plus_solid,
-                    ),
-                  ),
-                ],
-              ),
+            Text(
+              "FRIENDS",
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            SearchAppBar(
-              controller: _textEditingControllerSearchFriends,
-              onChanged: (value) {
-                setState(() {
-                  searchTerm = value.toString().toLowerCase();
-                });
-              },
+            CustomIconButton(
+              onPressed: () {},
+              icon: MingCute.user_add_line,
+              color: Theme.of(context).primaryColor,
+              iconColor: Colors.white,
             ),
           ],
         ),
+        backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SafeArea(
         child: Container(

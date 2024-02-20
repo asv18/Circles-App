@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:circlesapp/components/UI/custom_text_button.dart';
-import 'package:circlesapp/components/UI/exit_button.dart';
+import 'package:circlesapp/components/UI/custom_icon_button.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/circles_service.dart';
 import 'package:circlesapp/services/component_service.dart';
@@ -56,7 +56,7 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ExitButton(
+                    CustomIconButton(
                       icon: IonIcons.caret_back,
                       onPressed: () {
                         mainKeyNav.currentState!.pop(
