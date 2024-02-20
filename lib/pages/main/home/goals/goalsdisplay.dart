@@ -87,28 +87,11 @@ class _GoalsDispState extends State<GoalsDisp> {
                                 context,
                                 snapshot.data![index],
                                 _tapPosition,
-                                () {
-                                  setState(() {
-                                    List<Goal> goals =
-                                        List.empty(growable: true);
-                                    GoalService.goals.then(
-                                      (value) {
-                                        for (Goal obj in value) {
-                                          if (obj.id !=
-                                              snapshot.data![index].id) {
-                                            goals.add(obj);
-                                          }
-                                        }
-                                      },
-                                    );
-
-                                    GoalService.goals = Future.value(
-                                      goals,
-                                    );
-                                  });
-                                },
                               );
 
+                              await GoalService().fetchGoals();
+
+                              widget.callback();
                               setState(() {});
                             },
                             getTapPosition: _getTapPosition,

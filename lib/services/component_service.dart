@@ -4,7 +4,7 @@ import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/shared/circle.dart';
 import 'package:circlesapp/shared/goal.dart';
-import 'package:circlesapp/variable_screens/edit_goal_screen.dart';
+import 'package:circlesapp/pages/edit_goal_screen.dart/edit_goal_screen.dart';
 import 'package:flutter/material.dart';
 
 class ComponentService {
@@ -120,7 +120,6 @@ class ComponentService {
     BuildContext context,
     Goal goal,
     Offset tapPosition,
-    Function deleteFunction,
   ) async {
     final RenderObject? overlay =
         Overlay.of(context).context.findRenderObject();

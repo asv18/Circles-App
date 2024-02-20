@@ -8,7 +8,7 @@ import 'package:circlesapp/components/type_based/Goals/Tasks/task_widget.dart';
 import 'package:circlesapp/routes.dart';
 import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/variable_screens/circles/circlescreen.dart';
-import 'package:circlesapp/variable_screens/edit_goal_screen.dart';
+import 'package:circlesapp/pages/edit_goal_screen.dart/edit_goal_screen.dart';
 import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:circlesapp/services/auth_service.dart';
@@ -483,28 +483,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           context,
                                           snapshot.data![index],
                                           _tapPosition,
-                                          () {
-                                            setState(() {
-                                              List<Goal> goals =
-                                                  List.empty(growable: true);
-                                              GoalService.goals.then(
-                                                (value) {
-                                                  for (Goal obj in value) {
-                                                    if (obj.id !=
-                                                        snapshot
-                                                            .data![index].id) {
-                                                      goals.add(obj);
-                                                    }
-                                                  }
-                                                },
-                                              );
-
-                                              GoalService.goals = Future.value(
-                                                goals,
-                                              );
-                                            });
-                                          },
                                         );
+
+                                        await GoalService().fetchGoals();
 
                                         setState(() {});
                                       },

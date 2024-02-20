@@ -196,7 +196,7 @@ class _MainPageState extends State<MainPage> {
                     _index = 0;
                   });
                 },
-                icon: OctIcons.home,
+                icon: MingCute.home_3_fill,
                 color:
                     _index == 0 ? Theme.of(context).primaryColor : Colors.grey,
               ),
@@ -217,7 +217,7 @@ class _MainPageState extends State<MainPage> {
                     duration: Duration(seconds: 3),
                   ));
                 },
-                icon: IonIcons.people,
+                icon: MingCute.group_fill,
                 color:
                     _index == 1 ? Theme.of(context).primaryColor : Colors.grey,
               ),

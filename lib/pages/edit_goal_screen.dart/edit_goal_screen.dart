@@ -9,7 +9,9 @@ import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class GoalScreen extends StatefulWidget {
   const GoalScreen({
@@ -154,8 +156,28 @@ class _GoalScreenState extends State<GoalScreen> {
                   final DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: _selectedDate,
-                    firstDate: DateTime(1999),
+                    firstDate: DateTime.now(),
                     lastDate: DateTime(2101),
+                    builder: (context, child) {
+                      return Theme(
+                        data: ThemeData(
+                          colorScheme: Theme.of(context).colorScheme,
+                          textTheme: TextTheme(
+                            headlineLarge: GoogleFonts.nunito(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            bodyMedium: GoogleFonts.nunito(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color.fromARGB(255, 108, 117, 125),
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
 
                   if (pickedDate != null) {
