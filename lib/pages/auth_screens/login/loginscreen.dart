@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -116,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen>
               Text(
                 "Sign In",
                 style: GoogleFonts.poppins(
-                  fontSize: 24.sp,
+                  fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
@@ -139,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen>
                         textAlign: TextAlign.start,
                         style: GoogleFonts.montserrat(
                           color: Colors.red,
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),
                       ),

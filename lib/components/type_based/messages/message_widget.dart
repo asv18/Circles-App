@@ -4,7 +4,6 @@ import 'package:circlesapp/shared/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
@@ -121,7 +120,7 @@ class MessageWidget extends StatelessWidget {
           child: Text(
             message.message!,
             style: TextStyle(
-              fontSize: 15.sp,
+              fontSize: 15,
               color: (message.userFKey != UserService.dataUser.fKey
                   ? Colors.black
                   : Theme.of(context).canvasColor),

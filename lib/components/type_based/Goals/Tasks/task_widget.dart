@@ -2,7 +2,6 @@ import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class TaskWidget extends StatelessWidget {
   const TaskWidget({
@@ -123,7 +122,7 @@ class TaskWidget extends StatelessWidget {
                       Text(
                         "Complete",
                         style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           color: Theme.of(context).canvasColor,
                         ),
                       ),

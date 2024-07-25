@@ -8,7 +8,6 @@ import 'package:circlesapp/shared/circle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CirclePreviewScreen extends StatefulWidget {
   const CirclePreviewScreen({
@@ -120,7 +119,7 @@ class _CirclePreviewScreenState extends State<CirclePreviewScreen> {
                               Text(
                                 widget.circle.name!,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 20.sp,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
                                 ),

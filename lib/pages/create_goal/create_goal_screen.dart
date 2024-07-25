@@ -16,7 +16,6 @@ import 'package:circlesapp/shared/task.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CreateGoalScreen extends StatefulWidget {
   const CreateGoalScreen({super.key});
@@ -147,12 +146,12 @@ class _CreateGoalScreenState extends State<CreateGoalScreen> {
                           colorScheme: Theme.of(context).colorScheme,
                           textTheme: TextTheme(
                             headlineLarge: GoogleFonts.nunito(
-                              fontSize: 20.sp,
+                              fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
                             ),
                             bodyMedium: GoogleFonts.nunito(
-                              fontSize: 16.sp,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: const Color.fromARGB(255, 108, 117, 125),
                             ),

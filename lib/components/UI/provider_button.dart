@@ -1,7 +1,6 @@
 import 'package:circlesapp/services/component_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProviderButton extends StatelessWidget {
   // final ImageProvider icon;
@@ -52,7 +51,7 @@ class ProviderButton extends StatelessWidget {
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
             color: Colors.black,
-            fontSize: 14.sp,
+            fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
         ),

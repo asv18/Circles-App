@@ -9,7 +9,6 @@ import 'package:circlesapp/services/goal_service.dart';
 import 'package:circlesapp/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -83,7 +82,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   style: GoogleFonts.karla(
                                     fontWeight: FontWeight.w300,
                                     color: Colors.black,
-                                    fontSize: 20.sp,
+                                    fontSize: 20,
                                   ),
                                 ),
                                 TextSpan(
@@ -92,7 +91,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   style: GoogleFonts.karla(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
-                                    fontSize: 20.sp,
+                                    fontSize: 20,
                                   ),
                                 )
                               ],

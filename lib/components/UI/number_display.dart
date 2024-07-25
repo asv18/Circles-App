@@ -2,7 +2,6 @@ import 'package:circlesapp/services/component_service.dart';
 import 'package:circlesapp/shared/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class NumberDisplay extends StatelessWidget {
   final Future<dynamic> future;
@@ -49,7 +48,7 @@ class NumberDisplay extends StatelessWidget {
                         ? "99+"
                         : tasksLength.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
-                      fontSize: 18.sp,
+                      fontSize: 18,
                       color: Colors.black,
                     ),
                   );
@@ -59,7 +58,7 @@ class NumberDisplay extends StatelessWidget {
                         ? "20+"
                         : snapshot.data!.length.toString().padLeft(2, '0'),
                     style: GoogleFonts.poppins(
-                      fontSize: 18.sp,
+                      fontSize: 18,
                       color: Colors.black,
                     ),
                   );

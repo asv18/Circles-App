@@ -11,7 +11,6 @@ import 'package:circlesapp/variable_screens/circles/posts/circle_post_display.da
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CircleScreen extends StatefulWidget {
   const CircleScreen({
@@ -169,7 +168,7 @@ class _CircleScreenState extends State<CircleScreen> {
                               Text(
                                 circle.name!,
                                 style: GoogleFonts.poppins(
-                                  fontSize: 20.sp,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
                                 ),
